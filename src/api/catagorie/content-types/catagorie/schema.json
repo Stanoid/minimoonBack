@@ -24,7 +24,14 @@
     "subcatagories": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::subcatagory.subcatagory"
+      "target": "api::subcatagory.subcatagory",
+      "mappedBy": "catagory"
+    },
+    "promotions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::promotion.promotion",
+      "mappedBy": "catagories"
     }
   }
 }

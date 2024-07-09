@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "items": {
+      "type": "json"
+    },
+    "delivery": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "initiated",
+        "unpaid",
+        "paid",
+        "dispatched",
+        "delivering",
+        "delivered"
+      ]
+    },
+    "payment_ref": {
+      "type": "string"
+    },
+    "status_timestamps": {
+      "type": "json"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

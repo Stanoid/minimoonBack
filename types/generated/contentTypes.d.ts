@@ -818,6 +818,11 @@ export interface ApiCatagorieCatagorie extends Schema.CollectionType {
       'oneToMany',
       'api::subcatagory.subcatagory'
     >;
+    promotions: Attribute.Relation<
+      'api::catagorie.catagorie',
+      'manyToMany',
+      'api::promotion.promotion'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -913,6 +918,11 @@ export interface ApiCountryCountry extends Schema.CollectionType {
       'oneToMany',
       'api::city.city'
     >;
+    promotions: Attribute.Relation<
+      'api::country.country',
+      'manyToMany',
+      'api::promotion.promotion'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -924,6 +934,52 @@ export interface ApiCountryCountry extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::country.country',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiOrderOrder extends Schema.CollectionType {
+  collectionName: 'orders';
+  info: {
+    singularName: 'order';
+    pluralName: 'orders';
+    displayName: 'order';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    items: Attribute.JSON;
+    delivery: Attribute.Relation<
+      'api::order.order',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    status: Attribute.Enumeration<
+      ['initiated', 'unpaid', 'paid', 'dispatched', 'delivering', 'delivered']
+    >;
+    payment_ref: Attribute.String;
+    status_timestamps: Attribute.JSON;
+    users_permissions_user: Attribute.Relation<
+      'api::order.order',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::order.order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::order.order',
       'oneToOne',
       'admin::user'
     > &
@@ -956,7 +1012,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
     >;
     subcatagory: Attribute.Relation<
       'api::product.product',
-      'oneToOne',
+      'manyToOne',
       'api::subcatagory.subcatagory'
     >;
     seller: Attribute.Relation<
@@ -965,6 +1021,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     images: Attribute.Media;
+    promotions: Attribute.Relation<
+      'api::product.product',
+      'manyToMany',
+      'api::promotion.promotion'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -976,6 +1037,53 @@ export interface ApiProductProduct extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::product.product',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPromotionPromotion extends Schema.CollectionType {
+  collectionName: 'promotions';
+  info: {
+    singularName: 'promotion';
+    pluralName: 'promotions';
+    displayName: 'promotion';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    pids: Attribute.Relation<
+      'api::promotion.promotion',
+      'manyToMany',
+      'api::product.product'
+    >;
+    catagories: Attribute.Relation<
+      'api::promotion.promotion',
+      'manyToMany',
+      'api::catagorie.catagorie'
+    >;
+    countries: Attribute.Relation<
+      'api::promotion.promotion',
+      'manyToMany',
+      'api::country.country'
+    >;
+    start: Attribute.DateTime;
+    end: Attribute.DateTime;
+    meta: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::promotion.promotion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::promotion.promotion',
       'oneToOne',
       'admin::user'
     > &
@@ -1027,8 +1135,13 @@ export interface ApiSubcatagorySubcatagory extends Schema.CollectionType {
     img: Attribute.String;
     catagory: Attribute.Relation<
       'api::subcatagory.subcatagory',
-      'oneToOne',
+      'manyToOne',
       'api::catagorie.catagorie'
+    >;
+    products: Attribute.Relation<
+      'api::subcatagory.subcatagory',
+      'oneToMany',
+      'api::product.product'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1172,7 +1285,9 @@ declare module '@strapi/types' {
       'api::city.city': ApiCityCity;
       'api::color.color': ApiColorColor;
       'api::country.country': ApiCountryCountry;
+      'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
+      'api::promotion.promotion': ApiPromotionPromotion;
       'api::size.size': ApiSizeSize;
       'api::subcatagory.subcatagory': ApiSubcatagorySubcatagory;
       'api::user-info.user-info': ApiUserInfoUserInfo;

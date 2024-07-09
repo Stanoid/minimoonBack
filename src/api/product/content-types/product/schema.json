@@ -38,8 +38,9 @@
     },
     "subcatagory": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::subcatagory.subcatagory"
+      "relation": "manyToOne",
+      "target": "api::subcatagory.subcatagory",
+      "inversedBy": "products"
     },
     "seller": {
       "type": "relation",
@@ -48,14 +49,21 @@
       "inversedBy": "products"
     },
     "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "promotions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::promotion.promotion",
+      "mappedBy": "pids"
     }
   }
 }

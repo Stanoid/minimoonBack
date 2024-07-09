@@ -25,6 +25,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::city.city"
+    },
+    "promotions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::promotion.promotion",
+      "mappedBy": "countries"
     }
   }
 }
