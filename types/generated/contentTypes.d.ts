@@ -969,6 +969,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    session_id: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1245,6 +1246,7 @@ export interface ApiVarientVarient extends Schema.CollectionType {
       'manyToOne',
       'api::product.product'
     >;
+    product_ref: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

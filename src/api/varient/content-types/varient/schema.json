@@ -33,6 +33,9 @@
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "varients"
+    },
+    "product_ref": {
+      "type": "string"
     }
   }
 }

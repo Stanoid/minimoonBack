@@ -3,6 +3,7 @@
 
 const catagorie = require("../../catagorie/controllers/catagorie");
 const subcatagory = require("../../subcatagory/controllers/subcatagory");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 /**
  * product controller
@@ -266,11 +267,23 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               price,
               imgs,
             } = ctx.request.body;
+
+
+
+            const product = await stripe.products.create({
+              name: nameen,
+              description:descen,
+            });
+
+
+
+
             const entry = await strapi.entityService.create(
               "api::varient.varient",
               {
                 data: {
                   price: price,
+                  product_ref:product.id,
                   stock: stock,
                   color: color,
                   size: size,
@@ -283,9 +296,24 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
             console.log(imgs);
 
+            const productentry = await strapi.entityService.create('api::product.product', {
+              data: {
+                status:true,
+                name_ar:namear,
+                name_en:nameen,
+                description_ar:descar,
+                description_en: descen,
+                varients: verid,
+                subcatagory:subc,
+                seller: udata.id,
+                img: imgs,
+                publishedAt :  Date.now() ,
+              },
+            });
 
 
             return productentry;
+
           } else {
             return "unauthorized (:";
           }
@@ -342,11 +370,19 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                   varray.push(varients[key].id);
                   newvar.push(varients[key].id);
                 } else {
+
+
+                  const product = await stripe.products.create({
+                    name: nameen,
+                    description:descen,
+                  });
+
                   const entry = await strapi.entityService.create(
                     "api::varient.varient",
                     {
                       data: {
                         price: varients[key].attributes.price,
+                        product_ref:product.id,
                         stock: varients[key].attributes.stock,
                         color: varients[key].attributes.color.id,
                         size: varients[key].attributes.size.id,
@@ -402,7 +438,26 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
             console.log("to delete", toDelete);
 
+
+
+
             for (let x = 0; x < toDelete.length; x++) {
+
+
+
+              const entity = await strapi
+              .service("api::varient.varient")
+              .findOne(toDelete[x], {
+                select: ["*"],
+                populate: [],
+              });
+
+
+           const deleted = await stripe.products.del(entity.product_ref);
+
+           deleted;
+
+
               const deleteVars = await strapi.entityService.delete(
                 "api::varient.varient",
                 toDelete[x],
@@ -410,6 +465,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               );
 
               deleteVars;
+
+
+
+
             }
 
             return productentry;

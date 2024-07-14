@@ -6,6 +6,7 @@
 var url = require("url");
 const varient = require("../../varient/controllers/varient");
 const exp = require("constants");
+const product = require("../../product/controllers/product");
 require("dotenv").config()
 const { createCoreController } = require('@strapi/strapi').factories;
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
@@ -109,12 +110,169 @@ getTimeStamp (dtt){
          break;
 
 
+         case "expireOrder":
+        const {id} = ctx.request.body;
+
+
+        const session = await stripe.checkout.sessions.expire(id);
+
+        return session;
+        break;
+
+   case "getOrders" :
+
+   // validate list from orders with stripe checkout retrive1
+
+   const ressub = await strapi.db
+   .query("api::order.order")
+   .findMany({
+     select: ["*"],
+   });
+
+   let ordarray = []
+console.log(ressub)
+   for (let i = 0; i < ressub.length; i++) {
+    const session = await stripe.checkout.sessions.retrieve(ressub[i].session_id);
+
+    if(session.status!="expired"){
+
+    ordarray.push(session);
+  }
+
+   }
 
 
 
+   //console.log(ressub)
+return ordarray;
+    break;
+
+
+    case "deliverOrder":
+      if(utype==1||utype==5){
+       const {id} = ctx.request.body;
+       const order = await strapi.entityService.update('api::order.order',id, {
+
+         data: {
+             status:"delivered",
+
+           },
+         });
+
+
+ return order
+
+      }else{
+        return "unauthorized (:";
+      }
+        break;
 
 
 
+    case "getDeliveryOrders" :
+
+    // validate list from orders with stripe checkout retrive1
+
+    const resdev = await strapi.db
+    .query("api::order.order")
+    .findMany({
+      select: ["*"],
+    });
+
+    let ordarraydev = []
+ //console.log(resdev)
+    for (let i = 0; i < resdev.length; i++) {
+      let ordob = {}
+     const session = await stripe.checkout.sessions.retrieve(resdev[i].session_id);
+
+     if(session.status!="expired"&&session.payment_status=="paid"){
+    ordob.name = session.customer_details.name;
+    ordob.date = session.created;
+    ordob.phone = session.customer_details.phone
+    ordob.status = resdev[i].status;
+    ordob.id = resdev[i].id;
+    ordob.refId = session.id;
+    ordob.email = session.customer_details.email;
+    ordob.city = session.customer_details.address.city;
+    ordob.line1 = session.customer_details.address.line1;
+    ordob.line2 = session.customer_details.address.line2;
+     ordarraydev.push(ordob);
+   }
+
+    }
+ return ordarraydev;
+     break;
+
+
+     case "getOrderItems" :
+
+
+      if(utype==1||utype==5){
+        const {id} = ctx.request.body;
+        const lineItems = await stripe.checkout.sessions.listLineItems(
+          id
+        );
+   let returnArray = [];
+
+for (let i = 0; i < lineItems.data.length; i++) {
+  let ob = {};
+  ob.qty = lineItems.data[i].quantity;
+  const ressub = await strapi.db
+  .query("api::varient.varient")
+  .findMany({
+    select: ["*"],
+    where: {
+      // subcatagory: {
+      //   id: query.sid,
+      // },
+      product_ref:lineItems.data[i].price.product
+    },
+    populate: [
+      "color","size"
+    ],
+  });
+
+ob.color = ressub[0].color.name_en;
+ob.colorCode = ressub[0].color.colorCode;
+ob.product_ref= ressub[0].product_ref;
+ob.sizeName = ressub[0].size.name_en;
+ob.sizeIcom = ressub[0].size.icon;
+
+
+
+  const ressubp = await strapi.db
+  .query("api::product.product")
+  .findMany({
+    select: ["*"],
+    where: {
+      varients: ressub[0].id,
+
+
+    },
+    populate: [
+    ],
+  });
+
+ob.pid = ressubp[0].id;
+ob.name = ressubp[0].name_en;
+ob.imgs = ressubp[0].img;
+
+
+  // console.dir(ressubp)
+  // console.dir(ressub)
+  // console.dir(lineItems);
+returnArray.push(ob);
+
+}
+
+
+  return returnArray
+       }else{
+         return "unauthorized (:";
+       }
+
+
+     break;
           default:
         return "no function selected"
          break;
@@ -145,6 +303,7 @@ getTimeStamp (dtt){
 
     // console.log(entity);
   let price = 0;
+  let id = null;
 
   console.log(items[i]);
     //Product approach
@@ -167,22 +326,34 @@ getTimeStamp (dtt){
 
       if(ressub.varients[j].id == items[i].id){
         console.log(ressub.varients[j]);
-        price = ressub.varients[j].price
+        price = ressub.varients[j].price;
+        id = ressub.varients[j].id;
       }
 
     }
 
 
 
-    lineitems.push({
-      adjustable_quantity:{enabled:true},
 
+const createPrice = await stripe.prices.create({
+  currency: 'sar',
+  unit_amount: parseInt(price*100),
+  product_data: {
+   metadata:{pid:items[i].id},
+    name: ressub.name_en,
+
+
+  },
+});
+
+ console.log("ssssssssssssssss",items[i].product_ref)
+
+    lineitems.push({
+      adjustable_quantity:{enabled:true,maximum:5},
       price_data: {
         currency: "sar",
-        product_data: {
-          name: ressub.name_en,
-          description:ressub.description_en
-        },
+        product:items[i].product_ref,
+
          unit_amount: parseInt(price*100)  ,
       },
       quantity: items[i].qty,
@@ -200,10 +371,11 @@ getTimeStamp (dtt){
             mode: "payment",
             line_items:lineitems,
             allow_promotion_codes: true,
+
             shipping_address_collection:{allowed_countries:["HK","SA","ET"]},
             phone_number_collection:{enabled:true},
-            expires_at: Math.floor(Date.now() / 1000) + (3600 * 2),
-            success_url: `${process.env.CLIENT_URL}/payment`,
+            expires_at: Math.floor(Date.now() / 1000) + (3600 * 24),
+            success_url: `${process.env.CLIENT_URL}/delivery`,
             cancel_url: `${process.env.CLIENT_URL}/paymentFailed`
           });
 
@@ -213,6 +385,7 @@ getTimeStamp (dtt){
             {
               data: {
                 items: session,
+                session_id:session.id,
                 status: "initiated",
                 publishedAt: Date.now(),
               },
@@ -251,6 +424,7 @@ getTimeStamp (dtt){
           }
 
             break;
+
             case "testsession":
               const session = await stripe.checkout.sessions.retrieve(
                 'cs_test_b14Olxz3Ox7CDNXK0Cw0zYLdRKtvg7u3LpepbgVSJg4uV0LngwuW9LBSvr'
@@ -258,6 +432,9 @@ getTimeStamp (dtt){
 
               return session;
               break;
+
+
+
 
           default:
             return "Defaulted ):"
@@ -269,75 +446,69 @@ getTimeStamp (dtt){
   }
   },
 
-//   async update(ctx) {
+  async update(ctx) {
 
 
 
-//     const { id } = ctx.params;
+    const { id } = ctx.params;
 
-//     if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
-
-
-
-//       const udata = await strapi.plugins[
-//         "users-permissions"
-//       ].services.jwt.getToken(ctx);
-
-//      udata.id;
+    if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
 
 
-//      const user = await strapi.entityService.findOne(
-//       "plugin::users-permissions.user",
-//     udata.id,
 
-//     );
-//      const utype = user.type
-//      var url = require("url");
-//      var url_parts = url.parse(ctx.request.url, true);
-//      var query = url_parts.query;
-//      switch (query.func) {
-//        case "EditColor":
-// //console.log("Ssss",utype);
+      const udata = await strapi.plugins[
+        "users-permissions"
+      ].services.jwt.getToken(ctx);
 
-//        if(utype==1){
-//         const {name_ar,name_en,colorCode} = ctx.request.body;
-
-//         const coloredit = await strapi.entityService.update('api::order.order',id, {
-
-//           data: {
-//               status:true,
-//               name_ar:name_ar,
-//               name_en:name_en,
-//               colorCode:colorCode,
-//               updatedAt: Date.now()
-//             },
-//           });
+     udata.id;
 
 
-//   return coloredit
+     const user = await strapi.entityService.findOne(
+      "plugin::users-permissions.user",
+    udata.id,
 
-//        }else{
-//          return "unauthorized (:";
-//        }
-//          break;
-//           default:
-//         return "no function selected"
-//          break;
-//      }
-//       // try {
-//       // } catch (err) {
-//       //   return "nauthorized request catch triggred";
-//       // }
-//   } else {
-//     //puplic functions goes here
-//     return "unauthorized access."
-//    }
+    );
+     const utype = user.type
+     var url = require("url");
+     var url_parts = url.parse(ctx.request.url, true);
+     var query = url_parts.query;
+     switch (query.func) {
+       case "deliverOrder":
+       if(utype==1||utype==5){
+        const {id} = ctx.request.body;
+        const order = await strapi.entityService.update('api::order.order',id, {
+
+          data: {
+              status:"delivered",
+
+            },
+          });
+
+
+  return order
+
+       }else{
+         return "unauthorized (:";
+       }
+         break;
+          default:
+        return "no function selected"
+         break;
+     }
+      // try {
+      // } catch (err) {
+      //   return "nauthorized request catch triggred";
+      // }
+  } else {
+    //puplic functions goes here
+    return "unauthorized access."
+   }
 
 
 
 
 
-//   },
+  },
 
 }));
 
