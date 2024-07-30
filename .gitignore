@@ -93,6 +93,7 @@ pids
 logs
 results
 yarn.lock
+pnpm-lock.yaml
 node_modules
 .node_history
 
