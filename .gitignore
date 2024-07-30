@@ -92,6 +92,7 @@ lcov.info
 pids
 logs
 results
+yarn.lock
 node_modules
 .node_history
 
