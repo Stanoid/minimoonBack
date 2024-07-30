@@ -88,7 +88,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             // offset:parseInt(query.page),
             // limit:12,
             select: ["*"],
-            populate: ["varients", "subcatagory", "seller"],
+            populate: ["varients", "varients.color", "subcatagory", "seller"],
           });
 
           const sanitizedEntity = await this.sanitizeOutput(res, ctx);
@@ -167,6 +167,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               },
               populate: [
                 "varients",
+                "varients.color",
                 "subcatagory",
                 "subcatagory.catagory",
                 "seller",

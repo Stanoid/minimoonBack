@@ -72,13 +72,20 @@
       "mappedBy": "user"
     },
     "type": {
-      "type": "integer"
+      "type": "integer",
+      "default": 4
     },
     "products": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
       "mappedBy": "seller"
+    },
+    "orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

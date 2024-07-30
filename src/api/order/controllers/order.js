@@ -35,6 +35,7 @@ getTimeStamp (dtt){
 
 
 
+
   async create(ctx) {
     const { id } = ctx.params;
 
@@ -44,6 +45,7 @@ getTimeStamp (dtt){
         "users-permissions"
       ].services.jwt.getToken(ctx);
      udata.id;
+     console.log(udata)
      const user = await strapi.entityService.findOne(
       "plugin::users-permissions.user",
     udata.id,
@@ -118,6 +120,176 @@ getTimeStamp (dtt){
 
         return session;
         break;
+
+        case "getUserOrders" :
+        // user.id alreadey present, get userorders
+        const uorders = await strapi.db
+  .query("api::order.order")
+  .findMany({
+    orderBy:[{ publishedAt: 'desc' }],
+    limit:10,
+    select: ["*"],
+    where: {
+      users_permissions_user: {
+        id: udata.id,
+      },
+      //product_ref:lineItems.data[i].price.product
+    },
+    populate: [
+
+    ],
+  });
+
+  let orary = []
+  //console.log(resdev)
+     for (let i = 0; i < uorders.length; i++) {
+       let ordob = {}
+      const session = await stripe.checkout.sessions.retrieve(uorders[i].session_id);
+console.log(session)
+      if(session.status!="expired"){
+
+     ordob.date = session.created;
+   ordob.url = session.url;
+     ordob.status = uorders[i].status;
+     ordob.id = uorders[i].id;
+
+     ordob.refId = session.id;
+     ordob.total = session.amount_total / 100;
+     ordob.payment_status = session.payment_status;
+     orary.push(ordob);
+    }
+
+     }
+  return orary.reverse();
+
+
+
+        break;
+
+
+        case "initPaymentSession":
+          const {items} = ctx.request.body;
+
+
+        try {
+
+       var lineitems = []
+
+       for (let i = 0; i < items.length; i++) {
+       //Varient approach
+   //       const entity = await  strapi
+   // .service("api::varient.varient")
+   // .findOne(items[i].id, {
+   //   select: ["*"],
+   // });
+
+   // console.log(entity);
+ let price = 0;
+ let id = null;
+
+ console.log(items[i]);
+   //Product approach
+   const ressub = await strapi.db
+   .query("api::product.product")
+   .findOne({
+     select: ["*"],
+     where: {
+       varients: {
+         id: items[i].id,
+       },
+     },
+     populate: [
+       "varients",
+     ],
+   });
+
+   console.dir(ressub.varients);
+   for (let j = 0; j < ressub.varients.length; j++) {
+
+     if(ressub.varients[j].id == items[i].id){
+       console.log(ressub.varients[j]);
+       price = ressub.varients[j].price;
+       id = ressub.varients[j].id;
+     }
+
+   }
+
+
+
+
+const createPrice = await stripe.prices.create({
+ currency: 'sar',
+ unit_amount: parseInt(price*100),
+ product_data: {
+  metadata:{pid:items[i].id},
+   name: ressub.name_ar,
+
+
+ },
+});
+
+console.log("ssssssssssssssss",items[i].product_ref)
+
+   lineitems.push({
+     adjustable_quantity:{enabled:true,maximum:5},
+     price_data: {
+       currency: "sar",
+       product:items[i].product_ref,
+
+        unit_amount: parseInt(price*100)  ,
+     },
+     quantity: items[i].qty,
+   })
+
+
+
+       }
+
+
+
+
+         const session = await stripe.checkout.sessions.create({
+           payment_method_types: ["card"],
+           mode: "payment",
+           line_items:lineitems,
+           allow_promotion_codes: true,
+
+           shipping_address_collection:{allowed_countries:["HK","SA","ET"]},
+           phone_number_collection:{enabled:true},
+           expires_at: Math.floor(Date.now() / 1000) + (3600 * 24),
+           success_url: `${process.env.CLIENT_URL}/payment`,
+           cancel_url: `${process.env.CLIENT_URL}/user`
+         });
+
+
+         const entry = await strapi.entityService.create(
+           "api::order.order",
+           {
+             data: {
+               items: session,
+
+               users_permissions_user:user.id ,
+               session_id:session.id,
+               status: "initiated",
+               publishedAt: Date.now(),
+             },
+           }
+         )
+         console.log(entry)
+
+
+
+
+         return ({ url: session.url })
+       } catch (e) {
+         // res.status(500).json({ error: e.message })
+
+           console.log(e.message)
+       }
+
+
+         break;
+
 
    case "getOrders" :
 
@@ -207,8 +379,9 @@ return ordarray;
      case "getOrderItems" :
 
 
-      if(utype==1||utype==5){
+      if(utype==1||utype==5||utype==4){
         const {id} = ctx.request.body;
+        console.log("order items session id: ",id)
         const lineItems = await stripe.checkout.sessions.listLineItems(
           id
         );
@@ -232,10 +405,13 @@ for (let i = 0; i < lineItems.data.length; i++) {
     ],
   });
 
-ob.color = ressub[0].color.name_en;
+ob.colorEn = ressub[0].color.name_en;
+ob.colorAr = ressub[0].color.name_ar;
 ob.colorCode = ressub[0].color.colorCode;
 ob.product_ref= ressub[0].product_ref;
-ob.sizeName = ressub[0].size.name_en;
+ob.price = ressub[0].price;
+ob.sizeNameEn = ressub[0].size.name_en;
+ob.sizeNameAr = ressub[0].size.name_ar;
 ob.sizeIcom = ressub[0].size.icon;
 
 
@@ -254,7 +430,8 @@ ob.sizeIcom = ressub[0].size.icon;
   });
 
 ob.pid = ressubp[0].id;
-ob.name = ressubp[0].name_en;
+ob.nameEn = ressubp[0].name_en;
+ob.nameAr = ressubp[0].name_ar;
 ob.imgs = ressubp[0].img;
 
 
@@ -287,125 +464,7 @@ returnArray.push(ob);
     var url_parts = url.parse(ctx.request.url, true);
        var query = url_parts.query;
        switch (query.func) {
-         case "initPaymentSession":
-
-         try {
-
-        var lineitems = []
-
-        for (let i = 0; i < items.length; i++) {
-        //Varient approach
-    //       const entity = await  strapi
-    // .service("api::varient.varient")
-    // .findOne(items[i].id, {
-    //   select: ["*"],
-    // });
-
-    // console.log(entity);
-  let price = 0;
-  let id = null;
-
-  console.log(items[i]);
-    //Product approach
-    const ressub = await strapi.db
-    .query("api::product.product")
-    .findOne({
-      select: ["*"],
-      where: {
-        varients: {
-          id: items[i].id,
-        },
-      },
-      populate: [
-        "varients",
-      ],
-    });
-
-    console.dir(ressub.varients);
-    for (let j = 0; j < ressub.varients.length; j++) {
-
-      if(ressub.varients[j].id == items[i].id){
-        console.log(ressub.varients[j]);
-        price = ressub.varients[j].price;
-        id = ressub.varients[j].id;
-      }
-
-    }
-
-
-
-
-const createPrice = await stripe.prices.create({
-  currency: 'sar',
-  unit_amount: parseInt(price*100),
-  product_data: {
-   metadata:{pid:items[i].id},
-    name: ressub.name_en,
-
-
-  },
-});
-
- console.log("ssssssssssssssss",items[i].product_ref)
-
-    lineitems.push({
-      adjustable_quantity:{enabled:true,maximum:5},
-      price_data: {
-        currency: "sar",
-        product:items[i].product_ref,
-
-         unit_amount: parseInt(price*100)  ,
-      },
-      quantity: items[i].qty,
-    })
-
-
-
-        }
-
-
-
-
-          const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items:lineitems,
-            allow_promotion_codes: true,
-
-            shipping_address_collection:{allowed_countries:["HK","SA","ET"]},
-            phone_number_collection:{enabled:true},
-            expires_at: Math.floor(Date.now() / 1000) + (3600 * 24),
-            success_url: `${process.env.CLIENT_URL}/delivery`,
-            cancel_url: `${process.env.CLIENT_URL}/paymentFailed`
-          });
-
-
-          const entry = await strapi.entityService.create(
-            "api::order.order",
-            {
-              data: {
-                items: session,
-                session_id:session.id,
-                status: "initiated",
-                publishedAt: Date.now(),
-              },
-            }
-          )
-          console.log(entry)
-
-
-
-
-          return ({ url: session.url })
-        } catch (e) {
-          // res.status(500).json({ error: e.message })
-
-            console.log(e.message)
-        }
-
-
-          break;
-          case "webhook":
+                  case "webhook":
             const {event} = ctx.request.body;
           switch (event.type) {
             case 'payment_intent.succeeded':

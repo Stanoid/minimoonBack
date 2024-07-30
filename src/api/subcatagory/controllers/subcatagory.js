@@ -125,7 +125,7 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                     id:query.sid
                   }
                 },
-                populate: ["products","products.varients","products.subcatagory","products.seller"],
+                populate: ["products","products.varients","products.varients.color","products.subcatagory","products.seller"],
             });
 
             const sanitizedEntitysub = await this.sanitizeOutput(ressub, ctx);
