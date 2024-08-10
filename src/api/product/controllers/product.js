@@ -298,10 +298,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
 
             //uncomment for production
-            // const product = await stripe.products.create({
-            //   name: nameen,
-            //   description:descen,
-            // });
+            const product = await stripe.products.create({
+              name: nameen,
+              description:descen,
+            });
 
 
 
@@ -311,7 +311,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               {
                 data: {
                   price: price,
-                  product_ref: Date.now().toString(),
+                  product_ref: product.id,
                   stock: stock,
                   color: color,
                   size: size,
