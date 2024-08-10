@@ -86,7 +86,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         case "getAllProducts":
           const res = await strapi.db.query("api::product.product").findMany({
             // offset:parseInt(query.page),
-            // limit:12,
+             limit:18,
             select: ["*"],
             populate: ["varients", "varients.color", "subcatagory", "seller"],
           });
@@ -153,6 +153,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
           break;
 
+
+
         case "getProductswithSubid":
           // return query.sid;
 
@@ -178,6 +180,31 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           return sanitizedEntitysub;
 
           break;
+
+
+          case "getProductswithCatid":
+            // return query.sid;
+
+            const ressubo = await strapi.db
+              .query("api::subcatagory.subcatagory")
+              .findMany({
+                select: ["*"],
+                where: {
+                catagory:{
+                     id:query.cid
+                    },
+                },
+                populate: ["products", "img",  "products.varients",
+                  "products.varients.color",
+                  "products.varients.size",
+                  "products.subcatagory",
+                  "products.subcatagory.catagory"],
+              });
+
+            const sanitizedEntitysubo = await this.sanitizeOutput(ressubo, ctx);
+            return sanitizedEntitysubo;
+
+            break;
 
         default:
           return "Not a valid function name (: ";
@@ -253,7 +280,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       var query = url_parts.query;
       switch (query.func) {
         case "AddProduct":
-          //console.log("Ssss",utype);
+          //
 
           if (utype == 1) {
             const {
@@ -270,11 +297,11 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             } = ctx.request.body;
 
 
-
-            const product = await stripe.products.create({
-              name: nameen,
-              description:descen,
-            });
+            //uncomment for production
+            // const product = await stripe.products.create({
+            //   name: nameen,
+            //   description:descen,
+            // });
 
 
 
@@ -284,7 +311,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               {
                 data: {
                   price: price,
-                  product_ref:product.id,
+                  product_ref: Date.now().toString(),
                   stock: stock,
                   color: color,
                   size: size,
@@ -295,7 +322,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
             const verid = entry.id;
 
-            console.log(imgs);
+
 
             const productentry = await strapi.entityService.create('api::product.product', {
               data: {
@@ -334,7 +361,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
   async update(ctx) {
     const { id } = ctx.params;
 
-    console.log("aaaaaaaaa", id);
+
 
     if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
       const udata = await strapi.plugins[
@@ -397,7 +424,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               }
             }
 
-            // console.log(imgs);
+            //
             const productentry = await strapi.entityService.update(
               "api::product.product",
               id,
@@ -415,8 +442,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               }
             );
 
-            console.log("from front", vartoDelete);
-            console.log("new var array ", newvar);
+
+
 
             let toDelete = [];
 
@@ -437,7 +464,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               //  }
             }
 
-            console.log("to delete", toDelete);
+
 
 
 

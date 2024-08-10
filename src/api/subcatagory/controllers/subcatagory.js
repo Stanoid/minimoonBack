@@ -36,7 +36,7 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
      var query = url_parts.query;
      switch (query.func) {
        case "AddSubCat":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en,catagory} = ctx.request.body;
@@ -191,7 +191,7 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
      var query = url_parts.query;
      switch (query.func) {
        case "EditSubCat":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en,catagory} = ctx.request.body;

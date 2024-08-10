@@ -803,6 +803,44 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiAccountAccount extends Schema.CollectionType {
+  collectionName: 'accounts';
+  info: {
+    singularName: 'account';
+    pluralName: 'accounts';
+    displayName: 'account';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    phonenumber: Attribute.BigInteger;
+    email: Attribute.Email;
+    country: Attribute.Enumeration<['sudan ', 'solvakia', 'borkena fasso ']>;
+    city: Attribute.Relation<
+      'api::account.account',
+      'oneToOne',
+      'api::city.city'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::account.account',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::account.account',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCatagorieCatagorie extends Schema.CollectionType {
   collectionName: 'catagories';
   info: {
@@ -827,6 +865,11 @@ export interface ApiCatagorieCatagorie extends Schema.CollectionType {
       'api::catagorie.catagorie',
       'manyToMany',
       'api::promotion.promotion'
+    >;
+    section: Attribute.Relation<
+      'api::catagorie.catagorie',
+      'manyToOne',
+      'api::section.section'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -860,6 +903,11 @@ export interface ApiCityCity extends Schema.CollectionType {
     status: Attribute.Boolean;
     name_en: Attribute.String;
     name_ar: Attribute.String;
+    account: Attribute.Relation<
+      'api::city.city',
+      'oneToOne',
+      'api::account.account'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1097,6 +1145,44 @@ export interface ApiPromotionPromotion extends Schema.CollectionType {
   };
 }
 
+export interface ApiSectionSection extends Schema.CollectionType {
+  collectionName: 'sections';
+  info: {
+    singularName: 'section';
+    pluralName: 'sections';
+    displayName: 'section';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name_ar: Attribute.String;
+    name_en: Attribute.String;
+    catagories: Attribute.Relation<
+      'api::section.section',
+      'oneToMany',
+      'api::catagorie.catagorie'
+    >;
+    img: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::section.section',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiSizeSize extends Schema.CollectionType {
   collectionName: 'sizes';
   info: {
@@ -1138,7 +1224,6 @@ export interface ApiSubcatagorySubcatagory extends Schema.CollectionType {
     status: Attribute.Boolean;
     name_ar: Attribute.String;
     name_en: Attribute.String;
-    img: Attribute.String;
     catagory: Attribute.Relation<
       'api::subcatagory.subcatagory',
       'manyToOne',
@@ -1149,6 +1234,7 @@ export interface ApiSubcatagorySubcatagory extends Schema.CollectionType {
       'oneToMany',
       'api::product.product'
     >;
+    img: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1288,6 +1374,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::account.account': ApiAccountAccount;
       'api::catagorie.catagorie': ApiCatagorieCatagorie;
       'api::city.city': ApiCityCity;
       'api::color.color': ApiColorColor;
@@ -1295,6 +1382,7 @@ declare module '@strapi/types' {
       'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::promotion.promotion': ApiPromotionPromotion;
+      'api::section.section': ApiSectionSection;
       'api::size.size': ApiSizeSize;
       'api::subcatagory.subcatagory': ApiSubcatagorySubcatagory;
       'api::user-info.user-info': ApiUserInfoUserInfo;

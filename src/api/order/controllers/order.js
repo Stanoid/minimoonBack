@@ -45,7 +45,7 @@ getTimeStamp (dtt){
         "users-permissions"
       ].services.jwt.getToken(ctx);
      udata.id;
-     console.log(udata)
+
      const user = await strapi.entityService.findOne(
       "plugin::users-permissions.user",
     udata.id,
@@ -141,11 +141,11 @@ getTimeStamp (dtt){
   });
 
   let orary = []
-  //console.log(resdev)
+  //
      for (let i = 0; i < uorders.length; i++) {
        let ordob = {}
       const session = await stripe.checkout.sessions.retrieve(uorders[i].session_id);
-console.log(session)
+
       if(session.status!="expired"){
 
      ordob.date = session.created;
@@ -183,11 +183,11 @@ console.log(session)
    //   select: ["*"],
    // });
 
-   // console.log(entity);
+   //
  let price = 0;
  let id = null;
 
- console.log(items[i]);
+
    //Product approach
    const ressub = await strapi.db
    .query("api::product.product")
@@ -207,7 +207,7 @@ console.log(session)
    for (let j = 0; j < ressub.varients.length; j++) {
 
      if(ressub.varients[j].id == items[i].id){
-       console.log(ressub.varients[j]);
+
        price = ressub.varients[j].price;
        id = ressub.varients[j].id;
      }
@@ -217,18 +217,18 @@ console.log(session)
 
 
 
-const createPrice = await stripe.prices.create({
- currency: 'sar',
- unit_amount: parseInt(price*100),
- product_data: {
-  metadata:{pid:items[i].id},
-   name: ressub.name_ar,
+// const createPrice = await stripe.prices.create({
+//  currency: 'sar',
+//  unit_amount: parseInt(price*100),
+//  product_data: {
+//   metadata:{pid:items[i].id},
+//    name: ressub.name_ar,
 
 
- },
-});
+//  },
+// });
 
-console.log("ssssssssssssssss",items[i].product_ref)
+
 
    lineitems.push({
      adjustable_quantity:{enabled:true,maximum:5},
@@ -275,7 +275,9 @@ console.log("ssssssssssssssss",items[i].product_ref)
              },
            }
          )
-         console.log(entry)
+
+         entry;
+
 
 
 
@@ -284,7 +286,7 @@ console.log("ssssssssssssssss",items[i].product_ref)
        } catch (e) {
          // res.status(500).json({ error: e.message })
 
-           console.log(e.message)
+
        }
 
 
@@ -302,7 +304,7 @@ console.log("ssssssssssssssss",items[i].product_ref)
    });
 
    let ordarray = []
-console.log(ressub)
+
    for (let i = 0; i < ressub.length; i++) {
     const session = await stripe.checkout.sessions.retrieve(ressub[i].session_id);
 
@@ -315,7 +317,7 @@ console.log(ressub)
 
 
 
-   //console.log(ressub)
+   //
 return ordarray;
     break;
 
@@ -352,7 +354,7 @@ return ordarray;
     });
 
     let ordarraydev = []
- //console.log(resdev)
+ //
     for (let i = 0; i < resdev.length; i++) {
       let ordob = {}
      const session = await stripe.checkout.sessions.retrieve(resdev[i].session_id);
@@ -376,12 +378,50 @@ return ordarray;
      break;
 
 
+     case "getAdminOrders" :
+
+     // validate list from orders with stripe checkout retrive1
+
+     const resdeva = await strapi.db
+     .query("api::order.order")
+     .findMany({
+       select: ["*"],
+     });
+
+     let ordarraydeva = []
+  //
+     for (let i = 0; i < resdeva.length; i++) {
+       let ordob = {}
+      const session = await stripe.checkout.sessions.retrieve(resdeva[i].session_id);
+      console.log(session);
+
+     ordob.name = session.customer_details.name;
+     ordob.date = session.created;
+     ordob.phone = session.customer_details.phone
+     ordob.status = resdeva[i].status;
+     ordob.id = resdeva[i].id;
+     ordob.refId = session.id;
+     ordob.email = session.customer_details.email;
+     ordob.total = session.amount_total;
+     ordob.currency = session.currency;
+     ordob.payment_status = session.payment_status;
+     ordob.city = session.customer_details.address.city;
+     ordob.line1 = session.customer_details.address.line1;
+     ordob.line2 = session.customer_details.address.line2;
+      ordarraydeva.push(ordob);
+
+
+     }
+  return ordarraydeva;
+      break;
+
+
      case "getOrderItems" :
 
 
       if(utype==1||utype==5||utype==4){
         const {id} = ctx.request.body;
-        console.log("order items session id: ",id)
+
         const lineItems = await stripe.checkout.sessions.listLineItems(
           id
         );
@@ -479,7 +519,7 @@ returnArray.push(ob);
               break;
             // ... handle other event types
             default:
-              console.log(`Unhandled event type ${event.type}`);
+
           }
 
             break;

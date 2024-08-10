@@ -1,5 +1,7 @@
 'use strict';
 
+const { log } = require('console');
+
 /**
  * color controller
  */
@@ -36,10 +38,12 @@ module.exports = createCoreController('api::color.color', ({ strapi }) => ({
      var query = url_parts.query;
      switch (query.func) {
        case "AddColor":
-//console.log("Ssss",utype);
+
 
        if(utype==1){
         const {name_ar,name_en,colorCode} = ctx.request.body;
+
+          console.log(name_ar,name_en,colorCode);
 
 
         const entry = await strapi.entityService.create('api::color.color', {
@@ -101,7 +105,7 @@ module.exports = createCoreController('api::color.color', ({ strapi }) => ({
      var query = url_parts.query;
      switch (query.func) {
        case "EditColor":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en,colorCode} = ctx.request.body;

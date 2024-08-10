@@ -36,16 +36,17 @@ module.exports = createCoreController('api::catagorie.catagorie', ({ strapi }) =
      var query = url_parts.query;
      switch (query.func) {
        case "AddCat":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
-        const {name_ar,name_en,status} = ctx.request.body;
+        const {name_ar,name_en,status,section} = ctx.request.body;
 
 
         const entry = await strapi.entityService.create('api::catagorie.catagorie', {
           data: {
             name_ar:name_ar,
             name_en:name_en,
+            section:section,
             status: status,
             publishedAt :  Date.now() ,
           },
@@ -105,7 +106,7 @@ module.exports = createCoreController('api::catagorie.catagorie', ({ strapi }) =
      var query = url_parts.query;
      switch (query.func) {
        case "EditCat":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en} = ctx.request.body;

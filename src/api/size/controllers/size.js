@@ -36,7 +36,7 @@ module.exports = createCoreController('api::size.size', ({ strapi }) => ({
      var query = url_parts.query;
      switch (query.func) {
        case "AddSize":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en,icon,status} = ctx.request.body;
@@ -102,7 +102,7 @@ module.exports = createCoreController('api::size.size', ({ strapi }) => ({
      var query = url_parts.query;
      switch (query.func) {
        case "EditSize":
-//console.log("Ssss",utype);
+//
 
        if(utype==1){
         const {name_ar,name_en,icon,status} = ctx.request.body;

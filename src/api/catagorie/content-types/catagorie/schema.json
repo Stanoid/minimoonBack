@@ -32,6 +32,12 @@
       "relation": "manyToMany",
       "target": "api::promotion.promotion",
       "mappedBy": "catagories"
+    },
+    "section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "catagories"
     }
   }
 }
