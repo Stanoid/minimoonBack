@@ -786,6 +786,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::order.order'
     >;
+    likes: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::like.like'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -994,6 +999,37 @@ export interface ApiCountryCountry extends Schema.CollectionType {
   };
 }
 
+export interface ApiLikeLike extends Schema.CollectionType {
+  collectionName: 'likes';
+  info: {
+    singularName: 'like';
+    pluralName: 'likes';
+    displayName: 'like';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    users_permissions_user: Attribute.Relation<
+      'api::like.like',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    products: Attribute.Relation<
+      'api::like.like',
+      'oneToMany',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 export interface ApiOrderOrder extends Schema.CollectionType {
   collectionName: 'orders';
   info: {
@@ -1079,6 +1115,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'api::product.product',
       'manyToMany',
       'api::promotion.promotion'
+    >;
+    like: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
+      'api::like.like'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1379,6 +1420,7 @@ declare module '@strapi/types' {
       'api::city.city': ApiCityCity;
       'api::color.color': ApiColorColor;
       'api::country.country': ApiCountryCountry;
+      'api::like.like': ApiLikeLike;
       'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::promotion.promotion': ApiPromotionPromotion;

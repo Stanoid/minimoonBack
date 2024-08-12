@@ -64,6 +64,12 @@
       "relation": "manyToMany",
       "target": "api::promotion.promotion",
       "mappedBy": "pids"
+    },
+    "like": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::like.like",
+      "inversedBy": "products"
     }
   }
 }
