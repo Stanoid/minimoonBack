@@ -109,6 +109,20 @@ module.exports = createCoreController('api::section.section', ({ strapi }) => ({
       switch (query.func) {
 
 
+        case "getSections":
+          // return query.sid;
+             const sres = await strapi.db.query("api::section.section").findMany({
+               select: ["*"],
+                // populate: ["catagories","catagories.subcatagories","img"],
+             });
+
+             const sanitizedEntitys = await this.sanitizeOutput(sres, ctx);
+
+         //   console.dir(res);
+             return sanitizedEntitys;
+
+             break;
+
 
             case "getAllSubcat":
               // return query.sid;

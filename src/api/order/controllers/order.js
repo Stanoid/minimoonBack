@@ -170,6 +170,7 @@ getTimeStamp (dtt){
         case "initPaymentSession":
           const {items} = ctx.request.body;
 
+          console.log("items",items)
 
         try {
 
@@ -285,7 +286,7 @@ getTimeStamp (dtt){
          return ({ url: session.url })
        } catch (e) {
          // res.status(500).json({ error: e.message })
-
+console.log(e.message)
 
        }
 
@@ -351,6 +352,8 @@ return ordarray;
     .query("api::order.order")
     .findMany({
       select: ["*"],
+
+      populate:["users_permissions_user"]
     });
 
     let ordarraydev = []
@@ -360,13 +363,13 @@ return ordarray;
      const session = await stripe.checkout.sessions.retrieve(resdev[i].session_id);
 
      if(session.status!="expired"&&session.payment_status=="paid"){
-    ordob.name = session.customer_details.name;
+      ordob.name =  resdev[i].users_permissions_user.username;
     ordob.date = session.created;
     ordob.phone = session.customer_details.phone
     ordob.status = resdev[i].status;
     ordob.id = resdev[i].id;
     ordob.refId = session.id;
-    ordob.email = session.customer_details.email;
+    ordob.email =  resdev[i].users_permissions_user.email;
     ordob.city = session.customer_details.address.city;
     ordob.line1 = session.customer_details.address.line1;
     ordob.line2 = session.customer_details.address.line2;
@@ -386,28 +389,30 @@ return ordarray;
      .query("api::order.order")
      .findMany({
        select: ["*"],
+       populate:["users_permissions_user"]
      });
 
      let ordarraydeva = []
   //
      for (let i = 0; i < resdeva.length; i++) {
        let ordob = {}
+       console.log(resdeva[i])
       const session = await stripe.checkout.sessions.retrieve(resdeva[i].session_id);
-      console.log(session);
-
-     ordob.name = session.customer_details.name;
+      //console.log(session);
+     //Card information in session object
+     ordob.name =  resdeva[i].users_permissions_user.username;
      ordob.date = session.created;
-     ordob.phone = session.customer_details.phone
+     ordob.phone = session.customer_details&&session.customer_details.phone
      ordob.status = resdeva[i].status;
      ordob.id = resdeva[i].id;
      ordob.refId = session.id;
-     ordob.email = session.customer_details.email;
+     ordob.email = resdeva[i].users_permissions_user.email;
      ordob.total = session.amount_total;
      ordob.currency = session.currency;
      ordob.payment_status = session.payment_status;
-     ordob.city = session.customer_details.address.city;
-     ordob.line1 = session.customer_details.address.line1;
-     ordob.line2 = session.customer_details.address.line2;
+     ordob.city = session.customer_details&&session.customer_details.address.city;
+     ordob.line1 = session.customer_details&&session.customer_details.address.line1;
+     ordob.line2 = session.customer_details&&session.customer_details.address.line2;
       ordarraydeva.push(ordob);
 
 

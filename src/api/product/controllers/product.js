@@ -86,6 +86,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
         case "getAllProducts":
           const res = await strapi.db.query("api::product.product").findMany({
             // offset:parseInt(query.page),
+
              limit:18,
             select: ["*"],
             populate: ["varients", "varients.color", "subcatagory", "seller"],
