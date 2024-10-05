@@ -109,6 +109,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             //   }
             //  }
             // },
+            limit : 6,
             where: {
               name_en: {
                 $containsi: query.keyword,
