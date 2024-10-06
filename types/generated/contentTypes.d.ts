@@ -938,6 +938,11 @@ export interface ApiColorColor extends Schema.CollectionType {
     name_en: Attribute.String;
     name_ar: Attribute.String;
     colorCode: Attribute.String;
+    varient: Attribute.Relation<
+      'api::color.color',
+      'manyToOne',
+      'api::varient.varient'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1240,6 +1245,11 @@ export interface ApiSizeSize extends Schema.CollectionType {
     name_ar: Attribute.String;
     name_en: Attribute.String;
     icon: Attribute.String;
+    varient: Attribute.Relation<
+      'api::size.size',
+      'manyToOne',
+      'api::varient.varient'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1363,14 +1373,14 @@ export interface ApiVarientVarient extends Schema.CollectionType {
   attributes: {
     price: Attribute.Decimal;
     stock: Attribute.Integer;
-    color: Attribute.Relation<
+    colors: Attribute.Relation<
       'api::varient.varient',
-      'oneToOne',
+      'oneToMany',
       'api::color.color'
     >;
-    size: Attribute.Relation<
+    sizes: Attribute.Relation<
       'api::varient.varient',
-      'oneToOne',
+      'oneToMany',
       'api::size.size'
     >;
     product: Attribute.Relation<
@@ -1379,6 +1389,9 @@ export interface ApiVarientVarient extends Schema.CollectionType {
       'api::product.product'
     >;
     product_ref: Attribute.String;
+    name_en: Attribute.String;
+    name_ar: Attribute.String;
+    code: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -65,7 +65,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             populate: [
               "varients",
               "varients.size",
-              "varients.color",
+              "varients.colors",
               "subcatagory",
               "seller",
             ],
@@ -87,9 +87,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           const res = await strapi.db.query("api::product.product").findMany({
             // offset:parseInt(query.page),
 
-             limit:18,
+
             select: ["*"],
-            populate: ["varients", "varients.color", "subcatagory", "seller"],
+            populate: ["varients", "varients.colors", "subcatagory", "seller"],
           });
 
           const sanitizedEntity = await this.sanitizeOutput(res, ctx);
@@ -129,8 +129,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               select: ["*"],
               populate: [
                 "varients",
-                "varients.color",
-                "varients.size",
+                "varients.colors",
+                "varients.sizes",
                 "subcatagory",
                 "subcatagory.catagory",
               ],
@@ -147,7 +147,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             .service("api::product.product")
             .findOne(id, {
               select: ["*"],
-              populate: ["varients", "varients.size", "varients.color"],
+              populate: ["varients", "varients.size", "varients.colors"],
             });
           const sanitizedEntityb = await this.sanitizeOutput(entityb, ctx);
 
@@ -171,7 +171,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               },
               populate: [
                 "varients",
-                "varients.color",
+                "varients.colors",
                 "subcatagory",
                 "subcatagory.catagory",
                 "seller",
@@ -197,7 +197,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                     },
                 },
                 populate: ["products", "img",  "products.varients",
-                  "products.varients.color",
+                  "products.varients.colors",
                   "products.varients.size",
                   "products.subcatagory",
                   "products.subcatagory.catagory"],
@@ -230,8 +230,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             select: ["*"],
             populate: [
               "varients",
-              "varients.color",
-              "varients.size",
+              "varients.colors",
+              "varients.sizes",
               "subcatagory",
               "subcatagory.catagory",
             ],
@@ -247,7 +247,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           .service("api::product.product")
           .findOne(id, {
             select: ["*"],
-            populate: ["varients", "varients.size", "varients.color"],
+            populate: ["varients", "varients.size", "varients.colors"],
           });
         const sanitizedEntityb = await this.sanitizeOutput(entityb, ctx);
 
@@ -294,6 +294,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               color,
               size,
               stock,
+              code,
               price,
               imgs,
             } = ctx.request.body;
@@ -316,6 +317,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                   product_ref: product.id,
                   stock: stock,
                   color: color,
+                  code:code,
                   size: size,
                   publishedAt: Date.now(),
                 },

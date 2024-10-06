@@ -18,15 +18,17 @@
     "stock": {
       "type": "integer"
     },
-    "color": {
+    "colors": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::color.color"
+      "relation": "oneToMany",
+      "target": "api::color.color",
+      "mappedBy": "varient"
     },
-    "size": {
+    "sizes": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::size.size"
+      "relation": "oneToMany",
+      "target": "api::size.size",
+      "mappedBy": "varient"
     },
     "product": {
       "type": "relation",
@@ -35,6 +37,15 @@
       "inversedBy": "varients"
     },
     "product_ref": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string"
+    },
+    "name_ar": {
+      "type": "string"
+    },
+    "code": {
       "type": "string"
     }
   }

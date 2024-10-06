@@ -23,6 +23,12 @@
     },
     "icon": {
       "type": "string"
+    },
+    "varient": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::varient.varient",
+      "inversedBy": "sizes"
     }
   }
 }
