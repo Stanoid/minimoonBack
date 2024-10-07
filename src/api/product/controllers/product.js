@@ -316,9 +316,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                   price: price,
                   product_ref: product.id,
                   stock: stock,
-                  color: color,
+                  colors: color,
                   code:code,
-                  size: size,
+                  sizes: size,
                   publishedAt: Date.now(),
                 },
               }
