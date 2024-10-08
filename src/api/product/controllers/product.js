@@ -78,8 +78,8 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
           });
 
-          const sanitizedEntity = await this.sanitizeOutput(respc, ctx);
-          return sanitizedEntity;
+          //const sanitizedEntity = await this.sanitizeOutput(resp, ctx);
+          return respc;
           break;
 
         default:
