@@ -268,7 +268,7 @@ getTimeStamp (dtt){
            {
              data: {
                items: session,
-
+               cart: items ,
                users_permissions_user:user.id ,
                session_id:session.id,
                status: "initiated",

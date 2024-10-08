@@ -20,15 +20,15 @@
     },
     "colors": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::color.color",
-      "mappedBy": "varient"
+      "mappedBy": "varients"
     },
     "sizes": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::size.size",
-      "mappedBy": "varient"
+      "mappedBy": "varients"
     },
     "product": {
       "type": "relation",

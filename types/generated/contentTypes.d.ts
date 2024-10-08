@@ -938,9 +938,9 @@ export interface ApiColorColor extends Schema.CollectionType {
     name_en: Attribute.String;
     name_ar: Attribute.String;
     colorCode: Attribute.String;
-    varient: Attribute.Relation<
+    varients: Attribute.Relation<
       'api::color.color',
-      'manyToOne',
+      'manyToMany',
       'api::varient.varient'
     >;
     createdAt: Attribute.DateTime;
@@ -1057,7 +1057,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       ['initiated', 'unpaid', 'paid', 'dispatched', 'delivering', 'delivered']
     >;
     payment_ref: Attribute.String;
-    status_timestamps: Attribute.JSON;
+    cart: Attribute.JSON;
     users_permissions_user: Attribute.Relation<
       'api::order.order',
       'manyToOne',
@@ -1245,9 +1245,9 @@ export interface ApiSizeSize extends Schema.CollectionType {
     name_ar: Attribute.String;
     name_en: Attribute.String;
     icon: Attribute.String;
-    varient: Attribute.Relation<
+    varients: Attribute.Relation<
       'api::size.size',
-      'manyToOne',
+      'manyToMany',
       'api::varient.varient'
     >;
     createdAt: Attribute.DateTime;
@@ -1375,12 +1375,12 @@ export interface ApiVarientVarient extends Schema.CollectionType {
     stock: Attribute.Integer;
     colors: Attribute.Relation<
       'api::varient.varient',
-      'oneToMany',
+      'manyToMany',
       'api::color.color'
     >;
     sizes: Attribute.Relation<
       'api::varient.varient',
-      'oneToMany',
+      'manyToMany',
       'api::size.size'
     >;
     product: Attribute.Relation<

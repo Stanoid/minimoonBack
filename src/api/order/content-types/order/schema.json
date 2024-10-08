@@ -34,7 +34,7 @@
     "payment_ref": {
       "type": "string"
     },
-    "status_timestamps": {
+    "cart": {
       "type": "json"
     },
     "users_permissions_user": {

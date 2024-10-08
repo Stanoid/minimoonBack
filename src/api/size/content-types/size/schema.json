@@ -24,9 +24,9 @@
     "icon": {
       "type": "string"
     },
-    "varient": {
+    "varients": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::varient.varient",
       "inversedBy": "sizes"
     }
