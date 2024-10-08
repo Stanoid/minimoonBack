@@ -71,7 +71,14 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             ],
           });
 
-          const sanitizedEntity = await this.sanitizeOutput(resp, ctx);
+
+        case "getColorsAdmin":
+          const respc = await strapi.db.query("api::color.color").findMany({
+            select: ["*"],
+
+          });
+
+          const sanitizedEntity = await this.sanitizeOutput(respc, ctx);
           return sanitizedEntity;
           break;
 
