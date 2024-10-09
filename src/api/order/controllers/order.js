@@ -231,7 +231,7 @@ getTimeStamp (dtt){
 
 
    lineitems.push({
-     adjustable_quantity:{enabled:true,maximum:5},
+   //  adjustable_quantity:{enabled:true,maximum:5},
      price_data: {
        currency: "sar",
        product:items[i].product_ref,
@@ -253,8 +253,7 @@ getTimeStamp (dtt){
            mode: "payment",
            line_items:lineitems,
            allow_promotion_codes: true,
-
-           shipping_address_collection:{allowed_countries:["HK","SA","ET"]},
+           shipping_address_collection:{allowed_countries:["HK","SA","ET","DZ"]},
            phone_number_collection:{enabled:true},
            expires_at: Math.floor(Date.now() / 1000) + (3600 * 24),
            success_url: `${process.env.CLIENT_URL}/payment`,
