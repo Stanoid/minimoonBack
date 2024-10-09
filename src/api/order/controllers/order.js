@@ -233,7 +233,7 @@ getTimeStamp (dtt){
    lineitems.push({
    //  adjustable_quantity:{enabled:true,maximum:5},
      price_data: {
-       currency: "sar",
+       currency: "dzd",
        product:items[i].product_ref,
 
         unit_amount: parseInt(price*100)  ,
