@@ -71,17 +71,17 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             ],
           });
 
-
-        case "getColorsAdmin":
-          const respc = await strapi.db.query("api::color.color").findMany({
-            select: ["*"],
-
-          });
-
           //const sanitizedEntity = await this.sanitizeOutput(resp, ctx);
-          return respc;
+          return resp;
           break;
 
+          case "getColorsAdmin":
+            const respc = await strapi.db.query("api::color.color").findMany({
+              select: ["*"],
+
+            });
+     return respc;
+          break;
         default:
           return "Defaulting from Authed, You screwed up badly fam (: ";
           break;

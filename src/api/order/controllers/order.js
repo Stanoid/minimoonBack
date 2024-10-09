@@ -127,7 +127,6 @@ getTimeStamp (dtt){
   .query("api::order.order")
   .findMany({
     orderBy:[{ publishedAt: 'desc' }],
-    limit:10,
     select: ["*"],
     where: {
       users_permissions_user: {
@@ -427,68 +426,130 @@ return ordarray;
       if(utype==1||utype==5||utype==4){
         const {id} = ctx.request.body;
 
-        const lineItems = await stripe.checkout.sessions.listLineItems(
-          id
-        );
-   let returnArray = [];
+        // const lineItems = await stripe.checkout.sessions.listLineItems(
+        //   id
+        // );
 
-for (let i = 0; i < lineItems.data.length; i++) {
-  let ob = {};
-  ob.qty = lineItems.data[i].quantity;
-  const ressub = await strapi.db
-  .query("api::varient.varient")
-  .findMany({
-    select: ["*"],
-    where: {
-      // subcatagory: {
-      //   id: query.sid,
-      // },
-      product_ref:lineItems.data[i].price.product
-    },
-    populate: [
-      "color","size"
-    ],
-  });
+        const lineItems = await strapi
+            .service("api::order.order")
+            .findOne(id, {
+              select: ["*"],
 
-ob.colorEn = ressub[0].color.name_en;
-ob.colorAr = ressub[0].color.name_ar;
-ob.colorCode = ressub[0].color.colorCode;
-ob.product_ref= ressub[0].product_ref;
-ob.price = ressub[0].price;
-ob.sizeNameEn = ressub[0].size.name_en;
-ob.sizeNameAr = ressub[0].size.name_ar;
-ob.sizeIcom = ressub[0].size.icon;
+            });
+
+            let obitems = []
+
+for (let i = 0; i < lineItems.cart.length; i++) {
+//console.log(lineItems.cart[i].color)
+let obitem = {};
 
 
-
-  const ressubp = await strapi.db
-  .query("api::product.product")
-  .findMany({
-    select: ["*"],
-    where: {
-      varients: ressub[0].id,
-
-
-    },
-    populate: [
-    ],
-  });
-
-ob.pid = ressubp[0].id;
-ob.nameEn = ressubp[0].name_en;
-ob.nameAr = ressubp[0].name_ar;
-ob.imgs = ressubp[0].img;
+obitem.code = lineItems.cart[i].code;
+obitem.product_ref = lineItems.cart[i].product_ref;
+obitem.img = lineItems.cart[i].img;
+obitem.desc = lineItems.cart[i].desc;
+obitem.id = lineItems.cart[i].id;
+obitem.name = lineItems.cart[i].name;
+obitem.qty = lineItems.cart[i].qty;
 
 
-  // console.dir(ressubp)
-  // console.dir(ressub)
-  // console.dir(lineItems);
-returnArray.push(ob);
+const color = await strapi
+.service("api::color.color")
+.findOne(lineItems.cart[i].color, {
+  select: ["*"],
+
+});
+
+obitem.color = color
+
+const size = await strapi
+.service("api::size.size")
+.findOne(lineItems.cart[i].color, {
+  select: ["*"],
+
+});
+obitem.size = size;
+
+
+const varient = await strapi
+.service("api::varient.varient")
+.findOne(lineItems.cart[i].id, {
+  select: ["*"],
+});
+
+obitem.price = varient.price;
+
+obitems.push(obitem)
+
 
 }
 
 
-  return returnArray
+
+
+
+   let returnArray = [];
+
+//for (let i = 0; i < lineItems.data.length; i++) {
+//   let ob = {};
+
+
+
+//   ob.qty = lineItems.data[i].quantity;
+//   const ressub = await strapi.db
+//   .query("api::varient.varient")
+//   .findMany({
+//     select: ["*"],
+//     where: {
+//       // subcatagory: {
+//       //   id: query.sid,
+//       // },
+//       product_ref:lineItems.data[i].price.product
+//     },
+//     populate: [
+//       "color","size"
+//     ],
+//   });
+
+// ob.colorEn = ressub[0].color.name_en;
+// ob.colorAr = ressub[0].color.name_ar;
+// ob.colorCode = ressub[0].color.colorCode;
+// ob.product_ref= ressub[0].product_ref;
+// ob.price = ressub[0].price;
+// ob.sizeNameEn = ressub[0].size.name_en;
+// ob.sizeNameAr = ressub[0].size.name_ar;
+// ob.sizeIcom = ressub[0].size.icon;
+
+
+
+//   const ressubp = await strapi.db
+//   .query("api::product.product")
+//   .findMany({
+//     select: ["*"],
+//     where: {
+//       varients: ressub[0].id,
+
+
+//     },
+//     populate: [
+//     ],
+//   });
+
+// ob.pid = ressubp[0].id;
+// ob.nameEn = ressubp[0].name_en;
+// ob.nameAr = ressubp[0].name_ar;
+// ob.imgs = ressubp[0].img;
+
+
+//   // console.dir(ressubp)
+//   // console.dir(ressub)
+//   // console.dir(lineItems);
+// returnArray.push(ob);
+
+//}
+
+
+  return obitems
        }else{
          return "unauthorized (:";
        }
