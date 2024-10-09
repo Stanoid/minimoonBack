@@ -110,7 +110,9 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
             case "getRelatedsubcats":
          // return query.sid;
             const ressub = await strapi.db.query("api::subcatagory.subcatagory").findMany({
+
               select: ["*"],
+
               where:{
 
                 catagory:{
@@ -125,7 +127,7 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                     id:query.sid
                   }
                 },
-                populate: ["products","products.varients","products.varients.color","products.subcatagory","products.seller"],
+                populate: ["products","products.varients","products.varients.colors","products.subcatagory","products.seller"],
             });
 
             const sanitizedEntitysub = await this.sanitizeOutput(ressub, ctx);
