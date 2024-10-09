@@ -463,7 +463,7 @@ obitem.color = color
 
 const size = await strapi
 .service("api::size.size")
-.findOne(lineItems.cart[i].color, {
+.findOne(lineItems.cart[i].size, {
   select: ["*"],
 
 });
