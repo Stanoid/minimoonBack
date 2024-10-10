@@ -59,12 +59,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
         case "getAllProductsAdmin":
           const resp = await strapi.db.query("api::product.product").findMany({
-            offset: parseInt(query.page),
-            limit: 12,
             select: ["*"],
             populate: [
               "varients",
-              "varients.size",
+              "varients.sizes",
               "varients.colors",
               "subcatagory",
               "seller",
@@ -394,46 +392,34 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               nameen,
               namear,
               descen,
+              price,
+              stock,
+              code,
               descar,
+              color,
+              size,
               subc,
-              varients,
-              vartoDelete,
+              varient,
             } = ctx.request.body;
 
             //    console.dir(varients);
             let newvar = [];
             let varray = [];
-            for (const key in varients) {
-              if (Object.hasOwnProperty.call(varients, key)) {
-                if (varients[key].id) {
-                  varray.push(varients[key].id);
-                  newvar.push(varients[key].id);
-                } else {
 
-
-                  const product = await stripe.products.create({
-                    name: nameen,
-                    description:descen,
-                  });
-
-                  const entry = await strapi.entityService.create(
-                    "api::varient.varient",
-                    {
-                      data: {
-                        price: varients[key].attributes.price,
-                        product_ref:product.id,
-                        stock: varients[key].attributes.stock,
-                        color: varients[key].attributes.color.id,
-                        size: varients[key].attributes.size.id,
-                        publishedAt: Date.now(),
-                      },
-                    }
-                  );
-                  const verid = entry.id;
-                  varray.push(verid);
-                }
+            const varentity = await strapi.entityService.update(
+              "api::varient.varient",
+              varient,
+              {
+                data: {
+                  price: price,
+                 // product_ref: product.id,
+                  stock: stock,
+                  colors: color,
+                  code:code,
+                  sizes: size,
+                },
               }
-            }
+            );
 
             //
             const productentry = await strapi.entityService.update(
@@ -446,7 +432,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                   name_en: nameen,
                   description_ar: descar,
                   description_en: descen,
-                  varients: varray,
+                 // varients: varray,
                   subcatagory: subc,
                   updatedAt: Date.now(),
                 },
@@ -456,59 +442,13 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
 
 
-            let toDelete = [];
-
-            for (let i = 0; i < vartoDelete.length; i++) {
-              if (newvar.includes(vartoDelete[i])) {
-              } else {
-                toDelete.push(vartoDelete[i]);
-              }
-
-              //  for (let j = 0; j < newvar.length; j++) {
-
-              //   if(vartoDelete[i]==newvar[j]){
-
-              //   }else{
-              //   toDelete.push(vartoDelete[i])
-              //   }
-
-              //  }
-            }
 
 
 
 
 
 
-            for (let x = 0; x < toDelete.length; x++) {
 
-
-
-              const entity = await strapi
-              .service("api::varient.varient")
-              .findOne(toDelete[x], {
-                select: ["*"],
-                populate: [],
-              });
-
-
-           const deleted = await stripe.products.del(entity.product_ref);
-
-           deleted;
-
-
-              const deleteVars = await strapi.entityService.delete(
-                "api::varient.varient",
-                toDelete[x],
-                {}
-              );
-
-              deleteVars;
-
-
-
-
-            }
 
             return productentry;
           } else {
