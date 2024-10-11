@@ -53,8 +53,33 @@ module.exports = createCoreController('api::like.like', ({ strapi }) => ({
            break;
 
 
+           case "removeLike":
+            // return query.sid;
+            const {id} = ctx.request.body;
+
+
+
+            // const like = await strapi.entityService.create('api::like.like', {
+            //   data: {
+            //     users_permissions_user: udata.id,
+            //     status: true,
+            //     products:pid,
+            //     publishedAt :  Date.now() ,
+            //   },
+            // });
+            const like = await strapi.entityService.delete(
+              "api::like.like",
+             id,
+              {}
+            );
+
+
+      return like
+               break;
+
+
           default:
-        return "no function selected"
+        return "noo function selected"
          break;
      }
       // try {
@@ -91,6 +116,7 @@ module.exports = createCoreController('api::like.like', ({ strapi }) => ({
       }
       var url_parts = url.parse(ctx.request.url, true);
       var query = url_parts.query;
+
       switch (query.func) {
 
         case "getLikes":
@@ -202,7 +228,7 @@ module.exports = createCoreController('api::like.like', ({ strapi }) => ({
        }
          break;
           default:
-        return "no function selected"
+        return "noo function selected"
          break;
      }
       // try {
