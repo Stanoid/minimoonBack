@@ -116,11 +116,20 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             // },
             limit : 6,
             where: {
-              name_ar: {
-                $containsi: query.keyword,
-              },
+           $or:[
+           { name_ar: {$containsi: query.keyword,}},
+           { name_en: {$containsi: query.keyword,}},
+           {varients: {
+              code: {
+                $containsi: query.keyword
+              }
+            }}
+
+
+           ]
             },
             select: ["name_ar", "name_en", "id"],
+            populate:['varients']
           });
 
           const sanitizedEntitys = await this.sanitizeOutput(ress, ctx);
