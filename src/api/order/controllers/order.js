@@ -396,7 +396,7 @@ return ordarray;
        let ordob = {}
        console.log(resdeva[i])
       const session = await stripe.checkout.sessions.retrieve(resdeva[i].session_id);
-      //console.log(session);
+      console.log(session);
      //Card information in session object
      ordob.name =  resdeva[i].users_permissions_user.username;
      ordob.date = session.created;
@@ -406,6 +406,7 @@ return ordarray;
      ordob.refId = session.id;
      ordob.email = resdeva[i].users_permissions_user.email;
      ordob.total = session.amount_total;
+     ordob.url = session.url;
      ordob.currency = session.currency;
      ordob.payment_status = session.payment_status;
      ordob.city = session.customer_details&&session.customer_details.address.city;
