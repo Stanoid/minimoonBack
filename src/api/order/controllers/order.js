@@ -166,6 +166,83 @@ getTimeStamp (dtt){
         break;
 
 
+
+        case "orderProccessor" :
+          // user.id alreadey present, get userorders
+
+          const {oid} = ctx.request.body;
+          const orderp = await strapi.db
+          .query("api::order.order")
+          .findOne({
+            select: ["*"],
+            where: {
+             id:oid
+            },
+            populate: [
+
+            ],
+          });
+
+       if(orderp.status=="initiated"){
+
+        const sessionp = await stripe.checkout.sessions.retrieve(orderp.session_id);
+
+        if(sessionp.payment_status=="paid"){
+       // proccess order quantities;
+
+     for (let i = 0; i < orderp.cart.length; i++) {
+      const element = orderp.cart[i];
+
+      const ressub = await strapi.db
+      .query("api::varient.varient")
+      .findOne({
+        select: ["*"],
+        where: {
+         id: orderp.cart[i].id,
+        },
+        populate: [
+
+        ],
+      });
+
+      const updateentry = await strapi.entityService.update('api::varient.varient', orderp.cart[i].id, {
+        data: {
+          stock: ressub.stock - orderp.cart[i].qty,
+        },
+      });
+
+
+      console.log(updateentry);
+
+     }
+
+     const entry = await strapi.entityService.update('api::order.order',oid, {
+      data: {
+        status: "paid",
+      },
+      });
+
+      entry;
+
+
+      }
+       }else{
+        console.log("dublicated")
+        // return null
+       }
+
+
+
+
+
+
+    return orderp;
+
+
+
+          break;
+
+
         case "initPaymentSession":
           const {items} = ctx.request.body;
 
@@ -245,6 +322,19 @@ getTimeStamp (dtt){
 
        }
 
+       const prentry = await strapi.entityService.create(
+        "api::order.order",
+        {
+          data: {
+          //  items: session,
+            cart: items ,
+            users_permissions_user:user.id ,
+           // session_id:session.id,
+            status: "initiated",
+            publishedAt: Date.now(),
+          },
+        }
+      )
 
 
 
@@ -256,24 +346,37 @@ getTimeStamp (dtt){
            shipping_address_collection:{allowed_countries:["HK","SA","ET","DZ"]},
            phone_number_collection:{enabled:true},
            expires_at: Math.floor(Date.now() / 1000) + (3600 * 24),
-           success_url: `${process.env.CLIENT_URL}/payment`,
+           success_url: `${process.env.CLIENT_URL}/payment?orderid=${prentry.id}`,
            cancel_url: `${process.env.CLIENT_URL}/user`
          });
 
 
-         const entry = await strapi.entityService.create(
-           "api::order.order",
-           {
-             data: {
-               items: session,
-               cart: items ,
-               users_permissions_user:user.id ,
-               session_id:session.id,
-               status: "initiated",
-               publishedAt: Date.now(),
-             },
-           }
-         )
+
+         const entry = await strapi.entityService.update('api::order.order',prentry.id, {
+
+          data: {
+            items: session,
+           // cart: items ,
+            //users_permissions_user:user.id ,
+            session_id:session.id,
+            //status: "initiated",
+            //publishedAt: Date.now(),
+          },
+          });
+
+        //  const entry = await strapi.entityService.create(
+        //    "api::order.order",
+        //    {
+        //      data: {
+        //        items: session,
+        //        cart: items ,
+        //        users_permissions_user:user.id ,
+        //        session_id:session.id,
+        //        status: "initiated",
+        //        publishedAt: Date.now(),
+        //      },
+        //    }
+        //  )
 
          entry;
 
