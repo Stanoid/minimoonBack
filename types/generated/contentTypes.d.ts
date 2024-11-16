@@ -1064,6 +1064,8 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     session_id: Attribute.String;
+    payment_type: Attribute.Enumeration<['online', 'delivery']>;
+    delivery_type: Attribute.Enumeration<['pickup', 'delivery']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1075,6 +1077,42 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::order.order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPickupPickup extends Schema.CollectionType {
+  collectionName: 'pickups';
+  info: {
+    singularName: 'pickup';
+    pluralName: 'pickups';
+    displayName: 'pickup';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    location: Attribute.String;
+    city: Attribute.Relation<
+      'api::pickup.pickup',
+      'oneToOne',
+      'api::city.city'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::pickup.pickup',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::pickup.pickup',
       'oneToOne',
       'admin::user'
     > &
@@ -1435,6 +1473,7 @@ declare module '@strapi/types' {
       'api::country.country': ApiCountryCountry;
       'api::like.like': ApiLikeLike;
       'api::order.order': ApiOrderOrder;
+      'api::pickup.pickup': ApiPickupPickup;
       'api::product.product': ApiProductProduct;
       'api::promotion.promotion': ApiPromotionPromotion;
       'api::section.section': ApiSectionSection;

@@ -45,6 +45,20 @@
     },
     "session_id": {
       "type": "string"
+    },
+    "payment_type": {
+      "type": "enumeration",
+      "enum": [
+        "online",
+        "delivery"
+      ]
+    },
+    "delivery_type": {
+      "type": "enumeration",
+      "enum": [
+        "pickup",
+        "delivery"
+      ]
     }
   }
 }
