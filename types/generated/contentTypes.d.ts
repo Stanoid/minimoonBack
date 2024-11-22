@@ -1054,7 +1054,14 @@ export interface ApiOrderOrder extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     status: Attribute.Enumeration<
-      ['initiated', 'unpaid', 'paid', 'dispatched', 'delivering', 'delivered']
+      [
+        'initiated',
+        'processed',
+        'paid',
+        'dispatched',
+        'delivering',
+        'delivered'
+      ]
     >;
     payment_ref: Attribute.String;
     cart: Attribute.JSON;
@@ -1066,6 +1073,13 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     session_id: Attribute.String;
     payment_type: Attribute.Enumeration<['online', 'delivery']>;
     delivery_type: Attribute.Enumeration<['pickup', 'delivery']>;
+    pickup: Attribute.Relation<
+      'api::order.order',
+      'manyToOne',
+      'api::pickup.pickup'
+    >;
+    address: Attribute.Text;
+    phone: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1090,17 +1104,26 @@ export interface ApiPickupPickup extends Schema.CollectionType {
     singularName: 'pickup';
     pluralName: 'pickups';
     displayName: 'pickup';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String;
-    location: Attribute.String;
-    city: Attribute.Relation<
+    name_ar: Attribute.String;
+    name_en: Attribute.String;
+    address_ar: Attribute.String;
+    address_fr: Attribute.String;
+    commercial_num: Attribute.String;
+    complains_num: Attribute.String;
+    desk_num: Attribute.String;
+    home_price: Attribute.Decimal;
+    pickup_price: Attribute.Decimal;
+    return_price: Attribute.Decimal;
+    orders: Attribute.Relation<
       'api::pickup.pickup',
-      'oneToOne',
-      'api::city.city'
+      'oneToMany',
+      'api::order.order'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1164,6 +1187,7 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'manyToOne',
       'api::like.like'
     >;
+    code: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1429,7 +1453,6 @@ export interface ApiVarientVarient extends Schema.CollectionType {
     product_ref: Attribute.String;
     name_en: Attribute.String;
     name_ar: Attribute.String;
-    code: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

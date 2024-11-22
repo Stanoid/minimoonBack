@@ -28,7 +28,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::varient.varient",
-      "inversedBy": "sizes"
+      "mappedBy": "sizes"
     }
   }
 }

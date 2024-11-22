@@ -119,17 +119,17 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
            $or:[
            { name_ar: {$containsi: query.keyword,}},
            { name_en: {$containsi: query.keyword,}},
-           {varients: {
+           {
               code: {
                 $containsi: query.keyword
               }
-            }}
+            }
 
 
            ]
             },
-            select: ["name_ar", "name_en", "id"],
-            populate:['varients']
+            select: ["name_ar", "name_en", "id","code"],
+
           });
 
           const sanitizedEntitys = await this.sanitizeOutput(ress, ctx);
@@ -304,11 +304,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               namear,
               descen,
               descar,
+              code,
               subc,
               color,
-              size,
-              stock,
-              code,
+           varients,
               price,
               imgs,
             } = ctx.request.body;
@@ -321,24 +320,30 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             });
 
 
+           let idarray = []
+             for (let i = 0; i < varients.length; i++) {
+
+              const entry = await strapi.entityService.create(
+                "api::varient.varient",
+                {
+                  data: {
+                    price: varients[i].price,
+                    product_ref: product.id,
+                    stock: varients[i].stock,
+                    colors: color,
+                    sizes: varients[i].size,
+                    publishedAt: Date.now(),
+                  },
+                }
+              );
+
+              idarray.push(entry.id)
+
+             }
 
 
-            const entry = await strapi.entityService.create(
-              "api::varient.varient",
-              {
-                data: {
-                  price: price,
-                  product_ref: product.id,
-                  stock: stock,
-                  colors: color,
-                  code:code,
-                  sizes: size,
-                  publishedAt: Date.now(),
-                },
-              }
-            );
 
-            const verid = entry.id;
+            //const verid = entry.id;
 
 
 
@@ -349,9 +354,10 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                 name_en:nameen,
                 description_ar:descar,
                 description_en: descen,
-                varients: verid,
+                varients: idarray,
                 subcatagory:subc,
                 seller: udata.id,
+                code:code,
                 img: imgs,
                 publishedAt :  Date.now() ,
               },

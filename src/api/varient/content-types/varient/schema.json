@@ -28,7 +28,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::size.size",
-      "mappedBy": "varients"
+      "inversedBy": "varients"
     },
     "product": {
       "type": "relation",
@@ -43,9 +43,6 @@
       "type": "string"
     },
     "name_ar": {
-      "type": "string"
-    },
-    "code": {
       "type": "string"
     }
   }

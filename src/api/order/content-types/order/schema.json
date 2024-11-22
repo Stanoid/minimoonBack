@@ -24,7 +24,7 @@
       "type": "enumeration",
       "enum": [
         "initiated",
-        "unpaid",
+        "processed",
         "paid",
         "dispatched",
         "delivering",
@@ -59,6 +59,18 @@
         "pickup",
         "delivery"
       ]
+    },
+    "pickup": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::pickup.pickup",
+      "inversedBy": "orders"
+    },
+    "address": {
+      "type": "text"
+    },
+    "phone": {
+      "type": "string"
     }
   }
 }

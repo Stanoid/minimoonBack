@@ -4,23 +4,49 @@
   "info": {
     "singularName": "pickup",
     "pluralName": "pickups",
-    "displayName": "pickup"
+    "displayName": "pickup",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "name_ar": {
       "type": "string"
     },
-    "location": {
+    "name_en": {
       "type": "string"
     },
-    "city": {
+    "address_ar": {
+      "type": "string"
+    },
+    "address_fr": {
+      "type": "string"
+    },
+    "commercial_num": {
+      "type": "string"
+    },
+    "complains_num": {
+      "type": "string"
+    },
+    "desk_num": {
+      "type": "string"
+    },
+    "home_price": {
+      "type": "decimal"
+    },
+    "pickup_price": {
+      "type": "decimal"
+    },
+    "return_price": {
+      "type": "decimal"
+    },
+    "orders": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::city.city"
+      "relation": "oneToMany",
+      "target": "api::order.order",
+      "mappedBy": "pickup"
     }
   }
 }
