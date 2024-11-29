@@ -330,6 +330,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
                     price: varients[i].price,
                     product_ref: product.id,
                     stock: varients[i].stock,
+                    old_price:varients[i].discount,
                     colors: color,
                     sizes: varients[i].size,
                     publishedAt: Date.now(),

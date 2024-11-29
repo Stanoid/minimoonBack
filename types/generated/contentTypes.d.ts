@@ -1453,6 +1453,7 @@ export interface ApiVarientVarient extends Schema.CollectionType {
     product_ref: Attribute.String;
     name_en: Attribute.String;
     name_ar: Attribute.String;
+    old_price: Attribute.Decimal;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
