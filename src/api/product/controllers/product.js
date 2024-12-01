@@ -306,7 +306,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               descar,
               code,
               subc,
-
            varients,
               price,
               imgs,
