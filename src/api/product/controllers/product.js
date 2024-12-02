@@ -491,6 +491,44 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           }
           break;
 
+
+          case "editStock":
+            if (utype == 1) {
+              const { varient } = ctx.request.body;
+              let edited =[];
+
+              for (let i = 0; i < varient.length; i++) {
+                const stockEntery = await strapi.entityService.update(
+                  "api::varient.varient",
+                  varient[i].id,
+                  {
+                    data: {
+                     stock:varient[i].attributes.stock,
+                     price:varient[i].attributes.price,
+                     old_price:varient[i].attributes.old_price
+                    },
+                  }
+                );
+
+
+              edited.push(stockEntery)
+
+              }
+
+
+
+
+
+              return edited;
+            } else {
+              return "unauthorized (:";
+            }
+            break;
+
+
+
+
+
         default:
           return "no function selected";
 
