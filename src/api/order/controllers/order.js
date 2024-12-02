@@ -7,6 +7,7 @@ var url = require("url");
 const varient = require("../../varient/controllers/varient");
 const exp = require("constants");
 const product = require("../../product/controllers/product");
+const color = require("../../color/controllers/color");
 require("dotenv").config()
 const { createCoreController } = require('@strapi/strapi').factories;
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
@@ -390,6 +391,7 @@ const unixTimestamp = timestampInMilliseconds / 1000;
         try {
 
        var lineitems = []
+       var cartItems=[]
 
        for (let i = 0; i < items.length; i++) {
  let price = 0;
@@ -405,7 +407,7 @@ const unixTimestamp = timestampInMilliseconds / 1000;
        },
      },
      populate: [
-       "varients",
+       "varients","varients.colors","varients.sizes"
      ],
    });
 
@@ -415,9 +417,13 @@ const unixTimestamp = timestampInMilliseconds / 1000;
      if(ressub.varients[j].id == items[i].id){
        price = ressub.varients[j].price;
        id = ressub.varients[j].id;
+       cartItems.push({...items[i],color: ressub.varients[j].colors[0].id,size: ressub.varients[j].sizes[0].id})
      }
 
    }
+
+
+
    lineitems.push({
      price_data: {
        currency: "dzd",
@@ -428,6 +434,7 @@ const unixTimestamp = timestampInMilliseconds / 1000;
      quantity: items[i].qty,
    })
        }
+
 
 
 
@@ -453,7 +460,7 @@ const unixTimestamp = timestampInMilliseconds / 1000;
           {
             data: {
             //  items: session,
-              cart: items ,
+              cart: cartItems ,
               payment_type:"online",
               pickup:state_id,
               address:address,
@@ -531,7 +538,7 @@ const unixTimestamp = timestampInMilliseconds / 1000;
           {
             data: {
             //  items: session,
-              cart: items ,
+              cart: cartItems ,
               payment_type:"delivery",
               pickup:state_id,
               address:address,
