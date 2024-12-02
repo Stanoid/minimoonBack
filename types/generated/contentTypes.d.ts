@@ -1348,6 +1348,7 @@ export interface ApiSubcatagorySubcatagory extends Schema.CollectionType {
       'api::product.product'
     >;
     img: Attribute.Media;
+    feat: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

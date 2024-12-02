@@ -1,5 +1,8 @@
 'use strict';
 
+const catagorie = require('../../catagorie/controllers/catagorie');
+const product = require('../../product/controllers/product');
+
 /**
  * subcatagory controller
  */
@@ -136,19 +139,50 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
             break;
 
 
-            case "getAllSubcat":
+            case "getSubCatProducts":
               // return query.sid;
-                 const res = await strapi.db.query("api::subcatagory.subcatagory").findMany({
+                 const resp = await strapi.db.query("api::subcatagory.subcatagory").findMany({
                    select: ["*"],
-                     populate: ["catagory"],
+                   where: {
+                   feat:true,
+                  },
+                    // populate: ["catagory","products","products.varients","products.varients.colors"],
+                    populate:{
+                      catagory:{},
+                      products:{
+                        populate:{
+                          varients:{
+                            populate:["colors"]
+                          }
+                        },
+                        limit:6,
+                      },
+
+                    }
                  });
 
-                 const sanitizedEntity = await this.sanitizeOutput(res, ctx);
+                 const sanitizedEntityp = await this.sanitizeOutput(resp, ctx);
 
              //   console.dir(res);
-                 return sanitizedEntity;
+                 return sanitizedEntityp;
 
                  break;
+
+
+
+                 case "getAllSubcat":
+                  // return query.sid;
+                     const res = await strapi.db.query("api::subcatagory.subcatagory").findMany({
+                       select: ["*"],
+                         populate: ["catagory"],
+                     });
+
+                     const sanitizedEntity = await this.sanitizeOutput(res, ctx);
+
+                 //   console.dir(res);
+                     return sanitizedEntity;
+
+                     break;
 
 
 
@@ -214,6 +248,28 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
          return "unauthorized (:";
        }
          break;
+
+
+         case "togFeat":
+          //
+
+                 if(utype==1){
+                  const {status} = ctx.request.body;
+                  const subcatEdit = await strapi.entityService.update('api::subcatagory.subcatagory',id, {
+                    data: {
+
+                        feat:status,
+
+                      },
+                    });
+
+
+            return subcatEdit
+
+                 }else{
+                   return "unauthorized (:";
+                 }
+                   break;
           default:
         return "no function selected"
          break;
