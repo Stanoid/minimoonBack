@@ -1,6 +1,5 @@
 'use strict';
 
-const { log } = require('console');
 
 /**
  * color controller

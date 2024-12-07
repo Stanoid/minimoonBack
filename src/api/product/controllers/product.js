@@ -156,6 +156,16 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
           break;
 
+          case "getPick":
+
+          const respc = await strapi.db.query("api::pickup.pickup").findMany({
+            select: ["*"],
+
+          });
+   return respc;
+
+            break;
+
         case "getProductVariants":
           const entityb = await strapi
             .service("api::product.product")
