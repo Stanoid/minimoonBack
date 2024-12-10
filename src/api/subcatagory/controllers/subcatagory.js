@@ -150,7 +150,7 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                     populate:{
                       catagory:{},
                       products:{
-                        limit:10,
+                        limit:1,
                         populate:{
                           varients:{
                             populate:["colors"]
