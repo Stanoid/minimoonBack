@@ -876,6 +876,7 @@ export interface ApiCatagorieCatagorie extends Schema.CollectionType {
       'manyToOne',
       'api::section.section'
     >;
+    img: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

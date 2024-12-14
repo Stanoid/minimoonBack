@@ -38,6 +38,9 @@
       "relation": "manyToOne",
       "target": "api::section.section",
       "inversedBy": "catagories"
+    },
+    "img": {
+      "type": "string"
     }
   }
 }
