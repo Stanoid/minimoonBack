@@ -71,6 +71,9 @@
     },
     "phone": {
       "type": "string"
+    },
+    "name": {
+      "type": "string"
     }
   }
 }

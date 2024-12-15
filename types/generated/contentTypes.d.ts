@@ -1081,6 +1081,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
     >;
     address: Attribute.Text;
     phone: Attribute.String;
+    name: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
