@@ -534,6 +534,24 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           return ordarray;
           break;
 
+
+          case "deleteOrder":
+
+
+            if (ctx.state.user.type==1) {
+              const { oid } = ctx.request.body;
+              const delorder = await strapi.entityService.delete(
+                "api::order.order",
+                oid,
+                {}
+              );
+
+              return delorder;
+            } else {
+              return "unauthorized (:";
+            }
+            break;
+
         case "deliverOrder":
           if (utype == 1 || utype == 5) {
             const { id } = ctx.request.body;
