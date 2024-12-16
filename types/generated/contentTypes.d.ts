@@ -1059,6 +1059,7 @@ export interface ApiOrderOrder extends Schema.CollectionType {
         'initiated',
         'processed',
         'paid',
+        'deleted',
         'dispatched',
         'delivering',
         'delivered'

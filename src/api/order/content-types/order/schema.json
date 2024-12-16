@@ -26,6 +26,7 @@
         "initiated",
         "processed",
         "paid",
+        "deleted",
         "dispatched",
         "delivering",
         "delivered"

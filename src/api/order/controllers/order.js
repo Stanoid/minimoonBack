@@ -540,13 +540,20 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
 
             if (ctx.state.user.type==1) {
               const { oid } = ctx.request.body;
-              const delorder = await strapi.entityService.delete(
-                "api::order.order",
-                oid,
-                {}
-              );
 
-              return delorder;
+              const Deleorder = await strapi.entityService.update(
+              "api::order.order",
+              oid,
+              {
+                data: {
+                  status: "deleted",
+                },
+              }
+            );
+
+            return Deleorder;
+
+
             } else {
               return "unauthorized (:";
             }
@@ -704,11 +711,19 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
           // validate list from orders with stripe checkout retrive1
           const resdeva = await strapi.db.query("api::order.order").findMany({
             select: ["*"],
+            where:{
+              status: {
+                $ne: 'deleted'
+              },
+            },
             populate: ["users_permissions_user", "pickup"],
           });
           let ordarraydeva = [];
           for (let i = 0; i < resdeva.length; i++) {
             let ordob = {};
+
+
+
             if (resdeva[i].payment_type == "online") {
               const session = await stripe.checkout.sessions.retrieve(
                 resdeva[i].session_id
@@ -786,6 +801,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
               ordob.total = total_price + delivery_price;
               ordob.payment_status = "unpaid";
             }
+
             ordarraydeva.push(ordob);
           }
 
