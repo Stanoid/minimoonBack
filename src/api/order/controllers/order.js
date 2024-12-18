@@ -154,7 +154,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                       }
                     );
 
-                    console.log(updateentry);
+                   // console.log(updateentry);
                   }
 
                   const entry = await strapi.entityService.update(
@@ -193,7 +193,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                     }
                   );
 
-                  console.log(updateentry);
+                 // console.log(updateentry);
                 }
 
                 const entry = await strapi.entityService.update(
@@ -209,7 +209,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                 entry;
               }
             } else {
-              console.log("dublicated");
+             // console.log("dublicated");
               // return null
             }
 
@@ -297,7 +297,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                       id: uorders[i].cart[j].id,
                     },
                   });
-                console.dir(ressub);
+               // console.dir(ressub);
 
                 total_price =
                   total_price + ressub.price * uorders[i].cart[j].qty;
@@ -397,7 +397,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
               });
 
 
-              console.log("name", email);
+             // console.log("name", email);
 
             if (payment_metod == 1) {
               const prentry = await strapi.entityService.create(
@@ -506,7 +506,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
             }
           } catch (e) {
             // res.status(500).json({ error: e.message })
-            console.log(e.message);
+        //    console.log(e.message);
           }
 
           break;
@@ -692,7 +692,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                       id: resdev[i].cart[j].id,
                     },
                   });
-                console.dir(ressub);
+               // console.dir(ressub);
 
                 total_price =
                   total_price + ressub.price * resdev[i].cart[j].qty;
@@ -792,7 +792,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
                       id: resdeva[i].cart[j].id,
                     },
                   });
-                console.dir(ressub);
+                //console.dir(ressub);
 
                 total_price =
                   total_price + ressub.price * resdeva[i].cart[j].qty;
@@ -938,7 +938,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
 
 
      // const { items } = ctx.request.body;
-     console.log("unauthed")
+    // console.log("unauthed")
       var url_parts = url.parse(ctx.request.url, true);
       var query = url_parts.query;
       switch (query.func) {
@@ -1002,7 +1002,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
        ],
      });
 
-     console.dir(ressub.varients);
+   //  console.dir(ressub.varients);
      for (let j = 0; j < ressub.varients.length; j++) {
 
        if(ressub.varients[j].id == items[i].id){
@@ -1038,7 +1038,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   });
 
 
-console.log(email)
+//console.log(email)
 
 
          if(payment_metod==1){
@@ -1163,7 +1163,7 @@ console.log(email)
 
          } catch (e) {
            // res.status(500).json({ error: e.message })
-  console.log(e.message)
+  //console.log(e.message)
 
          }
 
