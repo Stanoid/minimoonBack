@@ -101,6 +101,19 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           return sanitizedEntity;
           break;
 
+
+          case "getFlashOffers":
+            //console.log("paaaaaaaaaage",query.page)
+            const entries = await strapi.db.query('api::product.product').findMany({
+              populate: ["varients", "varients.colors", "subcatagory", "seller"],
+              limit: 10,
+
+            });
+
+            const sanitizedEntityf = await this.sanitizeOutput(entries, ctx);
+            return sanitizedEntityf;
+            break;
+
         case "SearchWithkeyword":
           const ress = await strapi.db.query("api::product.product").findMany({
             // fillters:{
