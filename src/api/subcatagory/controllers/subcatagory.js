@@ -155,7 +155,8 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                             populate:["colors"]
                           }
                         },
-                     //   limit:8,
+                       offset:0,
+                       limit:8,
                       },
 
                     }
