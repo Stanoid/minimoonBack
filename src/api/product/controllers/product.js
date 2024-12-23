@@ -80,6 +80,14 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             });
      return respc;
           break;
+
+          case "getSizesAdmin":
+            const resps = await strapi.db.query("api::size.size").findMany({
+              select: ["*"],
+
+            });
+     return resps;
+          break;
         default:
           return "Defaulting from Authed, You screwed up badly fam (: ";
           break;
