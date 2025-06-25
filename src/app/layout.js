@@ -395,7 +395,8 @@ className="flex cursor-pointer items-center" >
  
             
             <section>
-            <div className="scrollable-content min-h-lvh"  style={{  }}>
+            <div className="lg:max-w-[1280px] lg:mx-auto min-h-lvh"  style={{  }}>
+              
                   {children}
                 </div>
             </section>

@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Button, user } from "@nextui-org/react";
 import { useRouter } from 'next/navigation'
 import { FaListAlt } from 'react-icons/fa';
+import MostDemanded from "./comps/Mostdemanded";
 const Hero = dynamic(() => import('./comps/hero'))
 
 
@@ -169,14 +170,14 @@ if (firstRenderRef.current) {
   </div> 
 
 
-
+{/* 
   <div  className=" bg-gradient-to-b  from-moon-100/30 to-moon-100/50  flex w-full  justify-center "   >
 
 <div className=" w-full   " >
 <FeaturedComp/>
 </div>
 
-</div>
+</div> */}
 
 
 
@@ -205,11 +206,17 @@ if (firstRenderRef.current) {
 
 
 
-<div style={{backgroundSize:50}} className="w-full flex items-center justify-center py-5  bg-gradient-to-b   to-moonsec-100/40 from-moonsec-200/20 ">
-  <ProductFeat variant={"never"} title="فرصتك الآن للحصول عليه" text="" />
+<div style={{backgroundSize:50}} className="w-full flex items-center justify-center py-5 ">
+  <ProductFeat  />
 </div>
+
+<div>
+
+<MostDemanded  />
+  </div>
 {/* 
 
+<Most
 <div style={{backgroundSize:50}} className="w-full flex items-center justify-center py-5  bg-[url('../../public/amblemblack.svg')]   to-moonsec-100/40 from-moonsec-200/20 ">
   <ProductFeat variant={"new"} title="منتجات جديدة" text=" هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، " />
 </div> */}
