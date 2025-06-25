@@ -1,39 +1,43 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap');
 
-.div{
+/* Add your custom font here */
+@font-face {
+  font-family: 'El Messiri'; /* This is the name you'll use in your CSS */
+  src: url('/fonts/ElMessiri-Regular.ttf') format('truetype');
+  font-weight: normal; /* Adjust if your font has specific weights */
+  font-style: normal;
+  font-display: swap; /* Helps with font loading performance */
+}
+
+.div {
   font-family: 'Cairo', sans-serif;
 }
 
 .maintype {
   font-family: 'PT Sans', sans-serif;
   font-weight: bold;
-/* font-family: 'Roboto', sans-serif; */
 }
 
 .subtype {
   font-family: 'PT Sans', sans-serif;
-color: black;
-/* font-family: 'Roboto', sans-serif; */
+  color: black;
 }
 
-.ptfont{
+.ptfont {
   font-family: 'PT Sans', sans-serif;
-
 }
 
-.MAIN_FONT{
+.MAIN_FONT {
   font-family: 'Cairo', sans-serif;
 }
 
-
-.test{
-
-
+.test {
+  /* You can now use your custom font here, for example: */
+  font-family: 'El Messiri', sans-serif;
 }
-.nextimg{
- object-fit: cover;
- 
- width: 100px;
- height: 100pxs;
+
+.nextimg {
+  object-fit: cover;
+  width: 100px;
+  height: 100px; /* Corrected typo: should be 'height' not 'heights' */
 }

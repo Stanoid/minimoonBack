@@ -3,13 +3,11 @@ import React from 'react';
 const Footer = () => {
   return (
     // Main footer container with specified width and background color
-    // The height is set to 'auto' to allow content to dictate overall height, which is more flexible.
-    <footer className="bg-white py-16 px-4 w-[1440px] mx-auto overflow-hidden">
+    <footer dir='rtl' className="bg-white border-t border-gray-505 py-16 px-4 w-[1440px] mx-auto" style={{ height: '644px' }}>
       <div className="max-w-6xl mx-auto">
         {/* Top Section - Contact, Payment, Shipping */}
-        {/* Adjusted grid to align items to the start (top) and ensure text alignment matches the image */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-start text-right" dir="rtl">
-          {/* Shipping Section - Moved to the far right as per image */}
+          {/* Shipping Section */}
           <div className="flex flex-col items-center md:items-end">
             <div className="flex items-center mb-4">
               {/* Truck Icon (Replaced FaTruck with SVG) */}
@@ -18,13 +16,12 @@ const Footer = () => {
               </svg>
               <h3 className="text-sm font-semibold text-gray-700">تتبع الطلب والشحن</h3>
             </div>
-            {/* Text alignment for paragraphs within these sections */}
             <p className="text-gray-600 font-medium leading-relaxed text-center md:text-right">
               نتيح لك معرفة موعد وصول مشترياتك عبر الإنترنت بجودة في التسليم
             </p>
           </div>
 
-          {/* Payment Methods Section - Middle position as per image */}
+          {/* Payment Methods Section */}
           <div className="flex flex-col items-center md:items-end">
             <div className="flex items-center mb-4">
               {/* Credit Card Icon (Replaced FaCreditCard with SVG) */}
@@ -38,7 +35,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Contact Section - Leftmost position as per image */}
+          {/* Contact Section */}
           <div className="flex flex-col items-center md:items-end">
             <div className="flex items-center mb-4">
               {/* Phone Icon (Replaced FaPhone with SVG) */}
@@ -48,15 +45,16 @@ const Footer = () => {
               <h3 className="text-sm font-semibold text-gray-700">اتصل بنا</h3>
             </div>
             <div className="space-y-3 text-center md:text-right">
-              {/* Contact numbers and email with icons */}
               <div className="flex items-center justify-center md:justify-end">
                 <span className="text-gray-600 ml-2">+1234567890</span>
+                {/* Phone Icon (Replaced FaPhone with SVG) */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
               <div className="flex items-center justify-center md:justify-end">
                 <span className="text-gray-600 ml-2">Support@minimoon.com</span>
+                {/* Envelope Icon (Replaced FaEnvelope with SVG) */}
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -69,29 +67,8 @@ const Footer = () => {
         <div className="border-t border-gray-200 my-12"></div>
 
         {/* Middle Section - Orders, About, Newsletter */}
-        {/* Adjusted grid to match the order in the image: Orders, About, Newsletter */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-right" dir="rtl">
-          {/* Orders & Shipping - Leftmost position as per image */}
-          <div className="flex flex-col items-center md:items-end">
-            <h4 className="font-semibold text-gray-700 text-sm mb-4">الطلبات والشحن</h4>
-            <ul className="space-y-2 text-gray-600 text-base">
-              <li><a href="#" className="hover:text-gray-800">حسابي</a></li>
-              <li><a href="#" className="hover:text-gray-800">تتبع الطلب</a></li>
-              <li><a href="#" className="hover:text-gray-800">سياسة الشحن و الإرجاع</a></li>
-            </ul>
-          </div>
-
-          {/* About Company - Middle position as per image */}
-          <div className="flex flex-col items-center md:items-end">
-            <h4 className="font-semibold text-sm text-gray-700 mb-4">عن الشركة</h4>
-            <ul className="space-y-2 text-gray-600 text-base">
-              <li><a href="#" className="hover:text-gray-800">الوظائف</a></li>
-              <li><a href="#" className="hover:text-gray-800">من نحن</a></li>
-              <li><a href="#" className="hover:text-gray-800">متاجرنا</a></li>
-            </ul>
-          </div>
-          
-          {/* Newsletter Section - Far right position as per image */}
+          {/* Newsletter Section */}
           <div className="flex flex-col items-center md:items-end">
             <h3 className="text-sm font-semibold text-gray-700 mb-4">
               احصل على أحدث العروض على بريدك
@@ -106,6 +83,26 @@ const Footer = () => {
                 اشترك الآن
               </button>
             </div>
+          </div>
+
+          {/* About Company */}
+          <div className="flex flex-col items-center md:items-end">
+            <h4 className="font-semibold text-sm text-gray-700 mb-4">عن الشركة</h4>
+            <ul className="space-y-2 text-gray-600 text-base">
+              <li><a href="#" className="hover:text-gray-800">الوظائف</a></li>
+              <li><a href="#" className="hover:text-gray-800">من نحن</a></li>
+              <li><a href="#" className="hover:text-gray-800">متاجرنا</a></li>
+            </ul>
+          </div>
+          
+          {/* Orders & Shipping */}
+          <div className="flex flex-col items-center md:items-end">
+            <h4 className="font-semibold text-gray-700 text-sm mb-4">الطلبات والشحن</h4>
+            <ul className="space-y-2 text-gray-600 text-base">
+              <li><a href="#" className="hover:text-gray-800">حسابي</a></li>
+              <li><a href="#" className="hover:text-gray-800">تتبع الطلب</a></li>
+              <li><a href="#" className="hover:text-gray-800">سياسة الشحن و الإرجاع</a></li>
+            </ul>
           </div>
         </div>
 
@@ -128,7 +125,7 @@ const Footer = () => {
             {/* Instagram Icon (Replaced FaInstagram with SVG) */}
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.071 1.17.06 1.805.234 2.224.413.56.243.96.65 1.353 1.042.393.393.801.794 1.043 1.352.179.419.353 1.054.413 2.224.058 1.265.07 1.646.07 4.85s-.012 3.584-.071 4.85c-.06 1.17-.234 1.805-.413 2.224-.243.56-.65 1.003-1.042 1.353-.393.393-.794.801-1.352 1.043-.419.179-1.054.353-2.224.413-1.265.058-1.646.07-4.85.07s-3.584-.012-4.85-.071c-1.17-.06-1.805-.234-2.224-.413-.56-.243-.96-.65-1.353-1.042-.393-.393-.801-.794-1.043-1.352-.179-.419-.353-1.054-.413-2.224-.058-1.265-.07-1.646-.07-4.85s.012-3.584.071-4.85c.06-1.17.234-1.805.413-2.224.243-.56.65-1.003 1.042-1.353.393-.393.794-.801 1.352-1.043.419-.179 1.054-.353 2.224-.413C8.416 2.175 8.797 2.163 12 2.163zm0 1.488c-3.195 0-3.565.012-4.82.07c-1.085.056-1.57.214-1.84.32-.38.153-.64.357-.92.64-.28.28-.487.54-.64.92-.106.27-.264.755-.32 1.84-.058 1.255-.07 1.625-.07 4.82s.012 3.565.07 4.82c.056 1.085.214 1.57.32 1.84.153.38.357.64.64.92.28.28.487.54.92.64.27.106.755.264 1.84.32 1.255.058 1.625.07 4.82.07s3.565-.012 4.82-.07c1.085-.056 1.57-.214 1.84-.32.38-.153.64-.357.92-.64.28-.28.487-.54.64-.92.106-.27.264-.755.32-1.84.058-1.255.07-1.625.07-4.82s-.012-3.565-.07-4.82c-.056-1.085-.214-1.57-.32-1.84-.153-.38-.357-.64-.92-.64-.28-.28-.54-.487-.64-.92-.106-.27-.264-.755-.32-1.84-.058-1.255-.07-1.625-.07-4.82zM12 7.75c2.347 0 4.25 1.903 4.25 4.25S14.347 16.25 12 16.25 7.75 14.347 7.75 12 9.653 7.75 12 7.75zm0 1.488c-1.527 0-2.762 1.235-2.762 2.762s1.235 2.762 2.762 2.762 2.762-1.235 2.762-2.762S13.527 9.238 12 9.238zM17.857 5.093c0 .548-.445.992-.993.992s-.992-.444-.992-.992.445-.992.993-.992.992.444.992.992z" />
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.071 1.17.06 1.805.234 2.224.413.56.243.96.65 1.353 1.042.393.393.801.794 1.043 1.352.179.419.353 1.054.413 2.224.058 1.265.07 1.646.07 4.85s-.012 3.584-.071 4.85c-.06 1.17-.234 1.805-.413 2.224-.243.56-.65 1.003-1.042 1.353-.393.393-.794.801-1.352 1.043-.419.179-1.054.353-2.224.413-1.265.058-1.646.07-4.85.07s-3.584-.012-4.85-.071c-1.17-.06-1.805-.234-2.224-.413-.56-.243-.96-.65-1.353-1.042-.393-.393-.801-.794-1.043-1.352-.179-.419-.353-1.054-.413-2.224-.058-1.265-.07-1.646-.07-4.85s.012-3.584.071-4.85c.06-1.17.234-1.805.413-2.224.243-.56.65-1.003 1.042-1.353.393-.393.794-.801 1.352-1.043.419-.179 1.054-.353 2.224-.413C8.416 2.175 8.797 2.163 12 2.163zm0 1.488c-3.195 0-3.565.012-4.82.07c-1.085.056-1.57.214-1.84.32-.38.153-.64.357-.92.64-.28.28-.487.54-.64.92-.106.27-.264.755-.32 1.84-.058 1.255-.07 1.625-.07 4.82s.012 3.565.07 4.82c.056 1.085.214 1.57.32 1.84.153.38.357.64.64.92.28.28.54.487.92.64.27.106.755.264 1.84.32 1.255.058 1.625.07 4.82.07s3.565-.012 4.82-.07c1.085-.056 1.57-.214 1.84-.32.38-.153.64-.357.92-.64.28-.28.487-.54.64-.92.106-.27.264-.755.32-1.84.058-1.255.07-1.625.07-4.82s-.012-3.565-.07-4.82c-.056-1.085-.214-1.57-.32-1.84-.153-.38-.357-.64-.92-.64-.28-.28-.54-.487-.64-.92-.106-.27-.264-.755-.32-1.84-.058-1.255-.07-1.625-.07-4.82zM12 7.75c2.347 0 4.25 1.903 4.25 4.25S14.347 16.25 12 16.25 7.75 14.347 7.75 12 9.653 7.75 12 7.75zm0 1.488c-1.527 0-2.762 1.235-2.762 2.762s1.235 2.762 2.762 2.762 2.762-1.235 2.762-2.762S13.527 9.238 12 9.238zM17.857 5.093c0 .548-.445.992-.993.992s-.992-.444-.992-.992.445-.992.993-.992.992.444.992.992z" />
               </svg>
             </a>
             {/* Dribbble Icon (Replaced FaDribbble with SVG) */}
@@ -141,7 +138,6 @@ const Footer = () => {
         </div>
 
         {/* Copyright Section */}
-        {/* Adjusted order to match the image: mini moon on the right, links in the middle, copyright on the left */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
           <div className="flex items-center mb-4 md:mb-0 order-3 md:order-1">
             <span className="font-semibold">mini moon</span>

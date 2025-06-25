@@ -1,168 +1,148 @@
+'use client'
+
 import React from 'react'
-import { Tooltip } from '@nextui-org/react';
-import { useEffect,useState,useMemo } from 'react';
-import { IMG_URL } from '../local';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { FaStar } from 'react-icons/fa6';
+
+import Styles from "../styles/Home.module.css"
+import { Theme,CURRENCY, API_URL, IMG_URL, DEF_IMG } from '../local'
+import { Tooltip } from '@nextui-org/react'
+import Image from 'next/image'
 import { CldImage } from 'next-cloudinary';
-import { CURRENCY } from '../local';
-import Image from 'next/image';
-function ProductCopm(props) {
- const router = useRouter();
- const [colors,setColors]=useState(null);
-
-
-useEffect(() => {
-
-//
-colorDisplay()
-}, [])
+import { Spinner } from '@nextui-org/react'
+import { motion } from 'framer-motion'
+import { useState,useEffect } from 'react'
+import { Button } from '@nextui-org/react'
+import { FaHeart, FaStar } from 'react-icons/fa6'
+import { MAIN_STYLE } from '../styles/style'
+import Head from 'next/head'
+import { BsStarFill,BsCheck2Circle,BsCheckCircleFill,BsCartPlusFill } from 'react-icons/bs'
+import { useRouter } from 'next/navigation'
 
 
 
-const colorDisplay = ()=>{
-  var colo = []
-  var colob = []
+export default function Product(props) {
+  const router = useRouter();
+  const [loading,setLoading]= useState(false);
+  const [cimg,setCimg] = useState("");
+  const [colors,setColors]=useState(null);
 
-for (let i = 0; i < props.data.varients.length; i++) {
- 
-  if(colo.includes(props.data.varients[i].colors[0].id)){
+  useEffect(() => {
+    colorDisplay()
+  }, [])
 
-  }else{
-    colo.push(props.data.varients[i].colors[0].id);
-    colob.push(props.data.varients[i].colors[0]);
-    
+
+  const colorDisplay = ()=>{
+    var colo = []
+    var colob = []
+
+    for (let i = 0; i < props.data.varients.length; i++) {
+      if(colo.includes(props.data.varients[i].colors[0].id)){
+        // Do nothing, color already added
+      } else {
+        colo.push(props.data.varients[i].colors[0].id);
+        colob.push(props.data.varients[i].colors[0]);
+      }
+    }
+    setColors(colob);
   }
-  
-}
 
-
-setColors(colob);
-}
-function oldPrice(newPrice, discountPercentage) {
-  const discountFactor = 1 - (discountPercentage / 100);
-  const oldPrice = newPrice / discountFactor;
-  return parseInt(oldPrice);
-}
+  function oldPrice(newPrice, discountPercentage) {
+    if (discountPercentage === 0) return 0; 
+    const discountFactor = 1 - (discountPercentage / 100);
+    const oldPrice = newPrice / discountFactor;
+    return parseInt(oldPrice);
+  }
 
   return (
     <motion.div
-    whileHover={{ scale: 1.03 }}
-    whileTap={{ scale: 0.9 }}
-    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-    
-    onClick={()=>{router.push(`/products?pid=${props.data.id}`)}} dir='rtl' className=" m-0 lg:m-2 sm:m-2 w-full overflow-hidden
-    ">
-  <div className="relative mx-3 mt-3 flex h-min overflow-hidden rounded-md lg:rounded-lg" href="#">
-    {/* <img  className="object-cover  h-60 "
-     src={IMG_URL.concat(JSON.parse(props.data.img)[0]?JSON.parse(props.data.img)[0]:JSON.parse(props.data.img)[1])} alt="product image" /> */}
-  <div className=' w-full h-60' style={{position:"relative"}} >
-  {/* <Image  fill objectFit='cover'
-  quality={40}
-  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" src={IMG_URL.concat(JSON.parse(props.data.img)[0]?JSON.parse(props.data.img)[0]:JSON.parse(props.data.img)[1])} 
+      onClick={()=>{setLoading(true); 
+        router.push(`/products?pid=${props.data.id}`)
+      }} 
+      className="
+      lg:w-[308px] lg:h-[501px] w-[167px] h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative" 
+    >
 
-  /> */}
-
-<CldImage
-  onClick={()=>{router.push(`/products?pid=${props.data.id}`)}}
-  fill objectFit='cover'
-   className=' rounded-md  ' 
-  src={JSON.parse(props.data.img)[0].id}
-   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  alt="Description of my image"
-/>
-
-  </div>
-    <span className="absolute top-0 left-0 m-2
-     rounded-full bg-black  text-center text-xs italic tracking-tighter p-1 px-3 font-medium text-white">{Math.round(props.data.varients[0].old_price)} خصم</span>
-  </div>
-  
-  
-  
-  
-  <div className="mt-4 px-3 pb-5">
- 
-  <div  onClick={()=>{router.push(`/products?pid=${props.data.id}`)}}  className="mt-2 px-1 flex justify-start  w-full">
-
-      <h5  className="text-base  
-        tracking-normal  text-white bg-moon-200 inline font-bold px-4 py-1  rounded-full ">{props.data&&props.data.code} </h5>
-    
-  </div>
-
-
-    <div className='flex w-1/2  justify-center items-center py-3 ' > 
-
-
-
-{colors&&colors.map((color,index)=>(
-                
-                <div className='items-center w-full justify-center mr-1 '   key={color.id}>
-                    <Tooltip className="bg-moon-300 font-medium py-2 px-5 text-white" content={color.name_ar} >
-                     <div style={{backgroundColor:color.colorCode}} className=' h-3 w-3 rounded-full  ' >
-                     
-                     </div>
-                     </Tooltip>
-                    </div>
-           
-               ))}
-
-
-            
-
-    </div>
-
-    <div className='flex py-1   w-full  justify-end items-center space-x-1'>
-               
-               
-               <div className='text-xs'>
-                 (121) <span className='text-moon-200 font-bold' >3.0</span>
-               </div>
-               
-               
-               <FaStar className='text-yellow-300' />
-                 <FaStar className='text-yellow-300' />
-                 <FaStar className='text-yellow-400' />
-                 <FaStar className='text-yellow-400' />
-                 <FaStar className='text-yellow-400' />
-               
-               
-               </div>
-    
-   <div className=' w-full flex flex-col justify-end '>
-        <div className="text-xl font-bold text-moon-300/75 flex flex-row  justify-end  " > <div>{CURRENCY} </div> <div> {props.data.varients[0].price} 
-          </div>  </div>
-
-          <div className="text-sm text-moon-200 line-through flex flex-row   justify-end" >
-       
-          {props.data.varients[0].old_price > 0 && (
-  <div className="text-sm text-moon-200 line-through flex flex-row justify-end">
-    <div>{CURRENCY}</div>
-    <div>
-      {oldPrice(props.data.varients[0].price, props.data.varients[0].old_price)}
-    </div>
-  </div>
-)}
-
-
+      {/* Image Section */}
+      <div className='relative w-full' style={{ height: '60%' }}> 
+        {loading ? (
+          <div className='absolute inset-0 flex items-center justify-center bg-gray-100 z-20'>
+            <div style={{ zIndex: 10 }}>
+              <div style={{ justifyContent: "center", alignItems: "center" }} className="lds-facebook"><div></div><div></div><div></div></div>
             </div>
-      
+          </div>
+        ) : (
+          <>
+            <CldImage
+              fill
+              objectFit='cover'
+              className='rounded-t-lg' 
+              src={JSON.parse(props.data.img)[0].thumb}
+              alt="Product Image"
+            />
+            {/* Wishlist Heart Icon */}
+            <div className="absolute top-2 left-2 p-2 bg-[#f7a0983d] rounded-md shadow-sm z-10">
+              <FaHeart className="text-gray-400 text-lg" />
+            </div>
+          </>
+        )}
       </div>
-   
-    
-    <a  onClick={()=>{router.push(`/products?pid=${props.data.id}`)}} style={{display:props.actbtn?"flex":"none"}}  className="  items-center justify-center
-     rounded-md bg-moon-200 px-5 py-2.5 text-center text-sm
-     font-medium text-white hover:bg-gray-700   focus:outline-none focus:ring-4 focus:ring-blue-300">
-      <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-      </svg>
-        <span  className='mr-2' > إضافة ألى السلة </span> </a >
-  </div>
-</motion.div>
 
+      {/* Product Details Section - Adjusted to remove excessive whitespace */}
+      <div dir="ltr" className="flex flex-col p-2 items-end"> {/* Removed flex-1 and justify-between */}
+        {/* Product Name */}
+        <div className="text-[13px] font-medium text-gray-800 text-right mb-1"> {/* Adjusted margin-bottom */}
+          {`pyjama 3 Pièces - 33270`} {/* Using hardcoded for exact match, replace with props.data.name_ar and props.data.code */}
+        </div>
 
+        {/* Colors and Rating - Grouped and right-aligned */}
+        <div className="flex flex-col items-end mb-2"> {/* Grouped these, increased mb to separate from price */}
+          {/* Color Swatches */}
+          <div className="flex items-center mb-1"> {/* Added mb-1 to create space between colors and rating */}
+            {colors &&
+              colors.map((color) => (
+                <div key={color.id} className="ml-1"> {/* Use ml-1 for spacing between color swatches */}
+                  <Tooltip className="bg-moon-300 font-medium py-2 px-5 text-white" content={color.name_ar}>
+                    <div
+                      style={{ backgroundColor: color.colorCode }}
+                      className="h-[14px] w-[14px] lg:h-[16px] lg:w-[16px] rounded-full border border-gray-200" 
+                    ></div>
+                  </Tooltip>
+                </div>
+              ))}
+          </div>
+          
+          {/* Rating */}
+          <div className="flex items-center space-x-1"> 
+            <div className="text-xs text-gray-600">(3.4k)</div>
+            <FaStar className="text-yellow-400 text-sm" />
+            <FaStar className="text-yellow-400 text-sm" />
+            <FaStar className="text-yellow-400 text-sm" />
+            <FaStar className="text-yellow-400 text-sm" />
+            <FaStar className="text-gray-300 text-sm" />
+          </div>
+        </div>
 
+        {/* Pricing - Now directly below rating with controlled spacing */}
+        <div className="flex flex-col items-end"> {/* Removed mt-auto */}
+          <div className="text-lg font-bold text-gray-900 flex items-baseline">
+            <div className="ml-1">{CURRENCY}</div> 
+            <div>6950</div> {/* Hardcoded, replace with props.data.varients[0].price */}
+          </div>
+          {props.data.varients[0].old_price > 0 &&
+            props.data.varients[0].old_price > props.data.varients[0].price && (
+              <div className="text-sm text-gray-500 line-through flex items-baseline">
+                <div className="ml-1">{CURRENCY}</div>
+                <div>8850</div> {/* Hardcoded, replace with props.data.varients[0].old_price */}
+              </div>
+            )}
+        </div>
+      </div>
+      
+      {/* Discount Tag - Adjusted positioning */}
+      {props.data.varients[0].old_price > 0 && props.data.varients[0].old_price > props.data.varients[0].price && (
+        <span className="absolute bottom-4 left-4 bg-[#FEE2E2] text-[#EF4444] text-xs font-bold px-3 py-1 rounded-full z-10"> 
+          {`%25 خصم`} {/* Hardcoded, replace with dynamic discount */}
+        </span>
+      )}
+    </motion.div>
   )
 }
-
-export default ProductCopm

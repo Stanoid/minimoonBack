@@ -20,6 +20,8 @@ export default function MostDemanded() {
       try {
         const res = await fetch(`${API_URL}subcatagories?func=getTopSubcats`);
         const data = await res.json();
+        console.log("API response for subcategories:", data); // <--- Add this line
+
         setSubcats(data);
       } catch (err) {
         console.error("Failed to fetch subcategories", err);
@@ -71,7 +73,7 @@ export default function MostDemanded() {
 
   return (
     <div className="py-8">
-      <div className="text-xl flex justify-center items-center font-bold text-right text-gray-800 mb-6">
+      <div className="text-xl  flex justify-center items-center font-bold text-right text-gray-800 mb-6">
         الأكثر طلباً
       </div>
 
@@ -136,7 +138,7 @@ export default function MostDemanded() {
             dir="ltr"
           >
             {products.map((product) => (
-              <div key={product.id} className=" ">
+              <div key={product.id} className="lg:max-[] ">
                 <Product data={product} />
               </div>
             ))}

@@ -5,6 +5,7 @@ import { API_URL ,Theme} from "./local";
 import Cart from "./comps/cart";
 import { NextUIProvider } from "@nextui-org/react";
 import CatDrop from "./comps/catDrop";
+import Footer from "./comps/footer";
 import NavbarC from "./comps/navbar";
 import dynamic from "next/dynamic";
 import {Provider} from "react-redux"
@@ -311,15 +312,15 @@ className="flex cursor-pointer items-center" >
 
 
         
-        <div onClick={()=>{router.push("/")}} className=" mx-3 
+        {/* <div onClick={()=>{router.push("/")}} className=" mx-3 
           cursor-pointer border-b-4 border-moon-200/60 text-moon-200 pb-0.5 " > الرئيسية </div>
-    
+     */}
    <div className="blok sm:block lg:hidden "  >
     <div className="w-32"></div>
     </div>    
      
 
-        {cat&&cat.map(ct=>(
+        {/* {cat&&cat.map(ct=>(
     
 
     <CatDrop data={ct}  lable={ct.name_ar}/>
@@ -329,7 +330,7 @@ className="flex cursor-pointer items-center" >
         </a>
         <a href="/contactus" >
         <div className=" cursor-pointer hover:border-b-2 border-moon-300/40 pb-0.5 " > إتصل بنا </div>
-       </a>
+       </a> */}
 
      
 
@@ -394,77 +395,18 @@ className="flex cursor-pointer items-center" >
 
  
             
-            <section>
-            <div className="lg:max-w-[1280px] lg:mx-auto min-h-lvh"  style={{  }}>
+            <section className="bg-gray-50 font-el-messiri">
+            <div className="lg:max-w-[1280px] bg-gray-50 lg:mx-auto min-h-lvh"  style={{  }}>
               
                   {children}
                 </div>
             </section>
             <section>
-            <div style={{backgroundSize:20}} className="    border-t-2 border-gray-500 mt-8 p-8 px-0  pb-3  w-full   text-right">
-      <div className="w-full" >
-   {/* <div className=" hidden sm:hidden lg:flex items-center my-2 justify-center">
-   <Logowhite style={{cursor:"pointer"}}  onClick={() => {
-                          router.push("/");
-                        }} width={100} />
   
-    </div>   */}
 
-    <div className="w-full  flex whitespace-nowrap text-right text-sm font-semibold px-6 lg:px-44 sm  justify-center space-x-3 items-center">
-  
-    <div className=" w-full flex text-moon-200  space-y-1 flex-col items-start justify-center "> 
-    <div className=" w-full ">  الجزائر    </div>
-    <div className=" w-full "> الدينار الجزائري    </div>
-    <div className=" w-full ">اللغة العربية</div>
-  
-     </div>
-
-
-    <div className=" w-full flex space-y-1 flex-col items-start justify-center "> 
-    <div className=" w-full "> من نحن    </div>
-    <div className=" w-full ">قيمنا    </div>
-    <div className=" w-full ">منتجاتنا</div>
-    <div className=" w-full ">متاجرنا</div>
-     </div>
-
-
-
-    <div className=" w-full flex space-y-1 flex-col items-start justify-center "> 
-    <div className=" w-full "> الدعم الفني    </div>
-    <div className=" w-full ">اتصل بنا    </div>
-    <div className=" w-full ">سياسة الشحن
-    </div>
-    <div className=" w-full ">سياسة الارجاع</div>
-     </div>
-
-     <div className=" w-full flex space-y-1 flex-col items-start justify-center "> 
-     <div className=" w-full ">التسجيل    </div>
-    <div className=" w-full ">تسجيل الدخول    </div>
-    <div className=" w-full ">عنواني</div>
-    <div className=" w-full ">طلباتي</div>
-     </div>
-    </div>
-
-    <div className='my-3' >
-     <div className='text-center my-1 font-semibold text-moon-200 '> تابعنا على</div> 
-   <div className='flex space-x-3 text-2xl flex-row items-center justify-center' >
-   <FaFacebook className='text-[#3E5C9A]' />
-   <FaInstagram className='text-[#C84278]' />  
-   <FaXTwitter/>
-   <FaGoogle className='text-[#DF4B38]' />
-   
-   </div>
-  
-    </div>
-    
-    
-        <p className="text-xs text-center border-t-1 border-gray-300 py-2  w-full break-words font-medium text-black lg:text-base  ">
-        جميع الحقوق محفوظة © ميني مون 2024
-        </p>
-      </div>
+  <Footer />
      
        
-    </div>
             </section>
 
           

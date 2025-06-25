@@ -149,7 +149,7 @@ for (let i = 0; i < vrs.length; i++) {
           setSize(data.data.attributes.varients.data[0].attributes.sizes.data[0].id);
           setColor(data.data.attributes.varients.data[0].attributes.colors.data[0].attributes.colorCode);
           setDb(data.data);
-        }).then(()=>{
+        }).then(() => {
         setLod(false);
         
         });
@@ -303,7 +303,7 @@ for (let i = 0; i < vrs.length; i++) {
   }
 
   return (
-    <div className='mt-24' >
+    <div dir='rtl' className='mt-24 bg-white' >
       <Head>
         {/* <title>{"Minimoon | " + db.attributes&&db.attributes.name_en} </title>
         <meta name="description" content={db.attributes.descriptionEn} /> */}
@@ -380,7 +380,7 @@ for (let i = 0; i < vrs.length; i++) {
         >
 
 
-<motion.div
+{/* <motion.div
 
 whileHover={{ scale: 1.03 }}
 whileTap={{ scale: 0.9 }}
@@ -403,10 +403,25 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
               }}
             >
               <BsHeartFill />
-            </motion.div>
+            </motion.div> */}
 
 
       <div  className='flex flex-col my-3'>
+      <div className='bg-gray-200 text-center lg:w-[176px] lg:h-[35px] rounded-full'>
+            <h2
+              style={{
+                fontWeight: "bold",
+                fontSize: 18,
+                width:"100%",
+                lineHeight:"150%"
+                
+              }}
+              className="max-w-xl mt-2   font-semibold leading-loose tracking-tight text-gray-900  "
+            >
+              {pcode} : رقم الصنف
+            </h2>
+          </div>
+
           <div>
             <h2
               style={{
@@ -422,20 +437,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             </h2>
           </div>
 
-          <div>
-            <h2
-              style={{
-                fontWeight: "bold",
-                fontSize: 17,
-                width:"100%",
-                
-                lineHeight: 1.3,
-              }}
-              className="max-w-xl mt-2  text-right font-semibold leading-loose tracking-tight text-gray-500  "
-            >
-              {pcode} : رقم الصنف
-            </h2>
-          </div>
+       
 
          
 
@@ -446,6 +448,17 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
         
 
       
+  
+
+        <p
+        dir='rtl'
+          style={{ fontWeight: 400, fontSize: 14, lineHeight: "150%", fontWeight:400 }}
+          className="max-w-xl mt-6 mb-6 text-right  font-semibold leading-loose tracking-wide text-gray-900  dark:text-gray-800"
+        >
+          {db&&db.attributes.description_ar}
+        </p>
+
+
         <p
           style={{
             display: "inline-block",
@@ -473,18 +486,10 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             {oldPrice(price,discount)} {CURRENCY}
           </span>)} 
         </p>
-
-        <p
-        dir='rtl'
-          style={{ fontWeight: 400, fontSize: 15, lineHeight: 1.2 }}
-          className="max-w-xl mt-6 mb-6 text-right  font-semibold leading-loose tracking-wide text-gray-900  dark:text-gray-800"
-        >
-          {db&&db.attributes.description_ar}
-        </p>
       </div>
 
       <div
-        className="w-full sm:w-full shadow-md "
+        className="w-full sm:w-full "
         style={{
           display: "flex",
           alignSelf:"center",
@@ -495,7 +500,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
           padding: 20,
         }}
       >
-        <div style={{width:"100%"}} className='shadow-md px-4  py-4 mb-4 rounded-md' >
+        <div style={{width:"100%"}} className=' px-4  py-4 mb-4 rounded-md' >
          <OptionEL varselect={(vid)=>{varselectHandler(vid)}} 
          vari={selectedV}
          selid={selectedV} vars={varients} />
@@ -508,7 +513,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
 
                <div
             
-             className=' py-4 pb-5 shadow-md '
+             className=' py-4 pb-5 '
             style={{
              
              
@@ -533,61 +538,62 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
 
        
 
-        <div className='flex flex-col space-y-2 justify-center items-center' >
-       {stock<=0?<div className='text-center font-bold text-red-500 py-3 bg-red-100 px-4 rounded-md ' > نفذت الكمية </div>:
-       <div
-       className="shadow-lg shadow-moon-100/70 rounded-md px-6 py-2.5 mt-3 bg-moon-200 "
-        onClick={() => {
-          HandleAddToCart();
-        }}
-        style={{
-          display: "flex" ,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-       
-        <span> أضف إلى السلة  </span>
-        <div
-          style={{
-            color: "white",
-            fontSize: 23,
-            marginLeft: 8,
-          }}
-        >
-          <BsCartPlusFill />
-        </div>
-      </div>
-       }
+ <div className='flex space-x-2 gap-[16px] justify-center items-center'>
+       {stock <= 0 ? (
+           <div className='text-center font-bold text-red-500 py-3 bg-red-100 px-4 rounded-md'>
+               نفذت الكمية
+           </div>
+       ) : (
+           <div
+               className="rounded-lg px-6 py-3.5 bg-[#e5675c] text-white flex items-center justify-center cursor-pointer"
+               onClick={() => {
+                   HandleAddToCart();
+               }}
+               style={{
+                   width: '411px', 
+                   height: '52px', 
+                   whiteSpace: 'nowrap', 
+               }}
+           >
+               <span> أضف إلى السلة </span>
+               <div
+                   style={{
+                       color: "white",
+                       fontSize: 23,
+                       marginLeft: 8,
+                   }}
+               >
+                   <BsCartPlusFill /> 
+               </div>
+           </div>
+       )}
 
 
             <div
-             className="shadow-lg shadow-moon-100/70 rounded-md px-6 py-2.5 mt-3 text-moon-300 bg-white "
+             className="rounded-lg px-6 py-3.5 bg-white border border-[#d3d3d3] text-[#4f5b66] flex items-center justify-center cursor-pointer"
               onClick={() => {
                 HandleAddToFav();
               }}
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                width: '165px',
+                height: '52px', 
+                whiteSpace: 'nowrap', 
               }}
             >
-             
-              <span> أضف إلى المفضلة  </span>
-              <div className='text-pink-600'
+
+              <span> أضف إلى المفضلة </span>
+              <div className='text-pink-600' 
                 style={{
-                 
                   fontSize: 23,
                   marginLeft: 8,
                 }}
               >
-                <BsHeartFill />
+                <BsHeartFill /> 
               </div>
             </div>
 
 
         </div>
-
             {/* <div onClick={()=>{console.log(cart)}} className='w-8 h-8 bg-red-800 text-white rounded-sm shadow-md '>
               cart
             </div>
@@ -703,8 +709,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
        
       </AccordionItem> */}
-{/* 
-      <AccordionItem
+{/* <AccordionItem
         key="4" 
         className='text-center bg-gray-100  p-3 py-0 '
         aria-label="Chung Miller"
@@ -780,4 +785,3 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
     </div>
   );
 }
-

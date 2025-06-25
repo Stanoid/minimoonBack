@@ -162,7 +162,7 @@ if (firstRenderRef.current) {
 
       
    
-    <div className="" style={{display:'flex',justifyContent:'center',alignItems:"center",flexDirection:'column', width:'100%'}}>
+    <div className="bg-gray-50" style={{display:'flex',justifyContent:'center',alignItems:"center",flexDirection:'column', width:'100%'}}>
  {lod?<LoadingOverlay/>:<></>} 
  <Cart ref={childCompRef}   openHandler={handleOpenCart} open={openCart} />
 <div className="   to-moon-100/30 from-moon-100/30   " style={{width:"100%"}}>
@@ -227,8 +227,8 @@ if (firstRenderRef.current) {
   !lod?<div  className=" px-1 sm:px-1 lg:px-6 m-0">
     
  
-<div className="  grid  lg:gap-x-1 lg:gap-y-2 xl:gap-x-2 xl:gap-y-2 md:gap-x-4 md:gap-y-4 gap-x-0 gap-y-0 my-6
-  xl:grid-cols-6
+{/* <div className="  grid  lg:gap-x-1 lg:gap-y-2 xl:gap-x-2 xl:gap-y-2 md:gap-x-4 md:gap-y-4 gap-x-0 gap-y-0 my-6
+  xl:grid-cols-4
    md:grid-cols-4 
    grid-cols-2  " >
 
@@ -244,9 +244,9 @@ product.status?
   
 
 
-</div>
+</div> */}
 
-<div className="flex justify-center py-4 items-center" >
+{/* <div className="flex justify-center py-4 items-center" >
 
 <div className="max-w-96  " >
 {
@@ -259,7 +259,7 @@ product.status?
 
 
 </div>
-</div>
+</div> */}
 
 
 
@@ -285,7 +285,7 @@ product.status?
 
 
 
-<div style={{backgroundSize:50}}  className="w-full   
+{/* <div style={{backgroundSize:50}}  className="w-full   
 bg-[url('../../public/amblemblack.svg')] "  >
 <div className="w-full flex flex-col align-middle h-fit justify-center bg-gradient-to-b from-moonsec-100/60 to-moonsec-100/30 py-4">
 <div className="p-6 my-6">
@@ -299,20 +299,19 @@ bg-[url('../../public/amblemblack.svg')] "  >
 </div>
 
 </div>
-</div>
+</div> */}
 
 
 {subcats&&subcats.map(subcat=>(
 
 <div className=" to-moonsec-200/20 from-moonsec-100/30 py-6">
 <div className="p-4 flex justify-between  ">
-<motion.div className=' p-0 sm:px-0 lg:px-3 flex align-middle justify-end ml-2' whileTap={{ scale: 1.03 }}>
+<motion.div className=' p-0 sm:px-0  flex align-middle justify-end ' whileTap={{ scale: 1.03 }}>
       {/* <LoadingBtn act={()=>{router.push("/login")} } color={Theme.primary} textColor={"white"} icon={<FaLock  />} text={"تسجيل دخول"}  /> */}
-     <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } variant="shadow" className="text-white text-xs rounded-lg
-      bg-moonsec-200 font-bold shadow-md" endContent={<FaListAlt />}> {subcat.catagory.name_ar} </Button>
+     <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } className="text-moon-200 underline text-lg "> {subcat.catagory.name_ar} </Button>
      </motion.div>
      <div>
-     <h5 className="text-2xl font-black text-right tracking-normal text-moon-300/80 mt-2 ">: {subcat.name_ar}</h5>
+     <h5 className="text-2xl font-black text-right tracking-normal text-moon-300/80 mt-2 ">{subcat.name_ar}</h5>
 
      </div>
 

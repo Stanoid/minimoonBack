@@ -54,33 +54,11 @@ function Lens(props) {
 
   return (
 
-    <div className=" " id="root">
+    <div dir="rtl" className=" " id="root">
      <GlobalStyles />
       <div className=" w-full flex flex-col-reverse sm:flex-col-reverse lg:flex-row  ">
        
-        <div  style={{
-            
-            maxWidth:"100%",
-            overflow:"scroll",
-            maxHeight:"100%"
-        }} className=" scrollable-content-em flex flex-row sm:flex-row lg:flex-col space-x-2 lg:space-x-0 sm:space-x-2  lg:space-y-2  ">
-       
-
-       {props.data&&props.data.map((img,index)=>(
- img?
- <div className="w-14 h-14  relative cursor-pointer" >  
-  <Image quality={40} objectFit="cover" className="rounded-md shadow-sm" fill onClick={() => 
-    handleClick(img.url)} src= {img.thumb}  />
- </div>:<></>
-
- 
-    ))}
-       
-       
-       
-     
-
-        </div>
+        
 
 
 
@@ -97,7 +75,7 @@ function Lens(props) {
        
           style={{backgroundColor:zoomv?Theme.primary:"",color:zoomv?"":Theme.primary,WebkitUserSelect:"none",zIndex:zoomv?30:0}}
            
-          className={`${zoomv?"w-full":"w-52"}  font-medium  lg:w-1/2 transition-width min-h-80 duration-75 tracking-tight italic  group touch-none mb-2 rounded-md    ml-0 lg:ml-2 sm:ml-0  `}>
+          className={`${zoomv?"w-full":"w-52"}  font-medium  lg:w-[528px] lg:h-[606px] transition-width min-h-80 duration-75 tracking-tight italic  group touch-none mb-2 rounded-md    ml-0 lg:ml-2 sm:ml-0  `}>
       <ImageZoom
            className={`${zoomv?"rounded-b-none":""} FullImageZoom rounded-md     `}
         
@@ -115,6 +93,31 @@ function Lens(props) {
         </div>
 </div>
      </div>
+
+
+     <div  style={{
+            
+            maxWidth:"100%",
+            overflow:"scroll",
+            maxHeight:"100%"
+        }} className=" scrollable-content-em flex flex-row sm:flex-row lg:flex-col space-x-2 lg:space-x-0 sm:space-x-2  lg:space-y-2  ">
+       
+
+       {props.data&&props.data.map((img,index)=>(
+ img?
+ <div className="w-16 h-16  relative cursor-pointer" >  
+  <Image quality={40} objectFit="cover" className="rounded-md shadow-sm" fill onClick={() => 
+    handleClick(img.url)} src= {img.thumb}  />
+ </div>:<></>
+
+ 
+    ))}
+       
+       
+       
+     
+
+        </div>
      
       </div>
 
