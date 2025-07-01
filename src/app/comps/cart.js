@@ -1,165 +1,74 @@
 'use client'
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState,useEffect,useContext } from 'react'
+import { Fragment, useState, useEffect, useContext, forwardRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import Cartel from './cartel'
-import { XIconreact,XIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/outline'
 import { BsCartFill } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
-import { Flip, toast,ToastContainer } from 'react-toastify'
+import { Flip, toast, ToastContainer } from 'react-toastify'
 import { Button } from '@nextui-org/react'
 import { FaCreditCard, FaLock, FaUser } from 'react-icons/fa6'
 import LoadingBtn from './loadingbtn'
-import {CartCon} from '../contexts/cartContext'
+import { CartCon } from '../contexts/cartContext'
 import Image from 'next/image';
 
 import { useRouter } from 'next/navigation'
 
-import { API_URL,Theme,CURRENCY } from '../local'
+import { API_URL, Theme, CURRENCY } from '../local'
 
-import { forwardRef, useRef,useImperativeHandle  } from "react"
-import { product } from './productdata'
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 
 const Cart = forwardRef((props, ref) => {
   const [open, setOpen] = useState(true)
-  const [scrol,setScrol]=useState(0);
-  const [lod,setLod]=useState(0);
-   const {cartData,addToCart,removeFromCart,CartTotal}  = useContext(CartCon);
-  const [total,setTotal]=useState(0);
+  const [lod, setLod] = useState(0);
+  const { cartData, addToCart, removeFromCart, CartTotal } = useContext(CartCon);
   const router = useRouter();
-const  ls = require('local-storage');
-  const [subtotal,setSubtotal]=useState(0);
-  const cartg = useSelector((state) => state.root.cart.data)
-  const isLogged = useSelector((state) => state.root.auth.data&&state.root.auth.data)
-const [logindata,setLogindata]= useState(null)
-
-//handel guest checkout
-const guestCheckout = () => {
-  props.openHandler(false);
-  router.push("/checkout"); 
-};
 
 
-  useEffect(()=>{
+  const [subtotal, setSubtotal] = useState(0);
+  const [savings, setSavings] = useState(0);
+  const [shippingCost, setShippingCost] = useState(0); 
+  const [finalTotal, setFinalTotal] = useState(0); 
   
-},[props.open])
+  const cartg = useSelector((state) => state.root.cart.data); 
+  const isLogged = useSelector((state) => state.root.auth.data);
 
+  useEffect(() => {
+    let calculatedSubtotal = 0;
 
+    cartg.forEach(item => {
+      const selectedVariant = item.data?.attributes?.varients?.data?.find(v => v.id === item.selvar);
+      if (selectedVariant && selectedVariant.attributes?.price) {
+        calculatedSubtotal += selectedVariant.attributes.price * item.qty;
+      }
+    });
+    setSubtotal(calculatedSubtotal);
 
-const handleOrder= ()=>{
-  props.openHandler(false);
-  router.push("/checkout")
-return
-  
-  if(cartg.length==0){
-    alert("الرجاء إضافة منتجات")
-    return
-  }
+    const calculatedSavings = calculatedSubtotal >= 6950 ? 6950 : 0;
+    setSavings(calculatedSavings);
 
-  setLod(true)
-  let payarray = []
-  for (let i = 0; i < cartg.length; i++) {
-    payarray.push({
-      id: cartg[i].selvar,
-      product_ref:cartg[i].product_ref,
-      name:cartg[i].name,
-      img:cartg[i].img,
-      code:cartg[i].code,
-      color: cartg[i].color ,
-      size: cartg[i].size ,
-      qty: cartg[i].qty,
-      desc: cartg[i].data.attributes.description_en 
+    const freeShippingThreshold = 1499; 
+    let currentShippingCost = 120; 
+    if (calculatedSubtotal >= freeShippingThreshold) {
+      currentShippingCost = 0; 
+    }
+    setShippingCost(currentShippingCost);
     
-    })
-  }
-
-
-  console.log(isLogged.jwt);
-  
-    const requestOptions = {
-  method: 'POST',
-  headers: {
-      "Content-Type": "application/json",
-      "Authorization": 'Bearer ' +  isLogged.data.jwt
-  },
-  body: JSON.stringify({
-     items: payarray
-    })
-};
-fetch(`${API_URL}orders?func=initPaymentSession`, requestOptions)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data)
-    setLod(false)
-window.location= data.url;
-  }).then(()=>{
+    setFinalTotal(calculatedSubtotal - calculatedSavings + currentShippingCost);
     
-  });
-                        
+  }, [cartg]); 
 
-}
+  // console.log("here are the porops ",props)
 
-
-
-
-const createCheckoutSession = ()=>{
-
-//   const requestOptions = {
-//     method: 'POST',
-//     headers: {
-//         "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(
-//         {     
-//            "id":1,
-//           }
-//       )
-// };
-//   fetch(`${API_URL}orders?func=initPaymentSession`, requestOptions)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       
-//       window.location= data.url;
-//     }).then(()=>{
-      
-//     });
-
-
+  const handleOrder = () => {
     props.openHandler(false);
-    router.push("/checkout")
-}
+    router.push("/checkout");
+  };
 
-
-
-const notify = (type,msg)=>{
-
-    const options={
-      hideProgressBar:true,
-      draggable:true,
-      closeButton:false,
-      
-    }
-    switch(type){
-      case 'success':
-        toast.success(msg,options)
-        break;
-
-        case 'error':
-          toast.error(msg,options)
-          break;
-
-          case 'warn':
-            toast.warn(msg,options)
-            break;
-
-          
-
-    }
-   
-  }
-  
-
+  const guestCheckout = () => {
+    props.openHandler(false);
+    router.push("/checkout");
+  };
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -167,10 +76,10 @@ const notify = (type,msg)=>{
         as="div"
         className="fixed inset-0 overflow-hidden z-20"
         onClose={() => {
-          props.openHandler(true);
+          props.openHandler(false);
         }}
       >
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute backdrop-blur-md inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-200"
@@ -180,67 +89,71 @@ const notify = (type,msg)=>{
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="absolute inset-0 bg-black lg:bg-black  bg-opacity-10 lg:bg-opacity-50 transition-opacity" />
+            <Dialog.Overlay className="absolute inset-0 bg-black bg-opacity-10 lg:bg-opacity-50 transition-opacity" />
           </Transition.Child>
 
-          <div className="fixed bottom-0 right-0 lg:top-0 max-h-1/2 text-right   max-w-md flex ">
+          <div className="fixed inset-x-0 bottom-0 lg:inset-y-0 lg:right-0 lg:left-auto w-full max-w-full lg:max-w-md  flex z-50">
+
             <Transition.Child
               as={Fragment}
               enter="transform transition ease-in-out duration-200 sm:duration-300"
-              enterFrom="translate-y-full lg:-translate-y-full"
-              enterTo="translate-y-0 lg:-translate-y-0 "
+              enterFrom="translate-y-full lg:translate-x-full"
+              enterTo="translate-y-0 lg:translate-x-0 "
               leave="transform transition ease-in-out duration-200 sm:duration-300"
-              leaveFrom="translate-y-0 lg:-translate-y-0 "
-              leaveTo="translate-y-full lg:-translate-y-full"
+              leaveFrom="translate-y-0 lg:translate-x-0 "
+              leaveTo="translate-y-full lg:translate-x-full"
             >
-              <div className="relative w-screen ">
+              <div className="relative w-full h-full ">
                 <ToastContainer limit={3} />
 
-                <div className="h-screen-1/2 flex flex-col py-6 rounded-t-lg rounded-r-lg lg:rounded-r-none lg:rounded-t-none  bg-white shadow-lg overflow-y-hidden">
-                  <div className="px-4 sm:px-6 flex align-middle justify-between">
+                <div className="h-full flex flex-col py-6  lg:max-w-[512px]  w-full rounded-t-lg rounded-r-none lg:rounded-t-none lg:rounded-r-lg bg-white shadow-lg overflow-y-hidden">
+                  <div className="px-4 sm:px-6 flex items-center justify-between">
+                    <div
+                      className="lg:block"
+                      onClick={() => {
+                        props.openHandler(false);
+                      }}
+                    >
+                      <XIcon
+                        className="h-6 w-6 text-gray-500"
+                        aria-hidden="true"
+                      />
+                    </div>
                     <div
                       style={{
                         display: "flex",
                         width: "100%",
-                        color: Theme.primary,
-                        justifyContent: "center",
+                        justifyContent: "end",
                         alignItems: "center",
                         fontWeight: "bold",
                         paddingBottom: 20,
-
-                        fontSize: 25,
+                        fontSize: 18,
                       }}
                     >
+                      <div>السلة</div>
                       <div
                         style={{
                           marginRight: 10,
                         }}
                       >
-                        <BsCartFill />
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
                       </div>
-                      <div>السلة</div>
-                    </div>
-
-                    <div
-                      className=" lg:block"
-                      onClick={() => {
-                        props.openHandler(false);
-                      }}
-                    >
-                      {" "}
-                      <XIcon
-                        className="h-8 w-8 
-                     border-2 rounded-full border-black  "
-                        aria-hidden="true"
-                      />
                     </div>
                   </div>
+
+                  {/* Free Shipping Bar */}
+                  {/* <div className="bg-green-50 text-green-700 text-sm py-2 px-4 text-center mb-4 mx-4 rounded-md" dir="rtl">
+                    يمكنك الحصول على شحن مجاني إذا أضفت منتجات بقيمة 1,499 د.ج
+                  </div> */}
+
                   <div
                     style={{
                       margin: "0px 20px",
                       borderTop: "2px solid " + Theme.primary,
                     }}
-                    className="mt-6 relative flex-1  "
+                    className="mt-6 relative flex-1"
                   >
                     <div
                       id="scrol"
@@ -278,78 +191,79 @@ const notify = (type,msg)=>{
                           }}
                         >
                           <div>
-                            <Image src={"/void.svg"} width={200} height={200} />
+                            <Image src={"/void.svg"} width={200} height={200} alt="Empty cart" />
                           </div>
                           <div style={{ fontWeight: "bold", marginTop: 20 }}>
-                            {" "}
-                            سلة فارغة{" "}
+                            سلة فارغة
                           </div>
                           <div>تصفح المنتجات و أضفها للمتابعة</div>
                         </div>
                       )}
                     </div>
 
-                    { cartg.length != 0? isLogged ? (
-                      <LoadingBtn
-                        icon={<FaArrowAltCircleRight className="ml-1.5" />}
-                        act={handleOrder}
-                        text={"متابعة"}
-                        lod={lod}
-                      />
-                    ) : (
-                      <div>
-                        <LoadingBtn
-                          icon={<FaLock className="ml-1.5" />}
-                          act={() => {
-                            router.push("/login");
-                            props.openHandler(false);
-                          }}
-                          text={"سجل الدخول للمتابعة"}
-                          color={Theme.secondaryDark}
-                          lod={lod}
-                        />
-                        <button
-                          onClick={guestCheckout}
-                          color={Theme.primary}
-                          className="mt-4 w-full bg-rose-400 text-white py-2 px-4 rounded-md text-lg"
-                        >
-                          متابعة كزائر
-                        </button>
+                    {cartg.length > 0 && (
+                      <div className="px-4 pt-4 border-t border-gray-200">
+                        {/* الإجمالي الاساسي (Base Total) */}
+                        <div className="flex justify-between items-center text-gray-700 mb-2" dir="rtl">
+                          <span className="text-sm">الإجمالي الاساسي</span>
+                          <span className="text-base font-bold">{subtotal.toFixed(2)} {CURRENCY}</span>
+                        </div>
+                        <div className="flex justify-between items-center mb-2" dir="rtl">
+                          <span className="text-sm text-gray-700">تم توفير</span>
+                          <span className="text-base font-bold text-green-600">{savings.toFixed(2)} {CURRENCY}</span>
+                        </div>
+                   
+                        <div className="flex justify-between items-center mb-4" dir="rtl">
+                          <span className="text-sm text-gray-700">مصاريف الشحن و التوصيل</span>
+                          <span className="text-base font-bold text-gray-700">{shippingCost.toFixed(2)} {CURRENCY}</span>
+                        </div>
+
+                        <div className="flex justify-between items-center text-lg font-bold text-gray-900 mb-6" dir="rtl">
+                          <span>الإجمالي</span>
+                          <span>{finalTotal.toFixed(2)} {CURRENCY}</span>
+                        </div>
+
+   
+                        <div className="mt-6">
+  {isLogged ? (
+    <div className="flex justify-center">
+      <LoadingBtn
+        act={handleOrder}
+        text={"اتمام الشراء"}
+        lod={lod}
+        className="w-full"
+      />
+    </div>
+  ) : (
+    <div className="flex items-center justify-between gap-2">
+      <LoadingBtn
+        icon={<FaLock className="" />}
+        act={() => {
+          router.push("/login");
+          props.openHandler(false);
+        }}
+        text={"سجل الدخول للمتابعة"}
+        color={Theme.secondaryDark}
+        lod={lod}
+        className="w-2/5 py-2 text-base rounded-md"
+      />
+      <button
+        onClick={guestCheckout}
+        style={{ backgroundColor: Theme.primary }}
+        className="w-3/5 bg-moon-200 text-white py-3 px-4 rounded-md text-sm font-meduim"
+        dir="rtl"
+      >
+        متابعة كزائر
+      </button>
+    </div>
+  )}
+</div>
+
                       </div>
-                    ):<></>}
+                    )}
 
-                    {/* <div
-                      style={{
-                        padding: 20,
-                        display: cartg && cartg.length == 0 ? "none" : "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {isLogged ? (
-                        <LoadingBtn
-                          icon={<FaArrowAltCircleRight className="ml-1.5" />}
-                          act={() => {
-                            handleOrder();
-                          }}
-                          text={"متابعة  "}
-                          lod={lod}
-                        />
-                      ) : (
-                        <LoadingBtn
-                          icon={<FaLock className="ml-1.5" />}
-                          act={() => {
-                            router.push("/login");
-                            props.openHandler(false);
-                          }}
-                          text={"سجل الدخول للمتابعة  "}
-                          color={Theme.secondaryDark}
-                          lod={lod}
-                        />
-                      )}
-                    </div> */}
+              
 
-                    {/* /End replace */}
                   </div>
                 </div>
               </div>

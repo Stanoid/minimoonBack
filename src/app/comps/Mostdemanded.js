@@ -20,7 +20,7 @@ export default function MostDemanded() {
       try {
         const res = await fetch(`${API_URL}subcatagories?func=getTopSubcats`);
         const data = await res.json();
-        console.log("API response for subcategories:", data); // <--- Add this line
+        console.log("API response for subcategories:", data); 
 
         setSubcats(data);
       } catch (err) {
@@ -41,7 +41,6 @@ export default function MostDemanded() {
         if (selectedSubcat) {
           url += `&subcatid=${selectedSubcat.id}`;
         }
-
         const res = await fetch(url);
         const data = await res.json();
 
@@ -87,7 +86,7 @@ export default function MostDemanded() {
               className={`rounded-md border ${
                 selectedSubcat?.id === subcat.id
                   ? 'bg-white border border-gray-300 text-gray-800'
-                  : 'bg-pink-100 border border-pink-100 text-gray-700'
+                  : 'bg-moon-200 border border-pink-100 text-gray-700'
               }`}
               onClick={() => setSelectedSubcat(subcat)}
             >

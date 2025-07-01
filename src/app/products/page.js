@@ -4,6 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import React, { useState, useEffect, useContext } from "react";
 import { API_URL, CURRENCY, Theme } from "../local";
 import QuantEl from "../comps/quantel";
+import { FaHeart, FaStar } from 'react-icons/fa6'
 import { BsHeartFill,BsCartPlusFill } from 'react-icons/bs';
 import { useDispatch,useSelector } from 'react-redux';
 import Lens from "../comps/Lens"
@@ -303,7 +304,7 @@ for (let i = 0; i < vrs.length; i++) {
   }
 
   return (
-    <div dir='rtl' className='mt-24 bg-white' >
+    <div dir='rtl' className='lg:mt-40 bg-white' >
       <Head>
         {/* <title>{"Minimoon | " + db.attributes&&db.attributes.name_en} </title>
         <meta name="description" content={db.attributes.descriptionEn} /> */}
@@ -411,12 +412,12 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             <h2
               style={{
                 fontWeight: "bold",
-                fontSize: 18,
+            
                 width:"100%",
                 lineHeight:"150%"
                 
               }}
-              className="max-w-xl mt-2   font-semibold leading-loose tracking-tight text-gray-900  "
+              className="max-w-xl mt-2 text-base lg:text-lg   font-semibold leading-loose tracking-tight text-gray-900  "
             >
               {pcode} : رقم الصنف
             </h2>
@@ -453,10 +454,19 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
         <p
         dir='rtl'
           style={{ fontWeight: 400, fontSize: 14, lineHeight: "150%", fontWeight:400 }}
-          className="max-w-xl mt-6 mb-6 text-right  font-semibold leading-loose tracking-wide text-gray-900  dark:text-gray-800"
+          className="max-w-xl lg:mt-6   text-right  font-semibold leading-loose tracking-wide text-gray-900  dark:text-gray-800"
         >
           {db&&db.attributes.description_ar}
         </p>
+
+        <div className="flex items-center my-4 space-x-1"> 
+            <FaStar className="text-yellow-400 text-base" />
+            <FaStar className="text-yellow-400 text-base" />
+            <FaStar className="text-yellow-400 text-base" />
+            <FaStar className="text-yellow-400 text-base" />
+            <FaStar className="text-gray-300 text-sm" />
+            <div className="text-base mx-2 text-gray-600">(3.4k)</div>
+          </div>
 
 
         <p
@@ -469,9 +479,9 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             width:"100%",
             color: "black",
           }}
-          className="inline-block text-2xl font-semibold  "
+          className="inline-block lg:text-3xl lg:font-extrabold text-lg  "
         >
-          <span> {CURRENCY} {price} </span> 
+          <span>  {price} {CURRENCY} </span> 
           {discount ==0
           ?<></>: (<span
             style={{
@@ -497,10 +507,9 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
           justifyContent: "center",
           alignItems: "flex-start",
        
-          padding: 20,
         }}
       >
-        <div style={{width:"100%"}} className=' px-4  py-4 mb-4 rounded-md' >
+        <div style={{width:"100%"}} className='   py-4 mb-4 rounded-md' >
          <OptionEL varselect={(vid)=>{varselectHandler(vid)}} 
          vari={selectedV}
          selid={selectedV} vars={varients} />
@@ -532,68 +541,73 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
  
 
 
- <div >
+ {/* <div >
  <QuantEl qty={qty} quantHandler={(q)=>{setQty(q)}} stock={stock}/>
- </div>
+ </div> */}
 
        
 
- <div className='flex space-x-2 gap-[16px] justify-center items-center'>
-       {stock <= 0 ? (
-           <div className='text-center font-bold text-red-500 py-3 bg-red-100 px-4 rounded-md'>
-               نفذت الكمية
-           </div>
-       ) : (
-           <div
-               className="rounded-lg px-6 py-3.5 bg-[#e5675c] text-white flex items-center justify-center cursor-pointer"
-               onClick={() => {
-                   HandleAddToCart();
-               }}
-               style={{
-                   width: '411px', 
-                   height: '52px', 
-                   whiteSpace: 'nowrap', 
-               }}
-           >
-               <span> أضف إلى السلة </span>
-               <div
-                   style={{
-                       color: "white",
-                       fontSize: 23,
-                       marginLeft: 8,
-                   }}
-               >
-                   <BsCartPlusFill /> 
-               </div>
-           </div>
-       )}
+<div class='flex flex-col lg:flex-row space-x-2 lg:gap-[16px] gap-4'>
+  {stock <= 0 ? (
+    <div class='text-center font-bold text-red-500 py-3 bg-red-100 px-4 rounded-md'>
+      نفذت الكمية
+    </div>
+  ) : (
+    <motion.div
+      className='rounded-lg px-6 py-3.5 bg-[#e5675c] text-white flex items-center justify-center cursor-pointer'
+      onClick={() => {
+        HandleAddToCart();
+      }}
+      style={{
+        width: '411px',
+        height: '52px',
+        whiteSpace: 'nowrap',
+      }}
+    
+    >
+      <div
+      className='flex items-center'
+        style={{
+          color: 'white',
+          fontSize: 23,
+          marginLeft: 8,
+        }}
+      >
+        <BsCartPlusFill />
+      </div>
+      <span className='text-base'> أضف إلى السلة </span>
+    </motion.div>
+  )}
+
+  <motion.div
+    className='rounded-lg lg:w-[165px] mt-2 lg:mt-0 w-full px-6 py-3.5 bg-white border border-[#d3d3d3] flex items-center justify-center cursor-pointer'
+    onClick={() => {
+      HandleAddToFav();
+    }}
+    style={{
+      height: '52px',
+      whiteSpace: 'nowrap',
+    }}
+
+  >
+    <div
+      className='text-gray-500'
+      style={{
+        fontSize: 23,
+        marginLeft: 8,
+      }}
+    >
+      {/* <BsHeartFill /> */}
 
 
-            <div
-             className="rounded-lg px-6 py-3.5 bg-white border border-[#d3d3d3] text-[#4f5b66] flex items-center justify-center cursor-pointer"
-              onClick={() => {
-                HandleAddToFav();
-              }}
-              style={{
-                width: '165px',
-                height: '52px', 
-                whiteSpace: 'nowrap', 
-              }}
-            >
-
-              <span> أضف إلى المفضلة </span>
-              <div className='text-pink-600' 
-                style={{
-                  fontSize: 23,
-                  marginLeft: 8,
-                }}
-              >
-                <BsHeartFill /> 
-              </div>
-            </div>
-
-
-        </div>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+              <span className="absolute top-0 right-0 -mt-0 -mr-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">4</span>
+</svg>
+    </div>
+    <span className='text-base text-gray-900'> أضف إلى المفضلة </span>
+  </motion.div>
+</div>
             {/* <div onClick={()=>{console.log(cart)}} className='w-8 h-8 bg-red-800 text-white rounded-sm shadow-md '>
               cart
             </div>
@@ -602,132 +616,46 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
               </div> */}
           </div>
             
-
-            <div  dir="rtl" className='w-full'>
-            <Accordion selectionMode="multiple">
-
-            <AccordionItem
-        key="1"
-        aria-label="Chung Miller"
-        startContent={
-        <FaBars/>
-        }
-       
-        title="وصف المنتج"
-      >
-<p dir='rtl' className=''>
-  <div className='flex flex-row-reverse justify-end items-center' >
-  <div>
-مجموعة متنوعة من الخيارات: متوفرة بألوان وأشكال متعددة لتناسب ذوقك الشخصي.
-</div>
-<div className='ml-2' >
-✅
-</div>
+{/* 
+          <div dir="rtl" className='w-full'>
+  <div className="flex justify-end border-b border-gray-300 mb-4">
+    <div className="px-4 py-2 text-red-500 border-b-2 border-red-500 font-semibold">وصف المنتج</div>
+    <div className="px-4 py-2 text-gray-700">الإرجاع و معلومات و الشحن</div>
   </div>
 
-  <div className='flex flex-row-reverse justify-end items-center' >
-  <div>
-  جودة متينة: تحافظ على الحالة المثالية حتى بعد عدة غسلات.
-  </div>
-<div className='ml-2'>
-✅
-</div>
-  </div>
-
-  <div className='flex flex-row-reverse justify-end items-center' >
-  <div>
-  راحة فائقة: خفيفة الوزن ومريحة، مثالية للارتداء طوال اليوم.
-  </div>
-<div className='ml-2'>
-✅
-</div>
+  <div className="mb-8">
+    <ul className="list-disc list-inside text-right">
+      <li className="mb-2">مجموعة متنوعة من الخيارات: متوفرة بألوان وأشكال متعددة لتناسب ذوقك الشخصي.</li>
+      <li className="mb-2">جودة متينة: تحافظ على الحالة المثالية حتى بعد عدة غسلات.</li>
+      <li className="mb-2">راحة فائقة: خفيفة الوزن ومريحة، مثالية للارتداء طوال اليوم.</li>
+      <li className="mb-2">مثالية للهدايا: هدية ممتازة لأحبائك أو هدية فاخرة لنفسك.</li>
+    </ul>
+    <div className="text-red-500 text-right mt-4 flex items-center justify-end">
+      <span className="ml-1">اقرأ المزيد</span>
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
   </div>
 
-
-  <div className='flex flex-row-reverse justify-end items-center' >
-  <div>
-  مثالية للهدايا: هدية ممتازة لأحبائك أو هدية فاخرة لنفسك.
+  <div className="text-right">
+    <h2 className="text-xl font-bold flex items-center justify-end mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12V10a2 2 0 012-2h10a2 2 0 012 2v2m-4 8h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z" />
+      </svg>
+      سياسة الاستبدال والاسترجاع
+    </h2>
+    <ul className="list-disc list-inside">
+      <li className="mb-2">الإستبدال حق مضمون كل عملائنا وهو يشمل جميع المنتجات التي نعرضها على متجرنا.</li>
+      <li className="mb-2">جميع المنتجات المعروضة على متجرنا قابلة لسياسة الإستبدال وفق الشروط والأحكام المنصوص عليها في هذه الصفحة.</li>
+      <li className="mb-2">يمكن الإستبدال إذا كان المنتج بنفس حالته الأصلية عند الشراء ومغلفا بالغلاف الأصلي.</li>
+      <li className="mb-2">الاستبدال خلال خمسة (5) أيام من تاريخ الشراء. - يرجى التواصل معنا عبر صفحة اتصل بنا أو عبر أرقامنا الهاتفية من أجل طلب الإستبدال.</li>
+      <li className="mb-2">يرجى تصوير المنتج وإرساله مع تحديد المدينة والعنوان ورقم الطلب ليتم إستبداله بمنتج اخر في حالة كان المنتج فاسدا أو به عيب معين .</li>
+      <li>عند ارسال الطلبية , في حالة حدوث خطا في المقاس من طرف الشركة تتكفل الشركة المسؤولية و جميع التكاليف (سعر التوصيل ) في حالة قام العميل بطلب مقاس ما و عند استلام الطلبية وجد ان المقاس لا يناسبه يتحمل العميل المسؤولية الكاملة و جميع التكاليف في حالة ما اراد تغيير المنتج بمقاس اخر ( التكاليف تتمثل في سعر الشحن )</li>
+    </ul>
   </div>
-<div className='ml-2'>
-✅
-</div>
-  </div>
-
-
-
-
-
-</p>
-        
-       </AccordionItem>
-
-      <AccordionItem
-        key="2"
-        aria-label="Chung Miller"
-        startContent={
-        <FaRecycle/>
-        }
-       
-        title=" الإرجاع و معلومات و الشحن "
-      >
-        <p className='text-right'>
-
-<h2 className='text-xl font-bold'>
-سياسة الاستبدال والاسترجاع
-
-</h2>
-        <br/>
-
-<b>سياسة الاستبدال: 
-</b>
-<br/>
-
-- الإستبدال حق مضمون كل عملائنا وهو يشمل جميع المنتجات التي نعرضها على متجرنا.
- <br/>
-- جميع المنتجات المعروضة على متجرنا قابلة لسياسة الإستبدال وفق الشروط والأحكام المنصوص عليها في هذه الصفحة.
-<br/>
-- يمكن الإستبدال إذا كان المنتج بنفس حالته الأصلية عند الشراء ومغلفا بالغلاف الأصلي.
-<br/>
-- الاستبدال خلال خمسة (5) أيام من تاريخ الشراء.
-- يرجى التواصل معنا عبر صفحة اتصل بنا أو عبر أرقامنا الهاتفية من أجل طلب الإستبدال.
-<br/>
-- يرجى تصوير المنتج وإرساله مع تحديد المدينة والعنوان ورقم الطلب ليتم إستبداله بمنتج اخر في حالة كان المنتج فاسدا أو به عيب معين .
-<br/>
-عند ارسال الطلبية , في حالة حدوث خطا في المقاس من طرف الشركة تتكفل الشركة المسؤولية و جميع التكاليف (سعر التوصيل )
- في حالة قام العميل بطلب مقاس ما و عند استلام الطلبية وجد ان المقاس لا يناسبه يتحمل العميل المسؤولية الكاملة و جميع التكاليف في حالة ما اراد تغيير المنتج بمقاس اخر ( التكاليف تتمثل في سعر الشحن )
-
-        </p>
-      </AccordionItem>
-      {/* <AccordionItem
-        key="3"
-        aria-label="Chung Miller"
-        startContent={
-        <FaShippingFast/>
-        }
-       
-        title=" شحن مجاني "
-      >
-       
-      </AccordionItem> */}
-{/* <AccordionItem
-        key="4" 
-        className='text-center bg-gray-100  p-3 py-0 '
-        aria-label="Chung Miller"
-        startContent={
-        <div className='flex flex-col justify-center items-start text-center w-full text-sm font-semibold'> <FaStar className='text-yellow-400 mb-3 text-2xl' /> 
-        (4.6) 233  تقييم</div>
-        }
-       
-        title=" التقييمات "
-      >
-        {defaultContent}
-      </AccordionItem> */}
-  
-    
-    </Accordion>
-
-            </div>
-              
+</div> */}
       
 
         <div style={{ marginTop: 14, width: "100%" }}>

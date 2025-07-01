@@ -67,10 +67,10 @@ const { useNotifi } =
         for (let i = 0; i < props.vars.length; i++) {
             if(props.vars[i].id == props.vari){
                 return (
-                    <div className=' space-y-2 flex font-bold whitespace-nowrap justify-around p-4 border-0  border-moon-200 rounded-md items-center'>
-                        <div className='flex items-center space-x-3'>
+                    <div className=' space-y-4 flex font-bold whitespace-nowrap justify-around p-6 border-0  border-moon-200  rounded-md items-center'>
+                        <div className='flex items-center space-x-3 gap-8'>
                             <div>{props.vars[i].attributes.colors.data[0].attributes.name_ar}</div>
-                            <div style={{backgroundColor:props.vars[i].attributes.colors.data[0].attributes.colorCode}} className='w-8 h-8 rounded-full' ></div>
+                            <div style={{backgroundColor:props.vars[i].attributes.colors.data[0].attributes.colorCode}} className='lg:w-w[36px] lg:h-[36px] w-8 h-8 rounded-full' ></div>
                         </div>
                         <div className='flex flex-col' >
                             <div className='flex items-center space-x-3 '>
@@ -99,14 +99,14 @@ const { useNotifi } =
             <div className='space-y-3 w-full' >
                 {/* Size Section */}
                 <div className='flex flex-col items-start w-full'>
-                    <div className='font-bold text-lg mb-2'> المقاس</div>
+                    <div className='font-bold text-lg mb-2'> اختر المقاس</div>
                     <div className='flex flex-wrap justify-start w-full text-sm'>
                         {sizes && sizes.map(vari => (
                             <div onClick={() => { handlesizeselect(vari.id) }} key={vari.id}
-                                className={`${sizeId == vari.id ? 'border-moon-200' : 'border-gray-500'} border-2 cursor-pointer mt-2 mr-2 px-4 py-2 rounded-md`}
+                                className={`${sizeId == vari.id ? 'border-moon-200 shadow-md' : 'border-gray-300'} border-[1px] cursor-pointer mt-2 mr-2 px-4 py-2 rounded-md`}
                                 style={{
                                     backgroundColor: sizeId == vari.id ? Theme.primary : "white",
-                                    color: sizeId == vari.id ? "white" : "black",
+                                    color: sizeId == vari.id ? "white" : "#6B7280",
                                     fontWeight: "bold",
                                     display: "flex",
                                     alignItems: "center",
@@ -138,9 +138,7 @@ const { useNotifi } =
                      style={{
                          borderColor: props.vari == color.varid ? Theme.primary : 'transparent', // Make border transparent when not selected
                          backgroundColor: props.vari == color.varid ? '#fde0e6' : 'transparent', // Light pink background for selected, transparent for others
-                         // You might also need to explicitly set flex direction if it's not inherited
-                         // from previous classes, or ensure it doesn't break your layout.
-                         // For the image, the text is below the circle, so flex-col is correct.
+                      
                      }}
                 >
                     {/* This div remains for the color circle */}

@@ -1,5 +1,6 @@
 "use client";
 import "./globals.css";
+import './custom.css';
 import { React, useEffect, useState, useRef, useContext } from "react";
 import { API_URL ,Theme} from "./local";
 import Cart from "./comps/cart";
@@ -162,7 +163,7 @@ if(el.target.value.length<3){
   }
 
   return (
-    <html className="scrollable-content" lang="en">
+    <html className="" lang="en">
       <head>
       <meta name=" theme-color" content="#f00" />
       <script
@@ -200,7 +201,7 @@ if(el.target.value.length<3){
             <section className="w-full" >
             <div className="  w-full bg-white text-white "
              style={{backgroundSize:20}}>
-        <div className="p-2 w-full transition-all  shadow-md bg-white " style={{position:"fixed",
+        <div className=" w-full transition-all   shadow-md bg-white " style={{position:"fixed",
           backgroundSize:20,top:0,zIndex:15}} >
 
         <NavbarC rel={false} searchTog={searchTog} setSearchTog={(sta)=>{setSearchTog(sta)}} cat={cat} openCart={(t)=>{handleOpenCart(t)}}  openFav={handleOpenCartl}  />
@@ -303,7 +304,7 @@ className="flex cursor-pointer items-center" >
        
         <div style={{maxWidth:"100%",overflowX:"scroll"}} className="  text-moon-300  text-md whitespace-nowrap  font-medium  transition-colors  py-0.5 w-full
           space-x-2 flex mt-1 pb-1
-        flex-row-reverse scrollable-content-only  justify-center items-center  ">
+        flex-row-reverse -only  justify-center items-center  ">
 
 
 
@@ -395,8 +396,8 @@ className="flex cursor-pointer items-center" >
 
  
             
-            <section className="bg-gray-50 font-el-messiri">
-            <div className="lg:max-w-[1280px] bg-gray-50 lg:mx-auto min-h-lvh"  style={{  }}>
+            <section className=" el-messiri-text">
+            <div className="lg:max-w-[1280px] overflow-hidden lg:mt-16  lg:mx-auto min-h-lvh"  style={{  }}>
               
                   {children}
                 </div>

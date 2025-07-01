@@ -1,0 +1,79 @@
+/* styles/globals.css (or src/app/globals.css) */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =================================================
+   STEP 2: Define your custom font using @font-face
+   =================================================
+*/
+@font-face {
+  font-family: 'El Messiri'; /* This is the name you will use to reference the font in your CSS */
+  src: url('/fonts/ElMessiri-Regular.ttf') format('truetype');
+  font-weight: normal; /* Define the weight (e.g., normal, bold, 400, 700). For 'Regular', 'normal' or '400' is typical. */
+  font-style: normal;  /* Define the style (e.g., normal, italic) */
+  font-display: swap;  /* Recommended for performance: displays fallback text until the font loads */
+}
+
+/* Optional: If you're also importing Google Fonts, do it here.
+   Make sure the font names (e.g., 'Cairo', 'PT Sans') match what you'll use in `font-family`.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
+/* ================================================= */
+/* Your other global styles go below here */
+/* ================================================= */
+
+:root {
+  /* ... your root variables ... */
+}
+
+body {
+  /* You can set a global default font here if you wish */
+  /* font-family: 'Cairo', sans-serif; */
+}
+
+/* =================================================
+   STEP 3: Create a custom CSS class and apply the font
+   =================================================
+*/
+.el-messiri-text {
+  font-family: 'El Messiri', sans-serif; /* Apply your custom font */
+}
+
+.another-el-messiri-style {
+    font-family: 'El Messiri', cursive; /* Use a different fallback if appropriate */
+    font-weight: bold; /* If you had a bold version of El Messiri, you'd define it in another @font-face rule and use it here */
+    text-align: center;
+}
+
+/* Existing classes you provided earlier */
+.div {
+  font-family: 'Cairo', sans-serif;
+}
+
+.maintype {
+  font-family: 'PT Sans', sans-serif;
+  font-weight: bold;
+}
+
+.subtype {
+  font-family: 'PT Sans', sans-serif;
+  color: black;
+}
+
+.ptfont{
+  font-family: 'PT Sans', sans-serif;
+}
+
+.MAIN_FONT{
+  font-family: 'Cairo', sans-serif;
+}
+
+.test {
+  font-family: 'El Messiri', sans-serif;
+}
+
+/* ... rest of your existing global CSS ... */

@@ -48,7 +48,7 @@ function ProductFeat(props) {
       onClick={() => link && window.location.assign(link)}
     >
       <div
-        className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-center"
+        className="absolute  bottom-0 left-0 right-0 p-4 flex items-center justify-center"
         style={{
           height: '84px',
           background: 'linear-gradient(180deg, rgba(225, 109, 100, 0) 0%, rgba(67, 17, 13, 0.6) 100%)',

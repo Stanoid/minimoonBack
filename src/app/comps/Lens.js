@@ -75,7 +75,7 @@ function Lens(props) {
        
           style={{backgroundColor:zoomv?Theme.primary:"",color:zoomv?"":Theme.primary,WebkitUserSelect:"none",zIndex:zoomv?30:0}}
            
-          className={`${zoomv?"w-full":"w-52"}  font-medium  lg:w-[528px] lg:h-[606px] transition-width min-h-80 duration-75 tracking-tight italic  group touch-none mb-2 rounded-md    ml-0 lg:ml-2 sm:ml-0  `}>
+          className={`${zoomv?"w-full":"w-full"}  font-medium  lg:w-[528px] lg:h-[606px] transition-width min-h-80 duration-75 tracking-tight italic  group touch-none mb-2 rounded-md    ml-0 lg:ml-2 sm:ml-0  `}>
       <ImageZoom
            className={`${zoomv?"rounded-b-none":""} FullImageZoom rounded-md     `}
         

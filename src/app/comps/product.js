@@ -29,21 +29,29 @@ export default function Product(props) {
     colorDisplay()
   }, [])
 
-
-  const colorDisplay = ()=>{
-    var colo = []
-    var colob = []
-
+  const colorDisplay = () => {
+    if (!Array.isArray(props.data.varients)) {
+      console.warn("Missing or invalid varients:", props.data.varients);
+      setColors([]);
+      return;
+    }
+  
+    const seenColorIds = new Set();
+    const uniqueColors = [];
+  
     for (let i = 0; i < props.data.varients.length; i++) {
-      if(colo.includes(props.data.varients[i].colors[0].id)){
-        // Do nothing, color already added
-      } else {
-        colo.push(props.data.varients[i].colors[0].id);
-        colob.push(props.data.varients[i].colors[0]);
+      const variant = props.data.varients[i];
+      const color = variant?.colors?.[0];
+  
+      if (color && !seenColorIds.has(color.id)) {
+        seenColorIds.add(color.id);
+        uniqueColors.push(color);
       }
     }
-    setColors(colob);
-  }
+  
+    setColors(uniqueColors);
+  };
+  
 
   function oldPrice(newPrice, discountPercentage) {
     if (discountPercentage === 0) return 0; 
@@ -75,7 +83,20 @@ export default function Product(props) {
               fill
               objectFit='cover'
               className='rounded-t-lg' 
-              src={JSON.parse(props.data.img)[0].thumb}
+              // src={JSON.parse(props.data.img)[0].thumb}
+
+              src={(() => {
+                try {
+                  const images = JSON.parse(props.data?.img || '[]');
+                  return images[0]?.thumb || '/fallback.jpg';
+                  console.log("Product img:", props.data?.img);
+                } catch (e) {
+                  console.error("Invalid JSON in product img:", props.data?.img);
+                  return '/fallback.jpg';
+                }
+              })()}
+
+              
               alt="Product Image"
             />
             {/* Wishlist Heart Icon */}
@@ -86,17 +107,17 @@ export default function Product(props) {
         )}
       </div>
 
-      {/* Product Details Section */}
-      <div dir="ltr" className="flex flex-col flex-1 p-2 items-end"> {/* Use items-end for right alignment */}
+      {/* Product Details Section - Adjusted to remove excessive whitespace */}
+      <div dir="ltr" className="flex flex-col p-2 items-end"> {/* Removed flex-1 and justify-between */}
         {/* Product Name */}
-        <div className="text-[13px] font-medium text-gray-800 text-right mb-1">
+        <div className="text-[13px] font-medium text-gray-800 text-right mb-1"> {/* Adjusted margin-bottom */}
           {`pyjama 3 Pièces - 33270`} {/* Using hardcoded for exact match, replace with props.data.name_ar and props.data.code */}
         </div>
 
-        {/* Colors and Rating - Aligned to the right, stacked vertically */}
-        <div className="flex flex-col items-end mb-1"> {/* Flex column to stack, items-end to right-align */}
+        {/* Colors and Rating - Grouped and right-aligned */}
+        <div className="flex flex-col items-end mb-2"> {/* Grouped these, increased mb to separate from price */}
           {/* Color Swatches */}
-          <div className="flex items-center mb-1"> {/* Flex row for colors, mb-1 to separate from rating */}
+          <div className="flex items-center mb-1"> {/* Added mb-1 to create space between colors and rating */}
             {colors &&
               colors.map((color) => (
                 <div key={color.id} className="ml-1"> {/* Use ml-1 for spacing between color swatches */}
@@ -111,7 +132,7 @@ export default function Product(props) {
           </div>
           
           {/* Rating */}
-          <div className="flex items-center space-x-1"> {/* flex items-center space-x-1 for rating elements */}
+          <div className="flex items-center space-x-1"> 
             <div className="text-xs text-gray-600">(3.4k)</div>
             <FaStar className="text-yellow-400 text-sm" />
             <FaStar className="text-yellow-400 text-sm" />
@@ -121,28 +142,32 @@ export default function Product(props) {
           </div>
         </div>
 
-        {/* Pricing - Pushed to the bottom and right-aligned */}
-        <div className="flex flex-col items-end mt-auto"> {/* mt-auto pushes to bottom, items-end for right-alignment */}
+        <div className="flex flex-col items-end"> 
           <div className="text-lg font-bold text-gray-900 flex items-baseline">
-            <div className="ml-1">{CURRENCY}</div> {/* Currency symbol to the left of the price */}
-            <div>6950</div> {/* Hardcoded, replace with props.data.varients[0].price */}
+            <div className="ml-1">{CURRENCY}</div> 
+            <div>6950</div> 
           </div>
-          {props.data.varients[0].old_price > 0 &&
-            props.data.varients[0].old_price > props.data.varients[0].price && (
-              <div className="text-sm text-gray-500 line-through flex items-baseline">
-                <div className="ml-1">{CURRENCY}</div>
-                <div>8850</div> {/* Hardcoded, replace with props.data.varients[0].old_price */}
-              </div>
-            )}
+          {props.data.varients?.length > 0 &&
+  props.data.varients[0].old_price > 0 &&
+  props.data.varients[0].old_price > props.data.varients[0].price && (
+    <div className="text-sm text-gray-500 line-through flex items-baseline">
+      <div className="ml-1">{CURRENCY}</div>
+      <div>{props.data.varients[0].old_price}</div>
+    </div>
+)}
+
         </div>
       </div>
       
       {/* Discount Tag - Adjusted positioning */}
-      {props.data.varients[0].old_price > 0 && props.data.varients[0].old_price > props.data.varients[0].price && (
-        <span className="absolute bottom-4 left-4 bg-[#FEE2E2] text-[#EF4444] text-xs font-bold px-3 py-1 rounded-full z-10"> 
-          {`%25 خصم`} {/* Hardcoded, replace with dynamic discount */}
-        </span>
-      )}
-    </motion.div>
+      {props.data.varients?.length > 0 &&
+  props.data.varients[0].old_price > 0 &&
+  props.data.varients[0].old_price > props.data.varients[0].price && (
+    <span className="absolute bottom-4 left-4 bg-[#FEE2E2] text-[#EF4444] text-xs font-bold px-3 py-1 rounded-full z-10"> 
+      {`%25 خصم`}
+    </span>
+)}
+
+      </motion.div>
   )
 }

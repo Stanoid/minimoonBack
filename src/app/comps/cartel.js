@@ -7,6 +7,8 @@ import { XIcon } from "@heroicons/react/outline";
 import {
   BsChevronDown,
   BsChevronUp,
+  BsDash,
+  BsPlus,
   BsThermometer,
   BsTrashFill,
 } from "react-icons/bs";
@@ -33,7 +35,7 @@ export default function Cartel(props) {
       
     }
     
-    console.log(props.data.attributes.varients.data)
+    console.log("here daddy",props.data.attributes.varients.data)
 
   },[]);
 
@@ -43,7 +45,7 @@ export default function Cartel(props) {
 
   return (
     <div
-      className="shadow-md w-full"
+      className=" w-full"
       style={{
         display: "flex",
         borderRadius: 10,
@@ -71,9 +73,11 @@ export default function Cartel(props) {
           }}
         >
           <img
-            width={70}
+className="w-[84px] h-[84px] object-cover lg:w-[120px] lg:h-[120px]"
             style={{
-              borderRadius: 5,
+              borderRadius: 8,
+              // height: "84px",
+              // width:"84px"
             }}
             src={JSON.parse(props.data.attributes.img)[0].url}
           />
@@ -82,15 +86,15 @@ export default function Cartel(props) {
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            // alignItems: "center",
+            // justifyContent: "end",
             flexDirection: "column",
           }}
           className="sm:flex-col lg:flex-row"
         >
-          <div
+          {/* <div
             dir="rtl"
-            className="text-xs"
+            className="text-xs w-full"
             style={{
               padding: 5,
               paddingBottom: 0,
@@ -101,91 +105,101 @@ export default function Cartel(props) {
             {props.data.attributes.name_ar.length > 30
               ? props.data.attributes.name_ar.slice(0, 30) + "..."
               : props.data.attributes.name_ar}
-          </div>
+              -           {props.code}
 
-          <div  className="flex flex-col">
-          <div dir="rtl" className="font-semibold text-moon-200/80" >  {varient && varient.attributes.price} {CURRENCY} </div>  
-          <div
-              className=" italic text-gray-300 "
-              style={{
-                padding: 5,
-                fontSize: 12,
-                paddingTop: 0,
-                color: "black",
-                fontWeight: "bold",
-              }}
-            >
-              {props.qty} قطعة
-            </div>
-          </div>
+          </div> */}
+
+          <div className="flex flex-col items-end flex-grow text-right pr-4"> 
+  <div className="text-base font-semibold text-gray-800">
+    <span className="block overflow-hidden whitespace-nowrap text-ellipsis" dir="rtl">
+      {props.data.attributes.name_ar} - {props.code}
+    </span>
+  </div>
+  <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-gray-600 mt-1" dir="rtl">
+    
+    {varient && varient.attributes.colors.data[0] && (
+      <div
+      className="w-4 h-4 rounded-full border border-gray-500 flex-shrink-0"
+      style={{ backgroundColor: varient.attributes.colors.data[0].attributes.colorCode }}
+      >
+
+      </div>
+    )}
+ {varient && varient.attributes.colors.data[0] && (
+      <span className="text-gray-600 text-sm font-medium">
+        {varient.attributes.colors.data[0].attributes.name_ar} - 
+      </span>
+    )}
+
+
+    {varient && varient.attributes.sizes.data[0] && (
+      <span className="font-medium">{varient.attributes.sizes.data[0].attributes.icon}</span>
+    )}
+    {/* <span className="ml-1">الاحمر</span>  */}
+  </div>
+  <div className="flex items-center gap-2 space-x-1 rtl:space-x-reverse mt-2">
+    <button
+      onClick={() => handleQuantityChange('decrease')}
+      className="w-6 h-6 border  border-moon-200  rounded-md flex items-center justify-center text-sm"
+      style={{ color: Theme.primary, backgroundColor: 'white' }}
+    >
+      <BsDash className="w-4 h-4" />
+    </button>
+    <span className="text-base font-medium">{props.qty}</span>
+    <button
+      onClick={() => handleQuantityChange('increase')}
+      className="w-6 h-6 rounded-md flex items-center justify-center text-sm"
+      style={{ backgroundColor: Theme.primary, color: 'white' }}
+    >
+      <BsPlus className="w-4 h-4" />
+    </button>
+  </div>
+</div>
         </div>
 
 
-        <div className="bg-moon-200 text-white px-2 py-1 text-sm rounded-full ">
+        {/* <div className="bg-moon-200 text-white px-2 py-1 text-sm rounded-full ">
           {props.code}
-        </div>
+        </div> */}
 
-        <div
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-            flexDirection: "row",
-            marginLeft: 5,
-          }}
-        >
-          <div
-            className="space-x-2"
+          {/* <div
+          className=""
             style={{
               display: "flex",
-              alignItems: "center",
+              alignContent: "center",
               justifyContent: "center",
+              flexDirection: "row",
+              marginLeft: 5,
             }}
           >
             <div
+              className="space-x-2"
               style={{
-                width: 28,
-                height: 28,
-                borderRadius: 7,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-
-                backgroundColor: Theme.primary,
-                color: "white",
-                fontSize: 14,
               }}
             >
-
-            {varient&&varient.attributes.sizes.data[0].attributes.icon}
-
-              {/* {varients &&
-                varients.map((vari) => {
-                  if (vari.id == props.selvar) {
-                    return vari.id;
+            
+              {varient &&
+                varient.attributes.colors.data.map((color) => {
+                  if (color.id == props.color) {
+                    return (
+                      <div
+                        style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
+                        className="w-7 h-7 rounded-full"
+                      ></div>
+                    );
                   }
-                })} */}
+                })} 
+
+  <div
+                        style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
+                        className="w-7 h-7 rounded-full"
+                      ></div>
+
             </div>
-
-            {/* {varient &&
-              varient.attributes.colors.data.map((color) => {
-                if (color.id == props.color) {
-                  return (
-                    <div
-                      style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
-                      className="w-7 h-7 rounded-full"
-                    ></div>
-                  );
-                }
-              })} */}
-
-<div
-                      style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
-                      className="w-7 h-7 rounded-full"
-                    ></div>
-
-          </div>
-        </div>
+          </div> */}
 
         <div
           onClick={() => {
@@ -202,9 +216,10 @@ export default function Cartel(props) {
           }}
         >
           <div
-            style={{ backgroundColor: "red", padding: 2.5, borderRadius: 100 }}
+          className="border border-moon-200 rounded-md  text-moon-200"
+            style={{  padding: 2.5 }}
           >
-            <BsX style={{ color: "white", fontSize: 25 }} />
+            <BsX style={{ color: "", fontSize: 25 }} />
           </div>
         </div>
       </div>
