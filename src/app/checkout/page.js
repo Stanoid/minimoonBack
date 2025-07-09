@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import {useEffect,useState,useRef,useContext } from 'react';
@@ -28,6 +28,7 @@ function AccounteEl() {
 
     const dispatch = useDispatch();
     const cartg = useSelector((state) => state.root.cart.data)
+    console.log("cart  swtuff", cartg)
     const [page,setPage] = useState(1) 
     const [address,setAddress] = useState(""); 
     const [phone,setPhone] = useState(""); 
@@ -169,9 +170,9 @@ setRefr(!refr);
           fetch(`${API_URL}products?func=getPick`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-             // console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data)
+             console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data)
               setpickups(data);
-             //console.log("ddd",data.data)
+             console.log("zzzzzzzzzzzzzzzzzzzzzzz",data.data)
   
           //  return data
             }).then((arr)=>{
@@ -244,7 +245,7 @@ setRefr(!refr);
           id: cartg[i].selvar,
           product_ref:cartg[i].product_ref,
           name:cartg[i].name,
-          img:cartg[i].img,
+          img:cartg[i].images?.[0].data.url,
           code:cartg[i].code,
           qty: cartg[i].qty,
           desc: cartg[i].data.attributes.description_en 
@@ -322,16 +323,12 @@ setRefr(!refr);
 
   return (
   
-<div className='flex-col md:flex-row lg:flex-row  w-full '  style={{display:'flex',alignItems:"flex-start",
-  justifyContent:"space-between"}} >
+<div className='flex-col md:flex-row lg:grid grid-cols-3 lg:mt-8 lg:mb-32 w-full '   >
 
-<div className='flex flex-1 flex-col mt-12 px-3 w-full  '>
+<div className='flex flex-1 flex-col lg:mt-[30px] px-3 w-full  '>
 
 
-<div id="scrol" className='flex flex-1 flex-col  px-3 w-full  ' >                
-              
-              
-<TableComp
+{/* <TableComp
    data={checkOutArray}
    checkout={true}
    columns={
@@ -349,37 +346,92 @@ setRefr(!refr);
    }
    
    delorder={()=>{}}
-    />
-              
-              
-              
-                  {/* {cartg&&cartg.length!=0?cartg.map((cart,index)=>(    
-                   <Cartel order={true} 
-                   key={index}
-                   index={index}
-                   data={cart.data}
-                   size={cart.size}
-                   color={cart.color}
-                   code={cart.code}
-                   selvar={cart.selvar}
-                    removeItem={()=>{}} 
-                    qty={cart.qty}
-                     
-                         />
-                  )):
-                  <div className='mt-2' style={{display:'flex',color:'grey',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column'}}>
-                     <div>
-         <Image src={'/void.svg'} width={200} height={200} />
-         </div>
-                    <div style={{fontWeight:'bold',marginTop:20}}> سلة فارغة  </div>
-                    <div>تصفح المنتجات و أضفها للمتابعة</div>
-                    </div>}  */}
+    /> */}
+<div id="scrol" className='flex flex-1 flex-col lg:px-3 w-full'>
+    <div className="bg-white p-4 rounded-md shadow mb-4">
+        <div className="flex justify-end items-center py-4 border-b border-gray-300 mb-4">
+            <h2 className="text-lg font-bold text-gray-800">المنتجات</h2>
+        </div>
+
+        {cartg && cartg.length !== 0 ? (
+            <>
+                {cartg.map((cart, index) => {
+                    const selectedVariant = cart.data.attributes.varients.data.find(v => v.id === cart.selvar);
+
+                    const productPrice = selectedVariant?.attributes.price || 0;
+                    const productName = cart.name || `Product ${cart.code}`;
+                    // const productImage = cart.data.attributes.images?.data?.[0]?.attributes?.url
+                    // const productImage = `${API_URL.replace(/\/$/, "")}${cart.data.attributes.images?.data?.[0]?.attributes?.url || ""}`;
+                    const productImage = cart.data.attributes.images?.data?.[0]?.attributes?.url;
+
+console.log("checkoutimage",productImage)
+
+                    const productSize = selectedVariant?.attributes.sizes.data[0]?.attributes.name_ar + " - " + selectedVariant?.attributes.sizes.data[0]?.attributes.icon || "";
+                    const productColorName = selectedVariant?.attributes.colors.data[0]?.attributes.name_ar || "";
+                    const productColorHex = selectedVariant?.attributes.colors.data[0]?.attributes.colorCode || "#000000";
+
+                    return (
+                        <div key={index} className="flex items-center justify-between py-2 border-b border-gray-200">
+                            <div className="flex items-center">
+                                <span className="text-sm font-bold text-gray-800 ml-2">{productPrice.toLocaleString()} د.ج</span>
+                                <span className="text-gray-600">x {cart.qty}</span>
+                            </div>
+
+                            <div className="flex flex-col items-end text-right flex-grow mx-2">
+                                <span className="text-sm font-semibold text-gray-800">{productName}</span>
+                                <div className="flex items-center text-xs text-gray-600 mt-1">
+                                    <span className="mr-1">المقاس: {productSize}</span>
+                                    <span
+                                        className="w-3 h-3 rounded-full mr-1"
+                                        style={{ backgroundColor: productColorHex }}
+                                    ></span>
+                                    <span>اللون: {productColorName}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex-shrink-0">
+                                <Image
+                                    src={productImage}
+                                    alt={productName}
+                                    width={60}
+                                    height={60}
+                                    className="rounded-md object-cover"
+                                />
+                            </div>
                         </div>
+                    );
+                })}
+            </>
+        ) : (
+            null 
+        )}
+    </div>
+
+    <div className="bg-white p-4 rounded-md shadow mt-4">
+        <h2 className="text-lg font-bold text-gray-800 text-right mb-4">إجمالي الطلب</h2>
+        <div className="flex justify-between items-center text-gray-700 mb-2">
+            <span className="font-semibold"> {total.toLocaleString()} د.ج </span>
+            <span>الإجمالي الأساسي</span>
+        </div>
+        <div className="flex justify-between items-center text-green-600 mb-2">
+            <span className="font-semibold">- 0 د.ج</span>
+            <span>تم توفير</span>
+        </div>
+        <div className="flex justify-between items-center text-gray-700 mb-2">
+            <span className="font-semibold"> {deliveryPrice.toLocaleString()} د.ج </span>
+            <span>مصاريف الشحن و التوصيل</span>
+        </div>
+        <div className="flex justify-between items-center text-gray-800 font-bold text-lg mt-4 pt-4 border-t border-gray-300">
+            <span> {gtotal.toLocaleString()} د.ج </span>
+            <span>الإجمالي</span>
+        </div>
+    </div>
+</div>
 
 
 
 
-<div className='p-6'>
+{/* <div className='p-6'>
 <div className='flex  flex-row-reverse    w-full' >
       <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :المجموع </div>
       <div dir='rtl' className='text-right text-xl font-semibold ' > {total}  {CURRENCY} </div>
@@ -394,7 +446,7 @@ setRefr(!refr);
       <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :المجموع الكلي </div>
       <div dir='rtl' className='text-right text-xl font-semibold ' > {gtotal}  {CURRENCY} </div>
     </div> 
-</div>
+</div> */}
       
 
 </div>
@@ -410,14 +462,14 @@ setRefr(!refr);
 
 
                         
-    <div className='flex  flex-col space-y-4 w-full px-3  mt-8' >
+    <div className='flex  flex-col space-y-4 w-full px-3 col-span-2 mt-8' >
 
    
 
 
 
-     <div className='flex flex-col w-full'>
-    <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :طريقة الدفع </div>
+     <div className='flex flex-col bg-white p-3 border border-gray-200 rounded-md w-full'>
+    <div className='text-gray-900 font-bold text-right text-xl mb-2 ' >  الدفع</div>
 
  <div className='flex flex-col sm:flex-row lg:flex-row items-center space-y-4 lg:space-x-2 md:space-x-2 lg:space-y-0 md:space-y-0   justify-between'>
 
@@ -425,17 +477,17 @@ setRefr(!refr);
  <div onClick={()=>{
 //  setPaymentMeth(1)
 }}
-  className={`${paymentMeth==1?"shadow-lg border-moon-200 ":" shadow-gray-800 "}  flex hover:shadow-md 
-   transition-shadow cursor-pointer opacity-20  w-full  flex-1 border-2 p-4 rounded-md items-center justify-between`}
+  className={`${paymentMeth==1?" border-moon-200 bg ":" shadow-gray-400 "}  flex hover:shadow-md 
+   transition-shadow cursor-pointer opacity-20  w-full bg-gray-200  flex-1 border-2 p-4 rounded-md items-center justify-between`}
  >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaCreditCard/>
     </div>  
     <div className='flex items-end flex-col'>
-      <div className='text-moon-200 font-semibold text-xl'>
+      <div className='text-gray font-semibold text-base'>
         دفع إلكتروني
       </div>
-      <div>
+      <div className='text-xs'>
          الدفع بإستخدام بطاقة بنكية
       </div>
     </div>
@@ -447,19 +499,18 @@ setRefr(!refr);
 
     <div onClick={()=>{setPaymentMeth(2)}}
     //  className='flex  flex-1 border-2 p-4 rounded-md border-moon-200 items-center justify-between'
-    className={`${paymentMeth==2?"shadow-lg border-moon-200 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border-2 p-4 rounded-md items-center justify-between`}
+    className={`${paymentMeth==2?"shadow-lg border-moon-200 bg-moon-100 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border p-4 rounded-md items-center justify-between`}
     
     >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaHandHoldingDollar/>
     </div>  
     <div className='flex items-end flex-col'>
-      <div className='text-moon-200 font-semibold text-xl'>
+      <div className='text-gray-900 font-semibold text-base'>
         دفع عند الإستلام
       </div>
-      <div>
-            الدفع عند إستلام الطلب
-      </div>
+      <div className='text-xs'>
+      يتم اضافة   {deliveryPrice}     </div>
     </div>
       
     </div> 
@@ -474,23 +525,25 @@ setRefr(!refr);
 
 
 
-    <div className='flex flex-col  w-full'>
-    <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > : التوصيل </div>
+    <div className='flex flex-col    w-full'>
+    <div className='bg-white p-3 rounded-md border border-gray-200'>
+
+    <div className='text-gray-800 font-bold text-right text-xl mb-2 ' > التوصيل </div>
 
  <div className='flex flex-col sm:flex-row lg:flex-row items-center space-y-4 lg:space-x-2 md:space-x-2 lg:space-y-0 md:space-y-0   justify-between'>
 
 
  <div onClick={()=>{handleDelChangle(1);}}
-  className={`${deliveryMeth==1?"shadow-lg border-moon-200 ":" shadow-gray-800 "}  flex hover:shadow-md w-full transition-shadow cursor-pointer   flex-1 border-2 p-4 rounded-md items-center justify-between`}
+  className={`${deliveryMeth==1?"shadow-lg border-moon-200 bg-moon-100 ":" shadow-gray-800 "}  flex hover:shadow-md w-full transition-shadow cursor-pointer   flex-1 border p-4 rounded-md items-center justify-between`}
  >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaMapPin/>
     </div>  
     <div className='flex items-end flex-col'>
-      <div className='text-moon-200 font-semibold text-xl'>
+      <div className='text-gray-9000 font-semibold text-base'>
          توصيل لعنوان
       </div>
-      <div>
+      <div className='text-xs'>
         التوصيل إلى عنوان معين 
       </div>
     </div>
@@ -502,17 +555,17 @@ setRefr(!refr);
 
     <div onClick={()=>{handleDelChangle(2);}}
     //  className='flex  flex-1 border-2 p-4 rounded-md border-moon-200 items-center justify-between'
-    className={`${deliveryMeth==2?"shadow-lg border-moon-200 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border-2 p-4 rounded-md items-center justify-between`}
+    className={`${deliveryMeth==2?"shadow-lg border-moon-200 bg-moon-100 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border p-4 rounded-md items-center justify-between`}
     
     >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaMapLocation/>
     </div>  
     <div className='flex items-end flex-col'>
-      <div className='text-moon-200 font-semibold text-xl'>
+      <div className='text-gray-900 font-semibold text-base'>
             نقطة توزيع
       </div>
-      <div>
+      <div className='text-xs'>
                  من نقطة التوزيع  
       </div>
     </div>
@@ -520,9 +573,13 @@ setRefr(!refr);
     </div> 
   </div> 
 
-  <div className='mt-4'>
 
-  <InputEl
+    
+  </div>
+
+  <div className='mt-4 bg-white border border-gray-200  p-3'>
+
+  {/* <InputEl
             value={selpick}
             outputfunc={(val) => {
              handleCityChange(val);           
@@ -532,56 +589,51 @@ setRefr(!refr);
             iscats={true}
             select={true}
             label={"الولاية"}
-          />
+          /> */}
 
-  <div className='mt-4' style={{
-    width:"100%",
-display:"grid",
-gap:10,
-gridTemplateAreas:`
-'email email email email'
-' adress  adress  adress adress  ' 
-' phone phone phone_c phone_c   ' 
-
-
-`
-   }} >
-    {/* <div style={{gridArea:"city"}}>
+<div className='mt-4 bg-white p-3 rounded-md'> 
     <InputEl
-            value={selpick}
-            outputfunc={(val) => {
-             handleCityChange(val);           
-            }}
-            iden={"color"}
-            data={pickups}
-            iscats={false}
-            select={true}
-            label={"الولاية"}
-          />
-    </div> */}
+        value={selpick}
+        outputfunc={(val) => {
+            handleCityChange(val);
+        }}
+        iden={"color"}
+        data={pickups}
+        iscats={true}
+        select={true}
+        label={"الولاية"}
+    />
 
+    {/* Responsive Grid for Inputs */}
+    <div className='mt-4 flex flex-col md:grid md:gap-10'
+        style={{
+            // Default (mobile): flex column
+            // md: (desktop/tablet): grid layout
+            gridTemplateAreas: `
+                'email email email email'
+                'adress adress adress adress'
+                'phone phone phone_c phone_c'
+            `
+        }}
+    >
+        <div style={{ gridArea: "email" }}>
+            <InputEl className="bg-white" value={isLogged ? isLogged.data.user.username : email} disabled={isLogged}
+                outputfunc={(val) => { setEmail(val) }} label={"الإسم"} />
+        </div>
 
-<div style={{gridArea:"email"}}>
-      <InputEl value={isLogged?isLogged.data.user.username:email} disabled={isLogged} 
-      outputfunc={(val)=>{setEmail(val)}} label={"الإسم"}/>
-    </div>  
+        <div style={{ gridArea: "phone" }}>
+            <InputEl outputfunc={(val) => { setPhone(val) }} label={"رقم الهاتف"} />
+        </div>
 
-    <div style={{gridArea:"phone"}}>
-      <InputEl outputfunc={(val)=>{setPhone(val)}} label={"رقم الهاتف"}/>
-    </div> 
+        <div style={{ gridArea: "phone_c" }}>
+            <InputEl outputfunc={(val) => { setPhoneC(val) }} label={"تأكيد رقم الهاتف"} />
+        </div>
 
-       <div style={{gridArea:"phone_c"}}>
-      <InputEl outputfunc={(val)=>{setPhoneC(val)}} label={"تأكيد رقم الهاتف"}/>
-    </div>  
-
-    <div style={{gridArea:"adress",display: deliveryMeth==1?"block":"none",}}>
-      <InputEl outputfunc={(val)=>{setAddress(val)}} label={"العنوان"}/>
-    </div>  
-
- 
-
-   
-   </div>
+        <div style={{ gridArea: "adress", display: deliveryMeth == 1 ? "block" : "none" }}>
+            <InputEl outputfunc={(val) => { setAddress(val) }} label={"العنوان"} />
+        </div>
+    </div>
+</div>
 {/* 
    <div style={{
     width:"100%",
@@ -608,11 +660,11 @@ gridTemplateAreas:`
   </div>
 
 
-  <div>
+  <div className='text-sm'>
     
-  <LoadingBtn  icon={<FaArrowAltCircleRight className='ml-1.5' />}   act={()=>{
+  <LoadingBtn  className="text-sm"   act={()=>{
                        handleOrder() ; 
-                       }}  text={"إتمام الطلب  "} lod={lod} />
+                       }}  text={"تاكيد الطلب   "} lod={lod} />
 
   </div>
 

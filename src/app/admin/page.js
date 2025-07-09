@@ -132,15 +132,14 @@ useNotifi(type,message);
 
   return (
       
-<div dir='rtl' style={{minHeight:"100vh",userSelect:"none",minWidth:"100vw",backgroundSize:50}}  className="w-full   
-bg-[url('../../public/amblemblack.svg')] ">
+<div dir='rtl' style={{minHeight:"100vh",userSelect:"none",minWidth:"100vw",backgroundSize:50}}  className="w-full    ">
 
 
 <div className='w-full flex pt-10  flex-col  sm:flex-col lg:flex-row     justify-center'>
 
 <div className='min-w-60    p-2 ' >
 
-<div  className='w-full  p-3 flex  flex-col   lg:min-h-96 shadow-lg bg-white'>
+<div  className='w-full  p-3 flex  flex-col   lg:min-h-96 lg:h-full shadow-lg bg-white'>
 {/* menu */}
 
 <div >
@@ -152,78 +151,167 @@ bg-[url('../../public/amblemblack.svg')] ">
   }}
 />
 </div>
-<div style={{width:"100%",overflowX:"scroll"}} className='flex  sm:flex-row mt-3 lg:flex-col scrollable-content ' >
 
+{/* You'll need `page`, `setPage`, `setPid` props available in the component where this JSX is rendered,
+    and `router` from `useRouter()` if you're using Next.js 13/14 App Router.
+    Also, ensure `Theme` is imported or defined if used elsewhere for colors. */}
 
+<div style={{ width: "100%", overflowX: "scroll" }} className='flex sm:flex-row mt-3 lg:flex-col scrollable-content'>
 
-<div onClick={()=>{setPage(0)}} style={{backgroundColor:page==0?Theme.primary:"white", color:page==0?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center whitespace-nowrap '   >
-<div><MdOutlineAutoGraph/></div><div className='mx-1.5'> لوحة التحكم</div></div>
+  {/* لوحة التحكم (Dashboard) */}
+  <div onClick={() => { setPage(0) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 0 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><MdOutlineAutoGraph /></div>
+    <div className='mx-1.5'> لوحة التحكم</div>
+  </div>
 
+  {/* الطلبات (Orders) */}
+  <div onClick={() => { setPid(null); setPage(1) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 1 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div>
+      
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+</svg>
+    </div>
+    <div className='mx-1.5'> الطلبات</div>
+  </div>
 
+  {/* إضافة منتج (Add Product) */}
+  <div onClick={() => { setPid(null); setPage(14) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 14 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg>
+      
+      </div>
+    <div className='mx-1.5'> إضافة منتج</div>
+  </div>
 
-<div onClick={()=>{ setPid(null);setPage(1)}} style={{backgroundColor:page==1?Theme.primary:"white", color:page==1?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><FaListCheck/></div><div className='mx-1.5'> الطلبات</div></div>
+  {/* المنتجات (Products) */}
+  <div onClick={() => { setPid(null); setPage(2) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 2 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div>
+      
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+</svg>
 
+        </div>
+    <div className='mx-1.5'> المنتجات</div>
+  </div>
 
+  {/* المقاسات (Sizes) */}
+  <div onClick={() => { setPid(null); setPage(3) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 3 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><FaRuler /></div>
+    <div className='mx-1.5'> المقاسات</div>
+  </div>
 
-<div onClick={()=>{ setPid(null); setPage(14)  }} style={{backgroundColor:page==14?Theme.primary:"white", color:page==14?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center whitespace-nowrap '   >
-<div><FaPlusCircle/></div><div className='mx-1.5'> إضافة منتج</div></div>
+  {/* الألوان (Colors) */}
+  <div onClick={() => { setPid(null); setPage(4) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 4 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div>
+      
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+</svg>
+    
+    </div>
+    <div className='mx-1.5'> الألوان</div>
+  </div>
 
-<div onClick={()=>{  setPid(null); setPage(2)}} style={{backgroundColor:page==2?Theme.primary:"white", color:page==2?"white":Theme.primary}} 
-className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center whitespace-nowrap'   >
-<div><FaBoxes/></div><div className='mx-1.5'> المنتجات</div></div>
+  {/* الفئات (Categories) */}
+  <div onClick={() => { setPid(null); setPage(5) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 5 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><BiCategory /></div>
+    <div className='mx-1.5'> الفئات</div>
+  </div>
 
+  {/* نقاط التوصيل (Delivery Points) */}
+  <div onClick={() => { setPid(null); setPage(21) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 21 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><FaTruck /></div>
+    <div className='mx-1.5'> نقاط التوصيل</div>
+  </div>
 
-<div onClick={()=>{  setPid(null); setPage(3)}} style={{backgroundColor:page==3?Theme.primary:"white", color:page==3?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center whitespace-nowrap '   >
-<div><FaRuler/></div><div className='mx-1.5'>  المقاسات</div></div>
+  {/* الفئات الفرعية (Subcategories) */}
+  <div onClick={() => { setPid(null); setPage(6) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 6 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><BiCategoryAlt /></div>
+    <div className='mx-1.5'> الفئات الفرعية</div>
+  </div>
 
+  {/* المخزون (Inventory) */}
+  <div onClick={() => { setPid(null); setPage(20) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 20 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><FaWarehouse /></div>
+    <div className='mx-1.5'> المخزون</div>
+  </div>
 
+  {/* العروض الترويجية (Promotions) */}
+  <div onClick={() => { setPid(null); setPage(10) }}
+    className={`
+      flex px-2 py-3 cursor-pointer whitespace-nowrap transition-colors duration-200
+      lg:border-b-2 lg:border-gray-200 justify-start items-center text-sm
+      ${page === 10 ? 'bg-gray-100 text-gray-900 font-bold' : 'bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700 font-normal'}
+    `}>
+    <div><MdSpeakerPhone /></div>
+    <div className='mx-1.5'> لعروض الترويجية</div>
+  </div>
 
-<div onClick={()=>{ setPid(null);setPage(4)}} style={{backgroundColor:page==4?Theme.primary:"white", color:page==4?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start whitespace-nowrap items-center '   >
-<div><FaSwatchbook/></div><div className='mx-1.5'> الألوان</div></div>
-
-
-<div onClick={()=>{ setPid(null);setPage(5)}} style={{backgroundColor:page==5?Theme.primary:"white", color:page==5?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><BiCategory/></div><div className='mx-1.5'> الفئات</div></div>
-
-<div onClick={()=>{ setPid(null);setPage(21)}} style={{backgroundColor:page==21?Theme.primary:"white", color:page==21?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><FaTruck/></div><div className='mx-1.5'> نقاط التوصيل</div></div>
-
-
-<div onClick={()=>{ setPid(null);setPage(6)}} style={{backgroundColor:page==6?Theme.primary:"white", color:page==6?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><BiCategoryAlt/></div><div className='mx-1.5'> الفئات الفرعية</div></div>
-
-
-
-
-<div onClick={()=>{ setPid(null);setPage(20)}} style={{backgroundColor:page==20?Theme.primary:"white", color:page==20?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><FaWarehouse/></div><div className='mx-1.5'> المخزون</div></div>
-
-<div onClick={()=>{ setPid(null);setPage(10)}} style={{backgroundColor:page==10?Theme.primary:"white", color:page==10?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><MdSpeakerPhone/></div><div className='mx-1.5'> لعروض الترويجية</div></div>
-
-
-
-
-
-{/* <div onClick={()=>{setPage(9)}} style={{backgroundColor:page==6?Theme.primary:"white", color:page==6?"white":Theme.primary}} className='flex px-2 py-3  bg-white hover:bg-moon-200 cursor-pointer whitespace-nowrap transition-colors
-hover:text-white lg:border-b-2  lg:border-gray-200 text-moon-200 justify-start items-center '   >
-<div><FaCreditCard/></div><div className='mx-1.5'> الفئات الفرعية</div></div> */}
-
-<div onClick={()=>{router.push("/logout")}}  className='flex px-2 py-3  bg-red-300 hover:bg-red-500 rounded-sm cursor-pointer whitespace-nowrap transition-colors
-hover:text-white text-white justify-start items-center '   >
-<div><FaPowerOff/></div><div className='mx-1.5'>  تسجيل خروج</div></div>
+  {/* تسجيل خروج (Logout) */}
+  <div onClick={() => { router.push("/logout") }}
+    className='flex px-2 py-3   rounded-sm cursor-pointer whitespace-nowrap transition-colors hover:text-red-700 text-red-500 justify-start items-center text-sm'>
+    <div dir='rtl'>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+</svg>
+    
+    </div>
+    <div className='mx-1.5'> تسجيل خروج</div>
+  </div>
 
 </div>
 
@@ -232,7 +320,7 @@ hover:text-white text-white justify-start items-center '   >
 </div>
 <div className='w-full sm:w-full lg:w-2/3  p-2' >
 
-<div className='min-h-96 px-2 py-5 w-full shadow-lg bg-white'>
+<div className='min-h-96 px-2 py-5 w-full h-4-full shadow-lg bg-white'>
 
 <div style={{display:lod?"flex":"none"}}  className='w-full min-h-96 flex items-center justify-center' >
       <div style={{justifyContent:"center",alignItems:"center"}} className="lds-facebook"><div></div><div></div><div></div></div>

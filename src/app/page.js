@@ -93,6 +93,7 @@ if (firstRenderRef.current) {
                 let newjoined= [...prds,...data]
                 setProducts(newjoined);
               }else{
+                console.log("here are teh products    ",data)
                 setProducts(data);
               }
 
@@ -210,7 +211,7 @@ if (firstRenderRef.current) {
   <ProductFeat  />
 </div>
 
-<div>
+<div className="">
 
 <MostDemanded  />
   </div>
@@ -304,8 +305,8 @@ bg-[url('../../public/amblemblack.svg')] "  >
 
 {subcats&&subcats.map(subcat=>(
 
-<div className=" to-moonsec-200/20 from-moonsec-100/30 py-6">
-<div className="p-4 flex justify-between  ">
+<div className="  py-6">
+<div className="lg:p-4 flex justify-between  ">
 <motion.div className=' p-0 sm:px-0  flex align-middle justify-end ' whileTap={{ scale: 1.03 }}>
       {/* <LoadingBtn act={()=>{router.push("/login")} } color={Theme.primary} textColor={"white"} icon={<FaLock  />} text={"تسجيل دخول"}  /> */}
      <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } className="text-moon-200 underline text-lg "> {subcat.catagory.name_ar} </Button>

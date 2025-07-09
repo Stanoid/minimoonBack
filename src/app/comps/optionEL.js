@@ -126,7 +126,6 @@ const { useNotifi } =
     <div className='flex flex-wrap justify-start w-full space-x-3'>
         {colors && colors.map(color => (
             color.sizeid == sizeId ? (
-                // This is the div that needs the square border and background when selected
                 <div key={color.varid}
                      style={{opacity:color.qty <= 0 ? 0.3 : 1}}
                      onClick={() => { color.qty <= 0 ? useNotifi("error", "نفذت الكمية من هذا الخيار") : props.varselect(color.varid) }}

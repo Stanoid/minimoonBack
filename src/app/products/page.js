@@ -171,7 +171,12 @@ for (let i = 0; i < vrs.length; i++) {
     selvar: selectedV, 
     name:db.attributes.name_ar,
     code:db.attributes.code,
-    img: JSON.parse(db.attributes.img)[0].url,
+    // img: db.attributes.img[0].url,
+    code: db.attributes.code,
+      img:
+        db.attributes.img && Array.isArray(db.attributes.img) && db.attributes.img[0]?.url
+          ? db.attributes.img[0].url
+          : "/default-image.png",
     product_ref:pref,
     qty: qty, 
   }))
@@ -304,7 +309,7 @@ for (let i = 0; i < vrs.length; i++) {
   }
 
   return (
-    <div dir='rtl' className='lg:mt-40 bg-white' >
+    <div dir='rtl' className='lg:mt-20 mt-20 bg-white' >
       <Head>
         {/* <title>{"Minimoon | " + db.attributes&&db.attributes.name_en} </title>
         <meta name="description" content={db.attributes.descriptionEn} /> */}
@@ -334,9 +339,14 @@ for (let i = 0; i < vrs.length; i++) {
   >
     
    
+   
    <div className='w-full '>
-    <Lens data={imgs} />
+    {/* <Lens data={imgs} /> */}
+
+    <Lens data={db?.attributes?.images?.data || []} />
+
    </div>
+
 
 
    
@@ -547,14 +557,14 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
 
        
 
-<div class='flex flex-col lg:flex-row space-x-2 lg:gap-[16px] gap-4'>
+<div class='flex flex-col  lg:flex-row space-x-2 lg:gap-[16px] gap-4'>
   {stock <= 0 ? (
     <div class='text-center font-bold text-red-500 py-3 bg-red-100 px-4 rounded-md'>
       نفذت الكمية
     </div>
   ) : (
     <motion.div
-      className='rounded-lg px-6 py-3.5 bg-[#e5675c] text-white flex items-center justify-center cursor-pointer'
+      className='rounded-lg px-6 lg:max-w-full  max-w-[343px]  py-3.5 bg-[#e5675c] text-white flex items-center justify-center cursor-pointer'
       onClick={() => {
         HandleAddToCart();
       }}
@@ -615,48 +625,8 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
               remove from cart 
               </div> */}
           </div>
-            
-{/* 
-          <div dir="rtl" className='w-full'>
-  <div className="flex justify-end border-b border-gray-300 mb-4">
-    <div className="px-4 py-2 text-red-500 border-b-2 border-red-500 font-semibold">وصف المنتج</div>
-    <div className="px-4 py-2 text-gray-700">الإرجاع و معلومات و الشحن</div>
-  </div>
-
-  <div className="mb-8">
-    <ul className="list-disc list-inside text-right">
-      <li className="mb-2">مجموعة متنوعة من الخيارات: متوفرة بألوان وأشكال متعددة لتناسب ذوقك الشخصي.</li>
-      <li className="mb-2">جودة متينة: تحافظ على الحالة المثالية حتى بعد عدة غسلات.</li>
-      <li className="mb-2">راحة فائقة: خفيفة الوزن ومريحة، مثالية للارتداء طوال اليوم.</li>
-      <li className="mb-2">مثالية للهدايا: هدية ممتازة لأحبائك أو هدية فاخرة لنفسك.</li>
-    </ul>
-    <div className="text-red-500 text-right mt-4 flex items-center justify-end">
-      <span className="ml-1">اقرأ المزيد</span>
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-      </svg>
-    </div>
-  </div>
-
-  <div className="text-right">
-    <h2 className="text-xl font-bold flex items-center justify-end mb-4">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12V10a2 2 0 012-2h10a2 2 0 012 2v2m-4 8h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z" />
-      </svg>
-      سياسة الاستبدال والاسترجاع
-    </h2>
-    <ul className="list-disc list-inside">
-      <li className="mb-2">الإستبدال حق مضمون كل عملائنا وهو يشمل جميع المنتجات التي نعرضها على متجرنا.</li>
-      <li className="mb-2">جميع المنتجات المعروضة على متجرنا قابلة لسياسة الإستبدال وفق الشروط والأحكام المنصوص عليها في هذه الصفحة.</li>
-      <li className="mb-2">يمكن الإستبدال إذا كان المنتج بنفس حالته الأصلية عند الشراء ومغلفا بالغلاف الأصلي.</li>
-      <li className="mb-2">الاستبدال خلال خمسة (5) أيام من تاريخ الشراء. - يرجى التواصل معنا عبر صفحة اتصل بنا أو عبر أرقامنا الهاتفية من أجل طلب الإستبدال.</li>
-      <li className="mb-2">يرجى تصوير المنتج وإرساله مع تحديد المدينة والعنوان ورقم الطلب ليتم إستبداله بمنتج اخر في حالة كان المنتج فاسدا أو به عيب معين .</li>
-      <li>عند ارسال الطلبية , في حالة حدوث خطا في المقاس من طرف الشركة تتكفل الشركة المسؤولية و جميع التكاليف (سعر التوصيل ) في حالة قام العميل بطلب مقاس ما و عند استلام الطلبية وجد ان المقاس لا يناسبه يتحمل العميل المسؤولية الكاملة و جميع التكاليف في حالة ما اراد تغيير المنتج بمقاس اخر ( التكاليف تتمثل في سعر الشحن )</li>
-    </ul>
-  </div>
-</div> */}
-      
+             
+        
 
         <div style={{ marginTop: 14, width: "100%" }}>
           <div
@@ -672,10 +642,56 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
 
 
           </div>
+
         </div>
+
+
+        
       </div>
+
+
     </div>
   </div>
+
+  <div dir="rtl" className=' mt-12 '>
+  <div className="flex justify-start border-b border-gray-300 mb-4">
+    <div className="px-4 py-2 text-gray-700 border-b-2 border-mon-200 font-semibold">وصف المنتج</div>
+    <div className="px-4 py-2 text-gray-700">الإرجاع و معلومات و الشحن</div>
+  </div>
+
+  <div className="mb-8 text-base text-gray-500">
+    <ul className="list-disc list-outside text-right">
+      <li className="mb-2">مجموعة متنوعة من الخيارات: متوفرة بألوان وأشكال متعددة لتناسب ذوقك الشخصي.</li>
+      <li className="mb-2">جودة متينة: تحافظ على الحالة المثالية حتى بعد عدة غسلات.</li>
+      <li className="mb-2">راحة فائقة: خفيفة الوزن ومريحة، مثالية للارتداء طوال اليوم.</li>
+      <li className="mb-2">مثالية للهدايا: هدية ممتازة لأحبائك أو هدية فاخرة لنفسك.</li>
+    </ul>
+    <div className="text-moot-200 text-right mt-4 flex items-center justify-end">
+      {/* <span className="ml-1">اقرأ المزيد</span> */}
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </div>
+
+  <div className="text-right">
+    <h2 className="text-xl font-bold flex items-center justify-start mb-4">
+      {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12V10a2 2 0 012-2h10a2 2 0 012 2v2m-4 8h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z" />
+      </svg> */}
+      سياسة الاستبدال والاسترجاع
+    </h2>
+    <ul className="list-disc list-outside text-base text-gray-500">
+      <li className="mb-2">الإستبدال حق مضمون كل عملائنا وهو يشمل جميع المنتجات التي نعرضها على متجرنا.</li>
+      <li className="mb-2">جميع المنتجات المعروضة على متجرنا قابلة لسياسة الإستبدال وفق الشروط والأحكام المنصوص عليها في هذه الصفحة.</li>
+      <li className="mb-2">يمكن الإستبدال إذا كان المنتج بنفس حالته الأصلية عند الشراء ومغلفا بالغلاف الأصلي.</li>
+      <li className="mb-2">الاستبدال خلال خمسة (5) أيام من تاريخ الشراء. - يرجى التواصل معنا عبر صفحة اتصل بنا أو عبر أرقامنا الهاتفية من أجل طلب الإستبدال.</li>
+      <li className="mb-2">يرجى تصوير المنتج وإرساله مع تحديد المدينة والعنوان ورقم الطلب ليتم إستبداله بمنتج اخر في حالة كان المنتج فاسدا أو به عيب معين .</li>
+      <li>عند ارسال الطلبية , في حالة حدوث خطا في المقاس من طرف الشركة تتكفل الشركة المسؤولية و جميع التكاليف (سعر التوصيل ) في حالة قام العميل بطلب مقاس ما و عند استلام الطلبية وجد ان المقاس لا يناسبه يتحمل العميل المسؤولية الكاملة و جميع التكاليف في حالة ما اراد تغيير المنتج بمقاس اخر ( التكاليف تتمثل في سعر الشحن )</li>
+    </ul>
+  </div>
+</div> 
 </div>
 :<div  style={{ width: "100%",opacity:0.4, padding: "20px 10px" }}>
  

@@ -43,6 +43,9 @@ export default function Cartel(props) {
     props.removeItem(props.index);
   };
 
+  // console.log("attrubutes", props.data.attributes)
+  // console.log("Image URL:", props.data.attributes.images?.data?.[0]?.attributes?.url);
+
   return (
     <div
       className=" w-full"
@@ -72,15 +75,16 @@ export default function Cartel(props) {
             alignItems: "center",
           }}
         >
-          <img
-className="w-[84px] h-[84px] object-cover lg:w-[120px] lg:h-[120px]"
-            style={{
-              borderRadius: 8,
-              // height: "84px",
-              // width:"84px"
-            }}
-            src={JSON.parse(props.data.attributes.img)[0].url}
-          />
+<img
+  className="w-[84px] h-[84px] object-cover lg:w-[120px] lg:h-[120px]"
+  style={{ borderRadius: 8 }}
+  src={
+    props.data.attributes.images?.data?.[0]?.attributes?.url
+      ? IMG_URL + props.data.attributes.images.data[0].attributes.url
+      : "/default-image.png"
+  }
+/>
+
         </div>
 
         <div

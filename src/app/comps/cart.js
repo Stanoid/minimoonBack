@@ -58,7 +58,7 @@ const Cart = forwardRef((props, ref) => {
     
   }, [cartg]); 
 
-  // console.log("here are the porops ",props)
+  console.log("here are the porops ",props)
 
   const handleOrder = () => {
     props.openHandler(false);
@@ -107,7 +107,8 @@ const Cart = forwardRef((props, ref) => {
                 <ToastContainer limit={3} />
 
                 <div className="h-full flex flex-col py-6  lg:max-w-[512px]  w-full rounded-t-lg rounded-r-none lg:rounded-t-none lg:rounded-r-lg bg-white shadow-lg overflow-y-hidden">
-                  <div className="px-4 sm:px-6 flex items-center justify-between">
+                  <div className="px-4 sm:px
+                  -6 flex items-center justify-between">
                     <div
                       className="lg:block"
                       onClick={() => {

@@ -8,7 +8,7 @@ import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import Image from "next/image";
-
+import { API_URL } from "../local";
 import Logowhite from "../../../public/logoblack.svg";
 import { get } from "http";
 
@@ -19,25 +19,28 @@ export default function NavbarC(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
   const [subCat, setSubCat] = useState([]);
 
+  // console.log(`${API_URL}subcatagories?func=getAllSubCat`, "Full fetch URL");
 
 
-  const getsubcatogries=()=>{
-    fetch("/api/categories")
+  const getsubcatogries = () => {
+    fetch(`${API_URL}subcatagories?func=getAllSubcat`)
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.data) {
-          console.log("subcatfronnav", data.data)
-          setSubCat(data.data);
-          props.setSubCat(data.data);
+        // console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
+  
+        if (Array.isArray(data)) {
+          setSubCat(data.slice(0, 8)); 
         } else {
           setSubCat([]);
-          props.setSubCat([]);
         }
+      })
+      .catch((err) => {
+        console.error("Error fetching subcategories:", err);
       });
-  }
-
+  };
+  
   useEffect(() => {
-getsubcatogries();
+    getsubcatogries();
   }, []);
   // const getSubCat = (cat) => {
   //   fetch(`/api/categories?cat=${cat}`)
@@ -81,8 +84,8 @@ getsubcatogries();
 
   return (
     <>
-    <nav className="bg-white    w-full">
-      <div className="bg-red-59  text-moon-200 border-b  text-sm py-2 flex items-center justify-center rtl">
+    <nav className="bg-white  lg:max-[218px]  w-full">
+      <div className="bg-mon-100  text-moon-200 border-b  text-sm py-2 flex items-center justify-center rtl">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
           <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -174,114 +177,92 @@ getsubcatogries();
           <Logowhite
   style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
   onClick={() => router.push("/")}
-  className="ml-4 lg:ml-0 hidden lg:block"
+  className=" lg:ml-3 hidden lg:block"
 />
         </div>
         
-        <div className="lg:flex hidden items-center space-x-6 space-x-reverse order-2 lg:order-1">
+        <div className="lg:flex hidden mx-4 items-center space-x-6 space-x-reverse order-2 lg:order-1 flex-row-reverse">
 
+{/* 1. Favorites */}
+{userData && !userData.error && (
+  <motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative">
+    <span className="text-sm ml-2 hidden sm:block">المفضلة</span>
+    <Button onClick={() => props.openFav(true)} isIconOnly className="text-xl" size="md" aria-label="Favorites">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+      </svg>
+    </Button>
+  </motion.div>
+)}
+
+{/* 2. Cart */}
+<motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer">
+  <span className="ml-2 text-sm hidden sm:block">
+    {cartData?.totalPrice || 0} $ {cartData?.totalItems || 0} منتجات
+  </span>
+  <Button onClick={() => props.openCart(true)} isIconOnly size="md" aria-label="Cart">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+    </svg>
+  </Button>
+</motion.div>
+
+{/* 3. Account */}
 {userData && !userData.error ? (
-  <motion.div
-    className="flex items-center space-x-1 space-x-reverse text-gray-700 hover:text-gray-900 cursor-pointer"
-  >
+  <motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1 space-x-reverse">
     <span className="text-sm hidden sm:block">حسابي</span>
-    <Button onClick={() => { handleAccount(userData.data.user.type); }} isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
+    <Button onClick={() => handleAccount(userData.data.user.type)} isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
       </svg>
     </Button>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 -ml-1">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-    </svg>
   </motion.div>
 ) : (
   <motion.div>
-    <Button onClick={() => { router.push("/login"); }} className="bg-gradient-to-tr from-moonsec-100/40 to-moonsec-100 text-xs font-medium text-white px-3 py-1 rounded-md" size="sm" aria-label="Login">
+    <Button onClick={() => router.push("/login")} className="bg-gradient-to-tr from-moonsec-100/40 to-moonsec-100 text-xs font-medium text-white px-3 py-1 rounded-md" size="sm" aria-label="Login">
       تسجيل دخول
     </Button>
   </motion.div>
 )}
-
-{/* Cart Section (will appear in the middle in RTL) */}
-<motion.div
-  className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer"
->
-  <span className="ml-2 text-sm flex items-center sm:block">
-    106.25 $ 4 منتجات
-  </span>
-  {/* <Badge size="md" content={cartData} placement="top-left" showOutline={false} variant="flat" color="primary" className="flex bg-moon-200 text-white align-middle justify-center"> */}
-    <Button onClick={() => { props.openCart(true); }} isIconOnly className="" size="md" aria-label="Cart">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-      </svg>
-    </Button>
-  {/* </Badge> */}
-</motion.div>
-
-{/* Favorites Section (will appear on the right in RTL due to space-x-reverse) */}
-{userData && !userData.error ? (
-  <motion.div
-    className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative"
-  >
-    <span className="text-sm mr-2 hidden sm:block">المفضلة</span>
-    <Button onClick={() => { props.openFav(true); }} isIconOnly className="text-xl" size="md" aria-label="Favorites">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-      </svg>
-      {/* The badge for favorites, showing '6' */}
-      {/* <span className="absolute top-0 right-0 -mt-1 -mr-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">6</span> */}
-    </Button>
-  </motion.div>
-) : (
-  <></>
-)}
 </div>
+
       </div>
 
-      <motion.div
-        initial={{ x: "100%" }} // Start off-screen to the right (RTL)
-        animate={{ x: isMenuOpen ? "0%" : "100%" }} // Slide in/out
-        transition={{ duration: 0.3 }}
+  
 
-        className="fixed top-0 shrink right-0 h-full w-64 bg-white  z-50 p-4 lg:hidden rtl"
-      >
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold">التصنيفات</h2>
-          <Button isIconOnly size="sm" onClick={() => setIsMenuOpen(false)} aria-label="Close Menu">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </Button>
-        </div>
-        <ul className="flex flex-col space-y-2 text-gray-700 text-sm font-medium">
-          <li><a href="/categories" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>كل التصنيفات</a></li>
-          <li><a href="/categories?tag=pajama-5-piece" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>بجامة 5 قطع</a></li>
-          <li><a href="/categories?tag=2-piece" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>2 قطعة</a></li>
-          <li><a href="/categories?tag=mobile" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>جوال</a></li>
-          <li><a href="/categories?tag=bathrobe" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>روب حمام</a></li>
-          <li><a href="/categories?tag=underwear" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>ملابس داخلية</a></li>
-          <li><a href="/categories?tag=plus-size" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>حجم كبير</a></li>
-          <li><a href="/categories?tag=bath-set" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>طقم حمام</a></li>
-          <li><a href="/categories?tag=another-pajama-5-piece" className="py-2 block hover:text-red-500" onClick={() => setIsMenuOpen(false)}>بجامة 5 قطع</a></li>
-        </ul>
-      </motion.div>
+      <div className="container mx-auto px-4  border-t bg-white  lg:max-h-[53px] border-gray-200 rtl hidden lg:block"> 
+    
+       {subCat && subCat.length > 0 ? (
+  <ul className="flex justify-end  max-w-full items-center text-gray-700 text-sm font-medium">
 
-      <div className="container mx-auto px-4 py-3 border-t border-gray-200 rtl hidden lg:block"> 
-        <ul className="flex justify-end max-w-5xl items-center text-gray-700 text-sm font-medium">
-          <li><a href="/categories" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">كل التصنيفات</a></li>
-          <li><a href="/categories?tag=pajama-5-piece" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">بجامة 5 قطع</a></li>
-          <li><a href="/categories?tag=2-piece" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">2 قطعة</a></li>
-          <li><a href="/categories?tag=mobile" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">جوال</a></li>
-          <li><a href="/categories?tag=bathrobe" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">روب حمام</a></li>
-          <li><a href="/categories?tag=underwear" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">ملابس داخلية</a></li>
-          <li><a href="/categories?tag=plus-size" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">حجم كبير</a></li>
-          <li><a href="/categories?tag=bath-set" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">طقم حمام</a></li>
-          <li><a href="/categories?tag=another-pajama-5-piece" className="px-4 py-2 hover:text-red-500 whitespace-nowrap">بجامة 5 قطع</a></li>
-        </ul>
+    {subCat.map((item, index) => (
+      <li key={index} className="flex justify-between hover:underline  items-center px-3">
+        <button
+
+onClick={() => {
+            const catId = item.catagory?.id;
+            if (catId) {
+              router.push(`/categories?cid=${catId}`);
+            } else {
+              console.warn("Category ID not found", item);
+            }
+          }}
+                    className="flex-1 text-right py-4 border-b hover:cursor-pointer  hover:text-moon-200  text-gray-900 text-sm rounded-md "
+        >
+          {item.name_ar}
+        </button>
+        {/* <span className="text-moon-200 text-base">←</span> */}
+      </li>
+    ))}
+  </ul>
+) : (
+  <p className="text-gray-500 text-sm">لا توجد تصنيفات متاحة</p>
+)}
+
       </div>
     </nav>
 {/* mobile nav */}
-    <div dir="rtl" className="lg:hidden w-full fixed top-0 left-0 z-50">
+    <div dir="rtl" className="lg:hidden  w-full fixed top-0 left-0 z-50">
         <div className="bg-white  w-full flex items-center justify-between px-4 py-3">
           <Logowhite onClick={() => router.push("/")} className="w-16 cursor-pointer" />
 
@@ -317,13 +298,12 @@ getsubcatogries();
    
 
         <motion.div
-          initial={{ x: "100%" }}
-          animate={{ x: isMenuOpen ? "0%" : "100%" }}
+initial={{ y: "100%" }}
+animate={{ y: isMenuOpen ? "0%" : "100%" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 right-0 h-screen w-full bg-white z-50 overflow-y-auto p-4"
+          className="fixed bottom-0 right-0 h-full backdrop-blur-md max-h-[80%] w-full bg-white z-50 overflow-y-auto p-4"
         >
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold">القائمة</h2>
             <Button
               isIconOnly
               onClick={() => setIsMenuOpen(false)}
@@ -355,44 +335,10 @@ getsubcatogries();
             >
               السلة ({cartData})
             </Button> */}
-
-<div className="w-full flex items-center  divide-x divide-gray-200">
-  {userData && !userData.error ? (
-    <Button
-      onClick={() => handleAccount(userData.data.user.type)}
-      fullWidth
-      className="bg-gray-800 text-white rounded-none"
-    >
-      حسابي
-    </Button>
-  ) : (
-    <Button
-      onClick={() => router.push("/login")}
-      fullWidth
-      className="text-gray-900 rounded-none"
-    >
-      تسجيل دخول
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="size-6 ml-2"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-        />
-      </svg>
-    </Button>
-  )}
-
+<div className="w-full flex divide-x divide-gray-200">
   <Button
     onClick={() => props.openFav(true)}
-    fullWidth
-    className="text-gray-900 rounded-none"
+    className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
   >
     المفضلة
     <svg
@@ -401,7 +347,7 @@ getsubcatogries();
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-6 ml-2"
+      className="size-6"
     >
       <path
         strokeLinecap="round"
@@ -410,36 +356,72 @@ getsubcatogries();
       />
     </svg>
   </Button>
+
+  {userData && !userData.error ? (
+    <Button
+      onClick={() => handleAccount(userData.data.user.type)}
+      className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
+    >
+      حسابي
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="size-6"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+        />
+      </svg>
+    </Button>
+  ) : (
+    <Button
+      onClick={() => router.push("/login")}
+      className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
+    >
+      تسجيل دخول
+    </Button>
+  )}
 </div>
 
-              <div dir="rtl" className="border-t  text-sm space-y-2">
+
+<div dir="rtl" className="border-t text-sm space-y-2">
   <p className="text-sm font-semibold">التصنيفات</p>
-  <ul className="space-y-1 text-gray-800 text-sm">
-    {[
-      { label: "كل التصنيفات", tag: "" },
-      { label: "بجامة 5 قطع", tag: "pajama-5-piece" },
-      { label: "طقم حمام", tag: "bath-set" },
-      { label: "ملابس داخلية", tag: "underwear" },
-      { label: "حجم كبير", tag: "plus-size" },
-      { label: "روبات", tag: "bathrobe" },
-      { label: "جوال", tag: "mobile" },
-      { label: "2 قطعة", tag: "2-piece" },
-      { label: "بجامة 3 قطع", tag: "another-pajama-5-piece" },
-    ].map((item, index) => (
-      <li key={index} className="flex justify-between items-center px-3 py-4 border-b rounded-md hover:bg-gray-100">
-        <a
-          href={`/categories${item.tag ? `?tag=${item.tag}` : ""}`}
-          className="flex-1 text-right"
+  {subCat && subCat.length > 0 ? (
+    <ul className="flex flex-col max-w-full text-gray-700 text-sm font-medium">
+      {subCat.map((item, index) => (
+        <li
+          key={index}
+          className="flex justify-between items-center w-full px-3 hover:underline"
         >
-          {item.label}
-        </a>
-        <span className="text-moon-200 text-base">
-          ←
-        </span>
-      </li>
-    ))}
-  </ul>
+          <button
+            onClick={() => {
+              const catId = item.catagory?.id;
+              if (catId) {
+                router.push(`/categories?cid=${catId}`);
+              } else {
+                console.warn("Category ID not found", item);
+              }
+            }}
+            className="flex-1 text-right py-4 border-b hover:cursor-pointer hover:text-moon-200 text-gray-900 text-sm rounded-md"
+          >
+            {item.name_ar}
+          </button>
+
+          <span className="text-moon-200 text-base">←</span>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className="text-gray-500 text-sm">لا توجد تصنيفات متاحة</p>
+  )}
 </div>
+
+
 
           </div>
         </motion.div>

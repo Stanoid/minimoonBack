@@ -1,98 +1,95 @@
 import React from 'react';
+import Logowhite from "../../../public/logoblack.svg";
 
 const Footer = () => {
   return (
-    // Main footer container with full width, responsive max-width, background color, and padding
-    <footer dir='rtl' className="w-full bg-white border-t border-gray-200 py-16 px-4 ">
-      <div className="max-w-7xl mx-auto"> {/* Adjusted max-width for better alignment */}
-        {/* Top Section - Contact, Payment, Shipping */}
-        {/* Adjusted grid to ensure consistent alignment for RTL and responsiveness */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-start text-right" dir="rtl">
+    <footer dir='rtl' className="w-full bg-white border-t border-gray-200 lg:max-h-[219px] pt-16 px-8 ">
+      <div className="max-w-7xl mx-auto"> 
+        <div dir="rtl" className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-start text-right" >
 
           {/* Shipping Section */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right">
-            <div className="flex items-center mb-4">
+          <div className="flex flex-col items-start md:items-start text-right md:text-right">
+            <div className="flex items-center gap-2 mb-4">
               {/* Truck Icon SVG */}
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-gray-400 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697A3.42 3.42 0 007 9.111v3.316l-2.709 1.355A3.42 3.42 0 002 16.035V18l.835 1.697A3.42 3.42 0 006.165 22h11.67A3.42 3.42 0 0021 19.697V18l.835-1.697A3.42 3.42 0 0022 13.965v-3.316a3.42 3.42 0 00-.835-2.614L18 4.697z" />
-              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 tetx-gray-500">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+</svg>
+
               <h3 className="text-sm font-semibold text-gray-700">تتبع الطلب والشحن</h3>
             </div>
-            <p className="text-gray-600 font-medium leading-relaxed">
+            <p className="text-gray-500 text-sm font-medium leading-relaxed">
               نتيح لك معرفة موعد وصول مشترياتك عبر الإنترنت بجودة في التسليم
             </p>
           </div>
 
-          {/* Payment Methods Section */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right">
-            <div className="flex items-center mb-4">
-              {/* Credit Card Icon SVG */}
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-gray-400 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
+          <div className="flex flex-col items-start md:items-start text-right md:text-right">
+            <div className="flex items-center gap-2 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+</svg>
+
               <h3 className="text-sm font-semibold text-gray-700">جميع وسائل الدفع الآمنة</h3>
             </div>
-            <p className="text-gray-600 font-medium leading-relaxed">
+            <p className="text-gray-500 text-sm font-medium leading-relaxed">
               يمكنك الشراء باستخدام ايزا وطرق مختلفة للدفع منها الدفع عند الاستلام والإلكتروني وغيرها
             </p>
           </div>
 
-          {/* Contact Section */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right">
+
+          <div className="flex flex-col items-start md:items-start text-right md:text-right">
             <div className="flex items-center mb-4">
-              {/* Phone Icon SVG */}
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-gray-400 ml-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <h3 className="text-sm font-semibold text-gray-700">اتصل بنا</h3>
+
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+</svg>
+              <h3 className="text-sm font-semibold text-gray-500">اتصل بنا</h3>
             </div>
             <div className="space-y-3">
-              <div className="flex items-center justify-center md:justify-end">
-                <span className="text-gray-600 ml-2">+1234567890</span>
-                {/* Phone Icon SVG */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
+              <div className="flex items-center justify-start gap-1 md:justify-start">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+</svg>
+
+                <span className="text-gray-500 ">+1234567890</span>
+
               </div>
-              <div className="flex items-center justify-center md:justify-end">
-                <span className="text-gray-600 ml-2">Support@minimoon.com</span>
-                {/* Envelope Icon SVG */}
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+              <div className="flex items-center justify-center gap-1 md:justify-start">
+              
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+</svg>
+
+                <span className="text-gray-500 ml-2">Support@minimoon.com</span>
+              
               </div>
             </div>
           </div>
         </div>
 
-        {/* Separator Line */}
         <div className="border-t border-gray-200 my-12"></div>
 
-        {/* Middle Section - Orders, About, Newsletter (Reordered for RTL left-to-right visual flow) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-right" dir="rtl">
+        <div className="grid sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 gap-8 w-full  text-right" dir="rtl">
 
-          {/* Orders & Shipping - Now the rightmost column on desktop */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right order-1 md:order-1">
-            <h4 className="font-semibold text-gray-700 text-sm mb-4">الطلبات والشحن</h4>
-            <ul className="space-y-2 text-gray-600 text-base">
+          <div className="flex flex-col items-start md:items-start text-right md:text-right order-1 md:order-1">
+            <h4 className="font-semibold text-gray-500 text-sm mb-4">الطلبات والشحن</h4>
+            <ul className="space-y-2 text-gray-600 text-sm">
               <li><a href="#" className="hover:text-gray-800">حسابي</a></li>
               <li><a href="#" className="hover:text-gray-800">تتبع الطلب</a></li>
               <li><a href="#" className="hover:text-gray-800">سياسة الشحن و الإرجاع</a></li>
             </ul>
           </div>
 
-          {/* About Company - Middle column on desktop */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right order-2 md:order-2">
+          <div className="flex flex-col items-start md:items-start text-right md:text-right order-2 md:order-2">
             <h4 className="font-semibold text-sm text-gray-700 mb-4">عن الشركة</h4>
-            <ul className="space-y-2 text-gray-600 text-base">
+            <ul className="space-y-2 text-gray-500 text-sm">
               <li><a href="#" className="hover:text-gray-800">الوظائف</a></li>
               <li><a href="#" className="hover:text-gray-800">من نحن</a></li>
               <li><a href="#" className="hover:text-gray-800">متاجرنا</a></li>
             </ul>
           </div>
 
-          {/* Newsletter Section - Now the leftmost column on desktop (order-3 in RTL) */}
-          <div className="flex flex-col items-center md:items-end text-center md:text-right order-3 md:order-3">
+          <div className="flex flex-col lg:col-span-1 col-span-2 items-center md:items-start text-right md:text-right order-3 md:order-3">
             <h3 className="text-sm font-semibold text-gray-700 mb-4">
               احصل على أحدث العروض على بريدك
             </h3>
@@ -102,36 +99,31 @@ const Footer = () => {
                 placeholder="قم بإدخال البريد الإلكتروني"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-red-400"
               />
-              <button className="w-full px-5 py-2.5 bg-red-400 text-white rounded-lg border hover:bg-red-500 transition-colors">
+              <button className="w-full px-5 py-2.5 bg-moon-200 text-white text-sm rounded-lg border transition-colors">
                 اشترك الآن
               </button>
             </div>
           </div>
         </div>
 
-        {/* Social Media Icons */}
-        <div className="flex justify-center py-5 mt-8"> {/* Added margin-top for spacing */}
-          <div className="flex space-x-4 space-x-reverse"> {/* Added space-x-reverse for RTL consistency */}
-            {/* Twitter Icon SVG */}
+        <div className="flex justify-center  mt-8"> 
+          <div className="flex space-x-4 space-x-reverse"> 
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.256 5.676c-.66.293-1.37.49-2.108.577.76-.456 1.34-1.18 1.615-2.04-.71.424-1.5.73-2.336.898-.67-.714-1.62-1.16-2.67-1.16-2.02 0-3.66 1.64-3.66 3.66 0 .287.032.56.096.825-3.04-.153-5.743-1.6-7.55-3.837-.315.54-.495 1.17-.495 1.84 0 1.27.645 2.39 1.628 3.058-.598-.018-1.16-.184-1.65-.453v.045c0 1.77 1.258 3.247 2.923 3.582-.305.083-.627.126-.96.126-.235 0-.46-.023-.68-.067.465 1.45 1.815 2.505 3.425 2.535-1.24.97-2.79 1.55-4.47 1.55-.29 0-.58-.017-.86-.05 1.61 1.04 3.52 1.65 5.56 1.65 6.67 0 10.31-5.52 10.31-10.31 0-.158-.003-.315-.01-.47.715-.51 1.335-1.14 1.83-1.87z" />
               </svg>
             </a>
-            {/* Facebook Icon SVG */}
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 0H5c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5V5c0-2.761-2.239-5-5-5zm-3 7h-2v2h2v-2zm0 3h-2v2h2v-2zm0 3h-2v2h2v-2zm-3 0h-2v2h2v-2zm0-3h-2v2h2v-2zm0-3h-2v2h2v-2zm-3 6H8v2h2v-2zm0-3H8v2h2v-2zm0-3H8v2h2v-2zM5 22V5c0-.552.448-1 1-1h12c.552 0 1 .448 1 1v12h-2v-2h-2v2h-2v-2h-2v2h-2v-2h-2v2H5zm14-10h-2v2h2v-2zm0 3h-2v2h2v-2z" />
                 <path d="M15 8h-2c-1.104 0-2 .896-2 2v2h4l-1 3h-3v7h-3v-7h-3V10h3V7c0-3.867 2.67-6 6-6h2v4h-2c-.552 0-1 .448-1 1v1z" />
               </svg>
             </a>
-            {/* Instagram Icon SVG */}
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.071 1.17.06 1.805.234 2.224.413.56.243.96.65 1.353 1.042.393.393.801.794 1.043 1.352.179.419.353 1.054.413 2.224.058 1.265.07 1.646.07 4.85s-.012 3.584-.071 4.85c-.06 1.17-.234 1.805-.413 2.224-.243.56-.65 1.003-1.042 1.353-.393.393-.794.801-1.352 1.043-.419.179-1.054.353-2.224.413-1.265.058-1.646.07-4.85.07s-3.584-.012-4.85-.071c-1.17-.06-1.805-.234-2.224-.413-.56-.243-.96-.65-1.353-1.042-.393-.393-.801-.794-1.043-1.352-.179-.419-.353-1.054-.413-2.224-.058-1.265-.07-1.646-.07-4.85s.012-3.584.071-4.85c.06-1.17.234-1.805.413-2.224.243-.56.65-1.003 1.042-1.353.393-.393.794-.801 1.352-1.043.419-.179 1.054-.353 2.224-.413C8.416 2.175 8.797 2.163 12 2.163zm0 1.488c-3.195 0-3.565.012-4.82.07c-1.085.056-1.57.214-1.84.32-.38.153-.64.357-.92.64-.28.28-.487.54-.64.92-.106.27-.264.755-.32 1.84-.058 1.255-.07 1.625-.07 4.82s.012 3.565.07 4.82c.056 1.085.214 1.57.32 1.84.153.38.357.64.64.92.28.28.54.487.92.64.27.106.755.264 1.84.32 1.255.058 1.625.07 4.82.07s3.565-.012 4.82-.07c1.085-.056 1.57-.214 1.84-.32.38-.153.64-.357.92-.64.28-.28.487-.54.64-.92.106-.27.264-.755.32-1.84.058-1.255.07-1.625.07-4.82s-.012-3.565-.07-4.82c-.056-1.085-.214-1.57-.32-1.84-.153-.38-.357-.64-.92-.64-.28-.28-.54-.487-.64-.92-.106-.27-.264-.755-.32-1.84-.058-1.255-.07-1.625-.07-4.82zM12 7.75c2.347 0 4.25 1.903 4.25 4.25S14.347 16.25 12 16.25 7.75 14.347 7.75 12 9.653 7.75 12 7.75zm0 1.488c-1.527 0-2.762 1.235-2.762 2.762s1.235 2.762 2.762 2.762 2.762-1.235 2.762-2.762S13.527 9.238 12 9.238zM17.857 5.093c0 .548-.445.992-.993.992s-.992-.444-.992-.992.445-.992.993-.992.992.444.992.992z" />
               </svg>
             </a>
-            {/* Dribbble Icon SVG */}
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm8 10c0 .99-.14 1.94-.41 2.83l-4.59-4.59c.78-.54 1.34-1.24 1.63-2.01l3.37 3.37c-.07.07-.15.13-.24.19zM4 12c0-.99.14-1.94.41-2.83l4.59 4.59c-.78.54-1.34 1.24-1.63 2.01L4 12zm10-1.85V10c0 1.38-1.12 2.5-2.5 2.5h-.7c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5h.7c.83 0 1.5.67 1.5 1.5zm0-2.35v-1.5c0-.83-.67-1.5-1.5-1.5h-.7c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h.7c.83 0 1.5.67 1.5 1.5zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
@@ -140,21 +132,20 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright Section */}
-        {/* Adjusted flex order for responsiveness */}
-        <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 text-center md:text-right">
-          {/* Copyright text (right-aligned on desktop, centered on mobile) */}
+        <div className="border-t border-gray-200 mt-8 py-3 flex flex-col-reverse md:flex-row justify-center items-center text-sm text-gray-500 text-center  md:text-right">
           <div className="mt-4 md:mt-0 order-1 md:order-3">
             <span>جميع الحقوق محفوظة © مني مون 2024</span>
           </div>
-          {/* Links (middle on desktop, second on mobile) */}
-          <div className="flex space-x-6 space-x-reverse order-2 md:order-2"> {/* space-x-reverse for RTL */}
+          {/* <div className="flex space-x-6 space-x-reverse order-2 md:order-2"> 
             <a href="#" className="hover:text-gray-700">ملفات التعريف</a>
             <a href="#" className="hover:text-gray-700">الخصوصية والأمان</a>
-          </div>
-          {/* Company name (left-aligned on desktop, first on mobile) */}
+          </div> */}
           <div className="flex items-center mb-4 md:mb-0 order-3 md:order-1">
-            <span className="font-semibold">mini moon</span>
+            <span className="font-semibold">      <Logowhite
+  style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
+  onClick={() => router.push("/")}
+  className=" lg:ml-3 hidden lg:block"
+/></span>
           </div>
         </div>
       </div>

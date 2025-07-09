@@ -31,8 +31,9 @@ import { BsX } from "react-icons/bs";
 import { useSelector } from "react-redux";
 const ArFont = localFont({ src: './styles/fonts/alfont_com_SomarGX.ttf' })
 const EnFont = localFont({ src: './styles/fonts/gothambook-webfont.woff2' })
-export default function RootLayout({ children }) {
- 
+export default function RootLayout({ children, isProductPage = false }) {
+  const bgColorClass = isProductPage ? 'bg-white' : 'bg-gray-50';
+
   const router = useRouter();
   //const userData = useSelector((state) => state.root.auth.data&&state.root.auth.data)
 
@@ -162,6 +163,10 @@ if(el.target.value.length<3){
     setDraw(true);
   }
 
+
+  
+
+  
   return (
     <html className="" lang="en">
       <head>
@@ -199,9 +204,9 @@ if(el.target.value.length<3){
         <CartContext>
           <AuthenContext>
             <section className="w-full" >
-            <div className="  w-full bg-white text-white "
+            <div className="  w-full  text-white "
              style={{backgroundSize:20}}>
-        <div className=" w-full transition-all   shadow-md bg-white " style={{position:"fixed",
+        <div className=" w-full  " style={{position:"fixed",
           backgroundSize:20,top:0,zIndex:15}} >
 
         <NavbarC rel={false} searchTog={searchTog} setSearchTog={(sta)=>{setSearchTog(sta)}} cat={cat} openCart={(t)=>{handleOpenCart(t)}}  openFav={handleOpenCartl}  />
@@ -302,7 +307,7 @@ className="flex cursor-pointer items-center" >
   </div>
        
        
-        <div style={{maxWidth:"100%",overflowX:"scroll"}} className="  text-moon-300  text-md whitespace-nowrap  font-medium  transition-colors  py-0.5 w-full
+        <div style={{maxWidth:"100%",}} className="  text-moon-300  text-md whitespace-nowrap  font-medium  transition-colors  py-0.5 w-full
           space-x-2 flex mt-1 pb-1
         flex-row-reverse -only  justify-center items-center  ">
 
@@ -396,8 +401,8 @@ className="flex cursor-pointer items-center" >
 
  
             
-            <section className=" el-messiri-text">
-            <div className="lg:max-w-[1280px] overflow-hidden lg:mt-16  lg:mx-auto min-h-lvh"  style={{  }}>
+            <section className={`${bgColorClass} el-messiri-text`}>
+            <div className="max-w-[1280px] w-full px-4 lg:px-8 overflow-hidden mt-8 lg:mt-16 mx-auto min-h-screen">
               
                   {children}
                 </div>

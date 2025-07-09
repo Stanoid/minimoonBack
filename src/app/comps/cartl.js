@@ -244,7 +244,15 @@ const notify = (type,msg)=>{
               price={like.products[0]?.varients[0]?.price}
                name={like.products[0]?.name_en} 
                code={like.products[0]?.code}
-              index={index} img={JSON.parse(like.products[0].img)[0].url }  />:<></>
+               index={index}
+               img={
+                 like.products[0]?.images &&
+                 like.products[0].images?.[0].url
+                   ? like.products[0].images[0].url
+                   : "/default-image.png" // Fallback image
+               }
+             />
+    :<></>
            
                )):
                <div style={{display:'flex',color:'grey',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column'}}>

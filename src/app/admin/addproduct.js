@@ -214,62 +214,79 @@ const handleProductFilling = ()=>{
     }
   };
 
-  const uploadMedia = () => {
-    if (lod) {
+  const uploadMedia = async () => {
+    if (lod || imgLod || !files || files.length === 0) {
       return;
     }
-
-    if (
-      namear == "" ||
-      nameen == "" ||
-      descar == "" ||
-      descen == "" ||
-      subc == null ||
-      colorSelect.length == 0 ||
-      sizeSelect.length == 0 ||
-      code == "" ||
-      stock == null ||
-      price == null ||
-      files == []
-    ) {
-      // alert("empty feildsfff  ",code);
-      // console.log(sizeSelect,)
-      return;
+  
+    setImglod(true);
+    const postData = new FormData();
+    files.forEach((file) => {
+      postData.append("files", file);
+    });
+  
+    try {
+      const response = await axios.post(`${API_URL}upload`, postData, {
+        headers: {
+          Authorization: "Bearer " + isLogged.data.jwt,
+        },
+      });
+  
+      const uploadedImages = response.data.map((img) => ({
+        name: img.name,
+        url: img.url,
+        thumb: `${API_URL}${img.url}`,
+        size: img.size,
+        id: img.id,
+      }));
+  
+      setResource(uploadedImages);
+      setImglod(false);
+      return uploadedImages
+      // submitProduct(uploadedImages);
+    } catch (err) {
+      console.error("Image upload failed", err);
+      setImglod(false);
     }
-
-    if (files == []) {
-      alert("Please upload images");
-      return;
-    }
-
-    setlod(true);
-
-    var tmepar = [];
-    for (let i = 0; i < files.length; i++) {
-      const postData = new FormData();
-      postData.append("files", files[i]);
-      //
-      axios
-        .post(`${API_URL}upload`, postData)
-        .then((response) => {
-          const imageId = response.data[0].id;
-
-          tmepar[i] = response.data[0].url;
-
-          //    setImgs(tmepar);
-
-          if (i == files.length - 1) {
-            submitProduct(tmepar);
-          }
-        })
-        .then(() => {});
-    }
-    //
-
-    //
-    //   setImgs(tmepar);
   };
+  
 
+
+  // console.log("uploading token:", isLogged?.data?.jwt);
+
+  // for (let i = 0; i < files.length; i++) {
+  //   const postData = new FormData();
+  //   files.forEach(file => {
+  //     postData.append("files", file);
+  //   });
+  
+  //   axios.post(`${API_URL}upload`, postData,{
+  //     headers: {
+  //       Authorization: "Bearer " + isLogged.data.jwt,
+  //       // Note: DO NOT set Content-Type here; let axios set it automatically for multipart/form-data
+  //     },
+  //   })
+  //     .then((response) => {
+  //       const uploadedImages = response.data.map((img) => ({
+  //         name: img.name,
+  //         url: img.url,
+  //         thumb: `${API_URL}${img.url}`,
+  //         size: img.size,
+  //         id: img.id,
+  //       }));
+        
+  //       setResource(uploadedImages); 
+  //       setImglod(false);
+  //       // submitProduct(uploadedImages); 
+  //     })
+  //     .catch((err) => {
+  //       console.error("Image upload failed", err);
+  //       setImglod(false);
+  //     });
+  
+  //   break; 
+  // }
+  
   const deleteEntry = (id) => {
     const requestOptions = {
       method: "DELETE",
@@ -393,67 +410,84 @@ const handleProductFilling = ()=>{
       });
   };
 
+  useEffect(() => {
+    console.log("here isthe resource " ,resource);
+
+  },[resource])
 
 
-  const submitProduct = (tmepar) => {
-    //
 
-    if(lod||imgLod|| resource== undefined){
-      return
-    }
-
+  const submitProduct = (images) => {
+    if (lod || imgLod || !images) return;
   
-
     if (
-      namear == "" ||
-      nameen == "" ||
-      descar == "" ||
-      descen == "" ||
-      subc == null ||
-      // sizeSelect.length == 0 ||
-      code == "" ||
-      //stock == null ||
-     // price == null ||
-      resource== undefined
-      
+      namear === "" || nameen === "" || descar === "" || descen === "" ||
+      subc == null || code === "" || images.length === 0
     ) {
-
-      props.notifi("error"," جميع الحقوق مطلوبة")
+      props.notifi("error", "جميع الحقول مطلوبة");
       return;
-    } else {
-      setlod(true)
-      //setlod(true);
-      //const jsonarray = JSON.stringify(imgsob);
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + isLogged.data.jwt,
-        },
-        body: JSON.stringify({
-          nameen: nameen,
-          namear: namear,
-          descen: descen,
-          descar: descar,
-          subc: subc,
-          code: code,
-        varients:varients,
-          imgs: JSON.stringify(resource),
-        }),
-      };
-
-      fetch(`${API_URL}products?func=AddProduct`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {})
-        .then(() => {
-          //  console.log(data)
-          props.notifi("success","تمت إضافة  المنتج")
-          location.reload();
-          setlod(false);
-          //  getProducts();
-        });
     }
+  
+    setlod(true);
+
+    const formattedVarients = varients.map((variant) => ({
+      size: parseInt(variant.size, 10),
+      stock: parseInt(variant.stock, 10),
+      price: parseInt(variant.price, 10),
+      discount: parseInt(variant.discount, 10),
+      color: parseInt(variant.color, 10),
+    }));
+  
+    const imageRelationData = images.map(img => ({ id: img.id }));
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + isLogged.data.jwt,
+      },
+      body: JSON.stringify({
+        nameen,
+        namear,
+        descen,
+        descar,
+        subc,
+        code,
+        varients: JSON.stringify(formattedVarients), 
+        imgs: imageRelationData,
+      }),
+    };
+
+    console.log("prequest load ",
+      {
+        nameen,
+        namear,
+        descen,
+        descar,
+        subc,
+        code,
+        varients,
+        imgs: imageRelationData,
+      }
+    )
+  console.log("variants being sent",varients)
+console.log("images being sent",images);
+
+  fetch(`${API_URL}products?func=AddProduct`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Product created:", data);
+        props.notifi("success", "تمت إضافة المنتج");
+        setlod(false);
+      })
+      .catch((err) => {
+        console.log("product created", data)
+        console.error("Failed to submit product:", err.data);
+        props.notifi("error", "فشل إضافة المنتج");
+        setlod(false);
+      });
   };
+  
 
 
   const addvarient = ()=>{
@@ -579,7 +613,7 @@ const handleProductFilling = ()=>{
               />
             </form> */}
 
-<CldUploadWidget
+{/* <CldUploadWidget
   uploadPreset="minimoon"
   onQueuesStart={()=>{setImglod(true)}}
 
@@ -599,10 +633,7 @@ const handleProductFilling = ()=>{
       setImglod(false)
       
     }
-    
-    
-    
-     // { public_id, secure_url, etc }
+  
   }}
   onQueuesEnd={(result, { widget }) => {
    // widget.close();
@@ -623,20 +654,73 @@ const handleProductFilling = ()=>{
     );
   
   }}
-</CldUploadWidget>
+</CldUploadWidget> */}
+{/* <input
+  type="file"
+  multiple
+  accept="image/*"
+  onChange={(e) => {
+    const filesArray = Array.from(e.target.files);
+    console.log("Selected files:", filesArray); 
+    setFiles(filesArray);
+  }}
+  className="..."
+/> */}
 
+<div className='bg-gray-100 ' style={{ gridArea: "images" }}>
+          <div class="w-full flex justify-between items-center  h-full align-middle ">
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={(e) => {
+              const filesArray = Array.from(e.target.files);
+              console.log("Selected files:", filesArray); 
+              setFiles(filesArray);
+            }}
+            className="block w-full text-sm text-gray-500
+                       file:mr-4 file:py-2 file:px-4
+                       file:rounded-full file:border-0
+                       file:text-sm file:font-semibold
+                       file:bg-violet-50 file:text-violet-700
+                       hover:file:bg-violet-100"
+          />
+
+          <div className='flex flex-row ' >
+            {/* Display selected images preview */}
+            {files.map((file, index) => (
+              <div key={index} className="mx-2 py-2">
+                <img
+                  className="rounded-md w-24 h-24 object-cover"
+                  src={URL.createObjectURL(file)} // Create URL for local file preview
+                  alt={`Preview ${index}`}
+                />
+              </div>
+            ))}
+          </div>
+
+          </div>
+        </div>
 
 <div className='flex flex-row ' >
-{resource&&resource.map(img=>(
+{/* {resource&&resource.map(img=>(
 
 <div className='mx-2 py-2 '>
 <img className='rounded-md' src={img.thumb} />
 </div>
+))}  */}
 
+{/* {resource &&
+  resource.map((img, idx) => (
+    <div key={idx} className="mx-2 py-2">
+      <img
+        className="rounded-md w-24 h-24 object-cover"
+        src={img.thumb ? img.thumb : `${API_URL}${img.url}`}
+        alt={img.name || `image-${idx}`}
+      />
+    </div>
+))} */}
 
-
-
-))}
 
 </div>
 
@@ -791,14 +875,36 @@ const handleProductFilling = ()=>{
         }}
       >
         <div>
-          <LoadingBtn
+          {/* <LoadingBtn
           color={imgLod||resource==undefined||varients.length==0?"grey":Theme.primary}
             act={()=>{ submitProduct()}}
             icon={<FaPlusCircle />}
             lod={lod}
             disabled={true}
             text={"إضافة المنتج"}
-          />
+          /> */}
+
+<LoadingBtn
+  color={imgLod || varients.length === 0 ? "grey" : Theme.primary}
+  act={async () => {
+    if (!resource || resource.length === 0) {
+      const uploadedImages = await uploadMedia();
+      if (uploadedImages) {
+        submitProduct(uploadedImages); // Pass uploaded images
+      } else {
+        props.notifi("error", "فشل رفع الصور");
+      }
+    } else {
+      submitProduct(resource); // Pass existing resource
+    }
+  }}
+  icon={<FaPlusCircle />}
+  lod={lod}
+  disabled={imgLod || varients.length === 0}
+  text={"إضافة المنتج"}
+/>
+
+
         </div>
       </div>
     </div>

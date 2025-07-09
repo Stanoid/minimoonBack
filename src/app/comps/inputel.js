@@ -8,11 +8,11 @@ function InputEl(props) {
 
     {props.select
     ? <div className="w-full">
-      <label className="block uppercase tracking-wide text-moon-200/80 text-xs text-right font-bold mb-2" for="grid-state">
-    : {props.label} 
+      <label className="block uppercase tracking-wide text-gray-900 text-xs text-right font-bold mb-2" for="grid-state">
+ {props.label} 
       </label>
       <div className="relative">
-        <select value={props.value} onChange={(e)=>{props.outputfunc(e.target.value)}} className="block appearance-none w-full bg-gray-200
+        <select value={props.value} onChange={(e)=>{props.outputfunc(e.target.value)}} className="block appearance-none w-full bg-white
          border border-gray-200 text-gray-400 text-sm py-3 px-4 pr-8 rounded leading-tight
           focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
         <option disabled value={null}   selected> أختر {props.label} </option>
@@ -33,11 +33,11 @@ function InputEl(props) {
     </div>
     :
     <motion.div whileTap={{ scale: 1.03 }} className="w-full">
-    <label className="block uppercase text-right tracking-wide text-moon-200/80 text-xs font-bold mb-2" for="grid-last-name">
-     : {props.label} 
+    <label className="block uppercase text-right tracking-wide text-gray-900 text-xs font-bold mb-2" for="grid-last-name">
+    {props.label} 
     </label>
-    <input value={props.value}  onChange={(e)=>{props.outputfunc(e.target.value)}} className="appearance-none  block w-full bg-gray-200  border
-     border-gray-200 rounded disabled:bg-gray-400 disabled:hover:cursor-not-allowed disabled:text-white py-3 px-3 leading-tight transition-colors text-sm text-right focus:outline-none focus:bg-white
+    <input value={props.value}  onChange={(e)=>{props.outputfunc(e.target.value)}} className="appearance-none  block w-full bg-white  border
+     border-gray-200 rounded disabled:bg-gray-200 disabled:hover:cursor-not-allowed disabled:text-gray-900 py-3 px-3 leading-tight transition-colors text-sm text-right focus:outline-none focus:bg-white
       focus:border-moonsec-100/80" id="grid-last-name" disabled={props.disabled&&props.disabled}
        min={props.min&&props.min} max={props.min&&props.max} 
         type={props.num?"number":props.date?"date":props.ispass?"password":"text"} placeholder={props.ispass?"********": props.label}/>
