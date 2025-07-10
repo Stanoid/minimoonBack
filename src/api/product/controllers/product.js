@@ -4,6 +4,7 @@
 const catagorie = require("../../catagorie/controllers/catagorie");
 const subcatagory = require("../../subcatagory/controllers/subcatagory");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+const { parseMultipartData, sanitizeEntity } = require('@strapi/utils');
 
 /**
  * product controller
@@ -102,7 +103,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
              offset:parseInt(query.page * 24),
             limit:24,
             select: ["*"],
-            populate: ["varients", "varients.colors", "subcatagory", "seller"],
+            populate: ["images","varients", "varients.colors", "subcatagory", "seller"],
           });
 
           const sanitizedEntity = await this.sanitizeOutput(res, ctx);
@@ -157,33 +158,40 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           return sanitizedEntitys;
           break;
 
-        case "getFullProduct":
-          const entity = await strapi
-            .service("api::product.product")
-            .findOne(id, {
-              select: ["*"],
-              populate: [
-                "varients",
-                "varients.colors",
-                "varients.sizes",
-                "subcatagory",
-                "subcatagory.catagory",
-              ],
-            });
-          // const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
 
-          // return this.transformResponse(sanitizedEntity);
-          return entity;
 
-          break;
 
-          case "getPick":
+          case "getFullProduct":
+            try {
+              const id = query.id; // or use ctx.params.id if hitting a route like /products/:id
 
-          const respc = await strapi.db.query("api::pickup.pickup").findMany({
-            select: ["*"],
+              if (!id) {
+                return ctx.badRequest("Product ID is missing.");
+              }
 
-          });
-   return respc;
+              const entity = await strapi.service("api::product.product").findOne(id, {
+                select: ["*"],
+                populate: [
+                  "images",
+                  "varients",
+                  "varients.colors",
+                  "varients.sizes",
+                  "subcatagory",
+                  "subcatagory.catagory",
+                ],
+              });
+
+              if (!entity) {
+                return ctx.notFound("Product not found");
+              }
+
+              const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+              return this.transformResponse(sanitizedEntity);
+            } catch (err) {
+              console.error("Error fetching product:", err);
+              return ctx.internalServerError("Failed to fetch product.");
+            }
+
 
             break;
 
@@ -202,6 +210,177 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
 
 
+          case "getColorsFilter":
+            const respFilterc = await strapi.db.query("api::color.color").findMany({
+              select: ["*"],
+
+            });
+            console.log(respFilterc);
+     return respFilterc;
+          break;
+
+          case "getSizesFilter":
+            const respFilter = await strapi.db.query("api::size.size").findMany({
+              select: ["*"],
+
+            });
+            console.log(respFilter);
+     return respFilter;
+          break;
+
+
+          case "getTopSellerPerSubcat":
+            const topSubcatid = query.subcatid;
+
+            const orders = await strapi.db.query("api::order.order").findMany({
+              where: { status: "processed" },
+              select: ["cart"],
+            });
+
+            const productSalesMap = {};
+
+            orders.forEach((order) => {
+              const cart = Array.isArray(order.cart) ? order.cart : [];
+              cart.forEach((item) => {
+                if (!item.id) return;
+                const id = item.id;
+                const quantity = item.qty || 1;
+                productSalesMap[id] = (productSalesMap[id] || 0) + quantity;
+              });
+            });
+
+            const productIds = Object.keys(productSalesMap).map(Number);
+
+            let allSoldProducts = await strapi.db.query("api::product.product").findMany({
+              where: {
+                id: { $in: productIds },
+              },
+              populate: ["subcatagory", "varients", "varients.colors"],
+            });
+
+            const productsWithSales = allSoldProducts.map((product) => ({
+              ...product,
+              totalSales: productSalesMap[product.id] || 0,
+            }));
+
+            const filteredProducts = topSubcatid
+              ? productsWithSales.filter(
+                  (p) => p.subcatagory && p.subcatagory.id == subcatid
+                )
+              : productsWithSales;
+
+            const topProducts = filteredProducts
+              .sort((a, b) => b.totalSales - a.totalSales)
+              .slice(0, 4);
+
+              console.log("Top Products:", topProducts.length);
+
+            return topProducts;
+break;
+
+case "filterProducts":
+  const {
+    subcatid,
+    catid,
+    priceRange,
+    sortBy,
+    colors,
+    sizes,
+    page = 0,
+    limit = 24,
+  } = query;
+
+  const filters = {};
+const varientFilters = {};
+
+
+if (subcatid && catid) {
+  filters.subcatagory = {
+    id: subcatid,
+    catagory: { id: catid },
+  };
+} else if (subcatid) {
+  filters.subcatagory = { id: subcatid };
+} else if (catid) {
+  filters.subcatagory = {
+    catagory: { id: catid },
+  };
+}
+
+
+if (priceRange && typeof priceRange === "string" && priceRange.includes(",")) {
+  const [minPrice, maxPrice] = priceRange.split(",").map(Number);
+  if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+    varientFilters.price = { $gte: minPrice, $lte: maxPrice };
+  }
+}
+
+if (colors && typeof colors === "string") {
+  const colorArray = colors.split(",").map((c) => parseInt(c)).filter(Boolean);
+  if (colorArray.length) {
+    varientFilters.colors = {
+      id: { $in: colorArray },
+    };
+  }
+}
+
+
+if (sizes && typeof sizes === "string") {
+  const sizeArray = sizes.split(",").map((s) => parseInt(s)).filter(Boolean);
+  if (sizeArray.length) {
+    varientFilters.sizes = {
+      id: { $in: sizeArray },
+    };
+  }
+}
+
+if (Object.keys(varientFilters).length > 0) {
+  filters.varients = varientFilters;
+}
+
+
+  const products = await strapi.db.query("api::product.product").findMany({
+
+    where: filters.$and && filters.$and.length > 0 ? filters : {},
+
+    offset: parseInt(page) * parseInt(limit),
+    limit: parseInt(limit),
+    populate: [
+      "varients",
+      "varients.colors",
+      "varients.sizes",
+      "subcatagory",
+      "subcatagory.catagory",
+      "seller",
+    ],
+  });
+
+  if (sortBy === "priceAsc") {
+    products.sort((a, b) => {
+      const priceA = a.varients?.[0]?.price || 0;
+      const priceB = b.varients?.[0]?.price || 0;
+      return priceA - priceB;
+    });
+  } else if (sortBy === "priceDesc") {
+    products.sort((a, b) => {
+      const priceA = a.varients?.[0]?.price || 0;
+      const priceB = b.varients?.[0]?.price || 0;
+      return priceB - priceA;
+    });
+  } else if (sortBy === "newest") {
+    products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } else if (sortBy === "oldest") {
+    products.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  }
+
+  const sanitizedProducts = await this.sanitizeOutput(products, ctx);
+
+  console.log("Filtered Products:", sanitizedProducts.length);
+  console.log("Filters Applied:", JSON.stringify(filters, null, 2));
+  console.log("Sort By:", sortBy);
+
+  return sanitizedProducts;
+break;
         case "getProductswithSubid":
           // return query.sid;
 
@@ -227,6 +406,15 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           return sanitizedEntitysub;
 
           break;
+          case "getPick":
+
+          const respc = await strapi.db.query("api::pickup.pickup").findMany({
+            select: ["*"],
+
+          });
+   return respc;
+
+            break;
 
 
           case "getProductswithCatid":
@@ -274,6 +462,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
           .findOne(id, {
             select: ["*"],
             populate: [
+              "images",
               "varients",
               "varients.colors",
               "varients.sizes",
@@ -305,6 +494,9 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
     }
   },
 
+
+
+
   async create(ctx) {
     const { id } = ctx.params;
 
@@ -326,84 +518,130 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
       var url_parts = url.parse(ctx.request.url, true);
       var query = url_parts.query;
       switch (query.func) {
-        case "AddProduct":
-          //
+ case "AddProduct":
+  if (utype == 1) {
+    let data, files;
 
-          if (utype == 1) {
-            const {
-              nameen,
-              namear,
-              descen,
-              descar,
-              code,
-              subc,
-           varients,
-              price,
-              imgs,
-            } = ctx.request.body;
+    try {
+      // Parse multipart or JSON data
+      if (ctx.is("multipart")) {
+        const multipartData = parseMultipartData(ctx);
+        data = multipartData.data;
+        files = multipartData.files;
+      } else {
+        data = ctx.request.body;
+      }
 
+      const {
+        nameen,
+        namear,
+        descen,
+        descar,
+        code,
+        subc,
+        varients,
+        imgs, // Include imgs field from the request body
+      } = data;
 
-            //uncomment for production
-            const product = await stripe.products.create({
-              name: nameen,
-              description:descen,
-            });
+      console.log("Received imgs:", imgs);
 
+      // Validate required fields
+      if (!nameen || !namear || !descen || !descar || !code || !subc || !varients) {
+        return ctx.badRequest("Missing required fields.");
+      }
 
-           let idarray = []
-             for (let i = 0; i < varients.length; i++) {
+      let idarray = [];
+      let parsedVarients;
 
-              const entry = await strapi.entityService.create(
-                "api::varient.varient",
-                {
-                  data: {
-                    price: varients[i].price,
-                    product_ref: product.id,
-                    stock: varients[i].stock,
-                    old_price:varients[i].discount,
-                    colors: varients[i].color ,
-                    sizes: varients[i].size,
-                    publishedAt: Date.now(),
-                  },
-                }
-              );
+      // Parse variants
+      try {
+        parsedVarients = JSON.parse(varients);
+      } catch (err) {
+        console.error("Error parsing variants:", err);
+        return ctx.badRequest("Invalid variants format.");
+      }
 
-              idarray.push(entry.id)
+      // Create variants
+      for (let i = 0; i < parsedVarients.length; i++) {
+        try {
+          const entry = await strapi.entityService.create("api::varient.varient", {
+            data: {
+              price: parsedVarients[i].price,
+              stock: parsedVarients[i].stock,
+              old_price: parsedVarients[i].discount,
+              colors: parsedVarients[i].color,
+              sizes: parsedVarients[i].size,
+              publishedAt: Date.now(),
+            },
+          });
+          idarray.push(entry.id);
+        } catch (err) {
+          console.error(`Error creating variant ${i}:`, err);
+          return ctx.internalServerError(`Failed to create variant ${i}.`);
+        }
+      }
 
-             }
+      // Create product entry without images
+      let productentry;
+      try {
+        productentry = await strapi.entityService.create("api::product.product", {
+          data: {
+            status: true,
+            name_ar: namear,
+            name_en: nameen,
+            description_ar: descar,
+            description_en: descen,
+            varients: idarray,
+            subcatagory: subc,
+            seller: udata.id,
+            code: code,
+            publishedAt: Date.now(),
+          },
+        });
 
+        console.log("Created product entry:", productentry);
+      } catch (err) {
+        console.error("Error creating product entry:", err);
+        return ctx.internalServerError("Failed to create product entry.");
+      }
 
+      // Manually associate images with the product
+      try {
+        await strapi.entityService.update("api::product.product", productentry.id, {
+          data: {
+            images: imgs.map((img) => ({
+              id: img.id,
+            })),
+          },
+        });
 
-            //const verid = entry.id;
+        console.log("Images associated successfully.");
 
-
-
-            const productentry = await strapi.entityService.create('api::product.product', {
-              data: {
-                status:true,
-                name_ar:namear,
-                name_en:nameen,
-                description_ar:descar,
-                description_en: descen,
-                varients: idarray,
-                subcatagory:subc,
-                seller: udata.id,
-                code:code,
-                img: imgs,
-                publishedAt :  Date.now() ,
-              },
-            });
-
-
-            return productentry;
-
-          } else {
-            return "unauthorized (:";
+        // Query the product entry to ensure images are populated
+        const updatedProduct = await strapi.entityService.findOne(
+          "api::product.product",
+          productentry.id,
+          {
+            populate: ["images"], // Ensure images are included in the response
           }
+        );
 
-          break;
+        console.log("Updated product entry with images:", updatedProduct);
+        return updatedProduct;
+      } catch (err) {
+        console.error("Error associating images:", err);
+        return ctx.internalServerError("Failed to associate images.");
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      return ctx.internalServerError("An unexpected error occurred.");
+    }
+  } else {
+    return ctx.forbidden("Unauthorized access.");
+  }
+  break;
 
-        default:
+  default:
           return "no function selected";
 
           break;

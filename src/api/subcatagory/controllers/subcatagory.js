@@ -140,34 +140,32 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
 
 
             case "getSubCatProducts":
-              // return query.sid;
-                 const resp = await strapi.db.query("api::subcatagory.subcatagory").findMany({
-                   select: ["*"],
-                   where: {
-                   feat:true,
-                  },
-                    // populate: ["catagory","products","products.varients","products.varients.colors"],
-                    populate:{
-                      catagory:{},
-                      products:{
-                        populate:{
-                          varients:{
-                            populate:["colors"]
-                          }
-                        },
-                     //   limit:8,
+              const resp = await strapi.db.query("api::subcatagory.subcatagory").findMany({
+                select: ["*"],
+                where: {
+                  feat: true,
+                },
+                populate: {
+                  catagory: true,
+                  products: {
+                    populate: {
+                      varients: {
+                        populate: ["colors"],
                       },
+                    },
+                  },
+                },
+              });
 
-                    }
-                 });
-
-                 const sanitizedEntityp = await this.sanitizeOutput(resp, ctx);
-
-             //   console.dir(res);
-                 return sanitizedEntityp;
-
-                 break;
-
+              const limitedProducts = resp.map(subcat => {
+                return {
+                  ...subcat,
+                  products: subcat.products?.slice(0, 4) || [],
+                };
+              });
+              const sanitizedEntityp = await this.sanitizeOutput(limitedProducts, ctx);
+              return sanitizedEntityp;
+ break;
 
 
                  case "getAllSubcat":
@@ -184,6 +182,65 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
 
                      break;
 
+
+                     case "getTopSubcats":
+  const orders = await strapi.db.query("api::order.order").findMany({
+    where: { status: "processed" },
+    select: ["cart"],
+  });
+
+  const productSalesMap = {};
+
+  orders.forEach((order) => {
+    const cart = order.cart || [];
+    cart.forEach((item) => {
+      const id = item.id;
+      const quantity = item.qty || 1;
+      if (!productSalesMap[id]) productSalesMap[id] = 0;
+      productSalesMap[id] += quantity;
+    });
+  });
+
+  const productIds = Object.keys(productSalesMap).map((id) => Number(id));
+
+  const products = await strapi.db.query("api::product.product").findMany({
+    where: { id: { $in: productIds } },
+    populate: ["subcatagory",
+      //  "varients", "varients.colors"
+      ],
+  });
+
+  const productsWithSales = products.map((product) => {
+    const totalSales = productSalesMap[product.id] || 0;
+    return { ...product, totalSales };
+  });
+
+  const subcategorySalesMap = {};
+
+  productsWithSales.forEach((product) => {
+    const subcategory = product.subcatagory;
+    if (!subcategory) return;
+
+    const subcatId = subcategory.id;
+
+    if (!subcategorySalesMap[subcatId]) {
+      subcategorySalesMap[subcatId] = {
+        subcategory: subcategory,
+        totalSales: 0,
+        products: [],
+      };
+    }
+
+    subcategorySalesMap[subcatId].totalSales += product.totalSales;
+    subcategorySalesMap[subcatId].products.push(product);
+  });
+
+  const sortedSubcategories = Object.values(subcategorySalesMap)
+    .sort((a, b) => b.totalSales - a.totalSales)
+    .slice(0, 5);
+// console.log(sortedSubcategories.length);
+  return sortedSubcategories;
+            break;
 
 
             default:
