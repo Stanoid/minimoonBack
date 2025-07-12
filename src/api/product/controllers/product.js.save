@@ -1,4 +1,4 @@
-// @ts-nocheck
+		// @ts-nocheck
 "use strict";
 
 const catagorie = require("../../catagorie/controllers/catagorie");
@@ -63,7 +63,6 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             select: ["*"],
             populate: [
               "varients",
-              "images",
               "varients.sizes",
               "varients.colors",
               "subcatagory",

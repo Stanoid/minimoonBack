@@ -149,24 +149,26 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                   catagory: true,
                   products: {
                     populate: {
+                      images: true,
                       varients: {
-                        populate: ["colors"],
+                        populate: {
+                          colors: true,
+                        },
                       },
                     },
                   },
                 },
               });
 
-              const limitedProducts = resp.map(subcat => {
-                return {
-                  ...subcat,
-                  products: subcat.products?.slice(0, 4) || [],
-                };
-              });
+              const limitedProducts = resp.map(subcat => ({
+                ...subcat,
+                products: subcat.products?.slice(0, 4) || [],
+              }));
+
               const sanitizedEntityp = await this.sanitizeOutput(limitedProducts, ctx);
               return sanitizedEntityp;
- break;
 
+break;
 
                  case "getAllSubcat":
                   // return query.sid;
