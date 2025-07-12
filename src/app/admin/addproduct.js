@@ -218,6 +218,9 @@ const handleProductFilling = ()=>{
     if (lod || imgLod || !files || files.length === 0) {
       return;
     }
+
+
+    
   
     setImglod(true);
     const postData = new FormData();
@@ -454,7 +457,7 @@ const handleProductFilling = ()=>{
         subc,
         code,
         varients: JSON.stringify(formattedVarients), 
-        imgs: imageRelationData,
+        images: imageRelationData,
       }),
     };
 
