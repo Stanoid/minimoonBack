@@ -53,8 +53,8 @@ export default function Product(props) {
   }
 
 console.log("images url",IMG_URL)
-  console.log("Image URL:", props.data);
-
+  console.log("Image URL:", props.data.images[0]?.formats?.thumbnail?.url);
+console.log(`ful image url ${IMG_URL}${props.data.images[0]?.formats?.medium?.url}`)
 
   
   return (
@@ -75,11 +75,13 @@ console.log("images url",IMG_URL)
           </div>
         ) : (
           <>
-            <CldImage
+            <Image
               fill
               objectFit='cover'
               className='rounded-t-lg' 
-              src={IMG_URL + props.data?.images?.[0]?.formats?.thumbnail?.url}
+      
+              // src={IMG_URL + props.data?.images?.[0]?.formats?.thumbnail?.url}
+               src={`${IMG_URL}${props.data?.images[0]?.formats?.medium?.url}`} 
               alt={props.data?.name_ar}
             />
             <div className="absolute top-2 left-2 p-2 bg-[#f7a0983d] rounded-md shadow-sm z-10">

@@ -20,15 +20,21 @@ export default function Home() {
   const searchParams = useSearchParams();
   const cid = searchParams.get('cid');
 
-  const getCatProducts = () => {
-    if (!cid) return;
-    fetch(`${API_URL}products?func=getProductswithCatid&cid=${cid}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLod(false);
-      });
-  };
+const getCatProducts = () => {
+  if (!cid) return;
+
+  fetch(`${API_URL}products?func=getProductswithCatid&cid=${cid}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Products fetched from server:", data);
+      setProducts(data);
+      setLod(false);
+    })
+    .catch((err) => {
+      console.error("Error fetching category products:", err);
+      setLod(false);
+    });
+};
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -77,7 +83,7 @@ export default function Home() {
                       objectFit="cover"
                       className="rounded-md rounded-b-none"
                       fill
-                      src="https://res.cloudinary.com/strapimedia/image/upload/v1728387477/minimoon_assets/g2lsfkim9mi7dwc1ofxs.jpg"
+               src={`${IMG_URL}${products.data?.images[0]?.formats?.medium?.url}`} 
                       alt="Product"
                     />
                   </div>
