@@ -422,20 +422,33 @@ break;
             // return query.sid;
 
             const ressubo = await strapi.db
-              .query("api::subcatagory.subcatagory")
-              .findMany({
-                select: ["*"],
-                where: {
-                catagory:{
-                     id:query.cid
+            .query("api::subcatagory.subcatagory")
+            .findMany({
+              where: {
+                catagory: { id: query.cid },
+              },
+              populate: {
+                img: true,
+                images: true,
+                products: {
+                  populate: {
+                    images: true,
+                    varients: {
+                      populate: {
+                        colors: true,
+                        size: true,
+                      },
                     },
+                    subcatagory: {
+                      populate: {
+                        catagory: true,
+                      },
+                    },
+                  },
                 },
-                populate: ["products", "img",  "products.varients",
-                  "products.varients.colors",
-                  "products.varients.size",
-                  "products.subcatagory",
-                  "products.subcatagory.catagory"],
-              });
+              },
+            });
+
 
             const sanitizedEntitysubo = await this.sanitizeOutput(ressubo, ctx);
             return sanitizedEntitysubo;
@@ -519,128 +532,128 @@ break;
       var url_parts = url.parse(ctx.request.url, true);
       var query = url_parts.query;
       switch (query.func) {
- case "AddProduct":
-  if (utype == 1) {
-    let data, files;
+  case "AddProduct":
+    if (utype == 1) {
+      let data, files;
 
-    try {
-      // Parse multipart or JSON data
-      if (ctx.is("multipart")) {
-        const multipartData = parseMultipartData(ctx);
-        data = multipartData.data;
-        files = multipartData.files;
-      } else {
-        data = ctx.request.body;
-      }
-
-      const {
-        nameen,
-        namear,
-        descen,
-        descar,
-        code,
-        subc,
-        varients,
-        imgs, // Include imgs field from the request body
-      } = data;
-
-      console.log("Received imgs:", imgs);
-
-      // Validate required fields
-      if (!nameen || !namear || !descen || !descar || !code || !subc || !varients) {
-        return ctx.badRequest("Missing required fields.");
-      }
-
-      let idarray = [];
-      let parsedVarients;
-
-      // Parse variants
       try {
-        parsedVarients = JSON.parse(varients);
-      } catch (err) {
-        console.error("Error parsing variants:", err);
-        return ctx.badRequest("Invalid variants format.");
-      }
+        // Parse multipart or JSON data
+        if (ctx.is("multipart")) {
+          const multipartData = parseMultipartData(ctx);
+          data = multipartData.data;
+          files = multipartData.files;
+        } else {
+          data = ctx.request.body;
+        }
 
-      // Create variants
-      for (let i = 0; i < parsedVarients.length; i++) {
+        const {
+          nameen,
+          namear,
+          descen,
+          descar,
+          code,
+          subc,
+          varients,
+          imgs, // Include imgs field from the request body
+        } = data;
+
+        console.log("Received imgs:", imgs);
+
+        // Validate required fields
+        if (!nameen || !namear || !descen || !descar || !code || !subc || !varients) {
+          return ctx.badRequest("Missing required fields.");
+        }
+
+        let idarray = [];
+        let parsedVarients;
+
+        // Parse variants
         try {
-          const entry = await strapi.entityService.create("api::varient.varient", {
+          parsedVarients = JSON.parse(varients);
+        } catch (err) {
+          console.error("Error parsing variants:", err);
+          return ctx.badRequest("Invalid variants format.");
+        }
+
+        // Create variants
+        for (let i = 0; i < parsedVarients.length; i++) {
+          try {
+            const entry = await strapi.entityService.create("api::varient.varient", {
+              data: {
+                price: parsedVarients[i].price,
+                stock: parsedVarients[i].stock,
+                old_price: parsedVarients[i].discount,
+                colors: parsedVarients[i].color,
+                sizes: parsedVarients[i].size,
+                publishedAt: Date.now(),
+              },
+            });
+            idarray.push(entry.id);
+          } catch (err) {
+            console.error(`Error creating variant ${i}:`, err);
+            return ctx.internalServerError(`Failed to create variant ${i}.`);
+          }
+        }
+
+        // Create product entry without images
+        let productentry;
+        try {
+          productentry = await strapi.entityService.create("api::product.product", {
             data: {
-              price: parsedVarients[i].price,
-              stock: parsedVarients[i].stock,
-              old_price: parsedVarients[i].discount,
-              colors: parsedVarients[i].color,
-              sizes: parsedVarients[i].size,
+              status: true,
+              name_ar: namear,
+              name_en: nameen,
+              description_ar: descar,
+              description_en: descen,
+              varients: idarray,
+              subcatagory: subc,
+              seller: udata.id,
+              code: code,
               publishedAt: Date.now(),
             },
           });
-          idarray.push(entry.id);
+
+          console.log("Created product entry:", productentry);
         } catch (err) {
-          console.error(`Error creating variant ${i}:`, err);
-          return ctx.internalServerError(`Failed to create variant ${i}.`);
+          console.error("Error creating product entry:", err);
+          return ctx.internalServerError("Failed to create product entry.");
         }
-      }
 
-      // Create product entry without images
-      let productentry;
-      try {
-        productentry = await strapi.entityService.create("api::product.product", {
-          data: {
-            status: true,
-            name_ar: namear,
-            name_en: nameen,
-            description_ar: descar,
-            description_en: descen,
-            varients: idarray,
-            subcatagory: subc,
-            seller: udata.id,
-            code: code,
-            publishedAt: Date.now(),
-          },
-        });
+        // Manually associate images with the product
+        try {
+          await strapi.entityService.update("api::product.product", productentry.id, {
+            data: {
+              images: imgs.map((img) => ({
+                id: img.id,
+              })),
+            },
+          });
 
-        console.log("Created product entry:", productentry);
+          console.log("Images associated successfully.");
+
+          // Query the product entry to ensure images are populated
+          const updatedProduct = await strapi.entityService.findOne(
+            "api::product.product",
+            productentry.id,
+            {
+              populate: ["images"], // Ensure images are included in the response
+            }
+          );
+
+          console.log("Updated product entry with images:", updatedProduct);
+          return updatedProduct;
+        } catch (err) {
+          console.error("Error associating images:", err);
+          return ctx.internalServerError("Failed to associate images.");
+        }
       } catch (err) {
-        console.error("Error creating product entry:", err);
-        return ctx.internalServerError("Failed to create product entry.");
+        console.error("Unexpected error:", err);
+        return ctx.internalServerError("An unexpected error occurred.");
       }
-
-      // Manually associate images with the product
-      try {
-        await strapi.entityService.update("api::product.product", productentry.id, {
-          data: {
-            images: imgs.map((img) => ({
-              id: img.id,
-            })),
-          },
-        });
-
-        console.log("Images associated successfully.");
-
-        // Query the product entry to ensure images are populated
-        const updatedProduct = await strapi.entityService.findOne(
-          "api::product.product",
-          productentry.id,
-          {
-            populate: ["images"], // Ensure images are included in the response
-          }
-        );
-
-        console.log("Updated product entry with images:", updatedProduct);
-        return updatedProduct;
-      } catch (err) {
-        console.error("Error associating images:", err);
-        return ctx.internalServerError("Failed to associate images.");
-      }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-      return ctx.internalServerError("An unexpected error occurred.");
+    } else {
+      return ctx.forbidden("Unauthorized access.");
     }
-  } else {
-    return ctx.forbidden("Unauthorized access.");
-  }
-  break;
+    break;
 
   default:
           return "no function selected";
