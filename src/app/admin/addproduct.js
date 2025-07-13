@@ -437,7 +437,9 @@ const handleProductFilling = ()=>{
       size: parseInt(variant.size, 10),
       stock: parseInt(variant.stock, 10),
       price: parseInt(variant.price, 10),
-      discount: parseInt(variant.discount, 10),
+      // discount: parseInt(variant.discount, 10),
+      discount: parseFloat(variant.discount),
+
       color: parseInt(variant.color, 10),
     }));
   
