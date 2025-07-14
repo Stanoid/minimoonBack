@@ -240,7 +240,7 @@ props.setLod(true)
       
  }}>
 
-<div className='text-moon-200/80 font-semibold w-full  text-right text-2xl mt-3 mb-4 '>
+<div className='text-gray-900 font-semibold w-full  text-right text-2xl mt-3 mb-4 '>
 تعديل العنوان
 </div>
 

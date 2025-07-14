@@ -85,23 +85,53 @@ export default function NavbarC(props) {
   return (
     <>
     <nav className="bg-white  lg:max-[218px]  w-full">
-      <div className="bg-mon-100  text-moon-200 border-b  text-sm py-2 flex items-center justify-center rtl">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span className="font-bold">لا تفوت عرض رأس العام! ارتق بمجموعتك الآن.</span>
-        <span className="mr-1">خصم يصل الي 50%</span>
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-      </div>
+    <div
+  className="bg-gradient-to-r from-moon-200 via-moon-100 to-moon-200 border-b border-moon-100 flex justify-center select-none duration-300"
+  style={{
+    width: '1440px',
+    height: '45px',
+    paddingTop: '3px',
+    paddingBottom: '3px',
+    borderBottomWidth: '1px',
+    fontFamily: '"El Messiri", sans-serif',
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '150%',
+    letterSpacing: '0%',
+    textAlign: 'center',
+    backgroundSize: '200% 100%',
+    animation: 'waveGradient 6s ease infinite',
+  }}
+>
+  <div className="flex items-center space-x-2">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+    </svg>
 
-      {/* Top Utility Bar */}
+    <span>لا تفوّت عروضنا الحصرية وتخفيضات الصيف المذهلة! </span>
+  </div>
+
+  <style jsx>{`
+    @keyframes waveGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  `}</style>
+</div>
+
+
       <div className="container   lg:flex hidden mx-auto px-4 py-2  justify-between items-center text-gray-500 text-sm border-b border-gray-200 rtl">
         <div className="flex items-center gap-2 space-x-4 space-x-reverse">
           <a href="#" className="flex items-center space-x-1 space-x-reverse hover:text-gray-900">
             <span>اتصل بنا</span>
-             {/* Using generic SVGs for exact match of image's icons if react-icons don't match perfectly */}
+
              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
@@ -185,9 +215,9 @@ export default function NavbarC(props) {
 
 {/* 1. Favorites */}
 {userData && !userData.error && (
-  <motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative">
+  <motion.div onClick={() => props.openFav(true)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative">
     <span className="text-sm ml-2 hidden sm:block">المفضلة</span>
-    <Button onClick={() => props.openFav(true)} isIconOnly className="text-xl" size="md" aria-label="Favorites">
+    <Button  isIconOnly className="text-xl" size="md" aria-label="Favorites">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
       </svg>
@@ -195,7 +225,6 @@ export default function NavbarC(props) {
   </motion.div>
 )}
 
-{/* 2. Cart */}
 <motion.div  onClick={() => props.openCart(true)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer">
   <span className="ml-2 text-sm hidden sm:block">
     {cartData?.totalPrice || 0} $ {cartData?.totalItems || 0} منتجات
@@ -207,7 +236,6 @@ export default function NavbarC(props) {
   </Button>
 </motion.div>
 
-{/* 3. Account */}
 {userData && !userData.error ? (
   <motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1 space-x-reverse">
     <span className="text-sm hidden sm:block">حسابي</span>
@@ -236,8 +264,8 @@ export default function NavbarC(props) {
   <ul className="flex justify-end  max-w-full items-center text-gray-700 text-sm font-medium">
 
     {subCat.map((item, index) => (
-      <li key={index} className="flex justify-between hover:underline  items-center px-3">
-        <button
+      <li key={index} className="flex justify-between hover:border-b border-moon-200 text-gray-500 hover:text-gray-900  items-center px-3">
+        <a
 
 onClick={() => {
             const catId = item.catagory?.id;
@@ -247,10 +275,10 @@ onClick={() => {
               console.warn("Category ID not found", item);
             }
           }}
-                    className="flex-1 text-right py-4 border-b hover:cursor-pointer  hover:text-moon-200  text-gray-900 text-sm rounded-md "
+                    className="flex-1 text-right py-4 border-b hover:cursor-pointer    text-gray-900 text-sm rounded-md "
         >
           {item.name_ar}
-        </button>
+        </a>
         {/* <span className="text-moon-200 text-base">←</span> */}
       </li>
     ))}
@@ -260,6 +288,9 @@ onClick={() => {
 )}
 
       </div>
+
+
+      
     </nav>
 {/* mobile nav */}
     <div dir="rtl" className="lg:hidden  w-full fixed top-0 left-0 z-50">

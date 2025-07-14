@@ -233,7 +233,7 @@ props.setLod(true)
       
  }}>
 
-<div className='text-moon-200/80 font-semibold w-full my-6 text-right text-2xl mt-3'>
+<div className='text-gray-900 font-semibold w-full my-6 text-right text-2xl mt-3'>
 البيانات الشخصية
 </div>
 
@@ -242,7 +242,7 @@ props.setLod(true)
 
 <div>
 
-  <div className=' p-8 rounded-full text-white text-5xl bg-moon-200 '>
+  <div className=' p-8 rounded-full text-white text-5xl bg-gray-100 '>
     <FaUserAlt/>
     <div className='text-sm absolute mt-1 mr-12 p-2 rounded-full bg-moon-100'>
         <FaEdit/>

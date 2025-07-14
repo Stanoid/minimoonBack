@@ -78,13 +78,13 @@ export default function Product(props) {
             </div>
           ) : (
             <>
-              {/* <CldImage
+              <Image
                 fill
                 objectFit='cover'
                 className='rounded-t-lg' 
-                src={JSON.parse(props.data.images.thumbnail)[0].thumb}
+               src={`${IMG_URL}${props.data?.images[0]?.formats?.medium?.url}`} 
                 alt="Product Image"
-              /> */}
+              />
               <div className="absolute top-2 left-2 p-2 bg-[#f7a0983d] rounded-md shadow-sm z-10">
                 <FaHeart className="text-gray-400 text-lg" />
               </div>

@@ -28,13 +28,19 @@ import Cookies from "universal-cookie";
 import Logowhite from "../../public/logored.svg";
 import { useRouter, usePathname } from "next/navigation";
 import { BsX } from "react-icons/bs";
+
 import { useSelector } from "react-redux";
 const ArFont = localFont({ src: './styles/fonts/alfont_com_SomarGX.ttf' })
 const EnFont = localFont({ src: './styles/fonts/gothambook-webfont.woff2' })
+
+
 export default function RootLayout({ children, isProductPage = false }) {
+  const router = useRouter();
+  const pathname = usePathname()
+   isProductPage = pathname.includes('/products');
+  
   const bgColorClass = isProductPage ? 'bg-white' : 'bg-gray-50';
 
-  const router = useRouter();
   //const userData = useSelector((state) => state.root.auth.data&&state.root.auth.data)
 
   const [openCart, setOpenCart] = useState(false);

@@ -211,7 +211,7 @@ const notify = (type,msg)=>{
                       display:"flex",
                       width:"100%",
                       color:Theme.primary,
-                      justifyContent:"center",
+                      justifyContent:"between",
                       alignItems:"center",
                       fontWeight:"bold",
                       paddingBottom:20,

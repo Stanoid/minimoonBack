@@ -64,7 +64,7 @@ const getCatProducts = () => {
       </div>
 
       <div
-        className="flex w-full max-w-screen-xl mx-auto px-2 lg:px-4"
+        className="flex w-full max-w-screen-xl mx-auto px-2 "
         style={{ display: lod ? 'none' : 'flex' }}
       >
         <div className="flex-1 space-y-2" dir="ltr">
@@ -103,7 +103,7 @@ const getCatProducts = () => {
                   </div>
 
                   {index % 2 === 0 ? (
-                    <div className="px-0 sm:px-0 lg:px-2 grid w-full gap-y-4 my-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-4 grid-cols-2">
+                    <div className="px-0 sm:px-0 lg:px-2 grid w-full gap-y-4 my-6 xl:grid-cols-3 xl:gfap-4 lg:gap-4 lg:grid-cols-3 md:grid-cols-4 grid-cols-2">
                       {sub.products &&
                         sub.products.map(
                           (prd) =>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { API_URL } from '../local';
+import {CURRENCY, API_URL, IMG_URL, DEF_IMG } from '../local'
 import { Spinner, Button, Tooltip } from '@nextui-org/react';
 import { FaArrowLeft, FaArrowRight, FaStar, FaHeart } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
@@ -175,20 +175,15 @@ export default function MostDemanded() {
                       </div>
                     ) : (
                       <>
-                        <CldImage
-                          fill
-                          objectFit="cover"
-                          className="rounded-t-lg"
-                          src={(() => {
-                            try {
-                              const imgs = JSON.parse(product.img || '[]');
-                              return imgs[0]?.thumb || '/fallback.jpg';
-                            } catch {
-                              return '/fallback.jpg';
-                            }
-                          })()}
-                          alt="صورة المنتج"
-                        />
+                        <img
+                                   fill
+                                   objectFit='cover'
+                                   className='rounded-t-lg' 
+                           
+                                   // src={IMG_URL + props.data?.images?.[0]?.formats?.thumbnail?.url}
+                                    src={`${IMG_URL}${product.data?.images[0]?.formats?.medium?.url}`} 
+                                   alt={product.data?.name_ar}
+                                 />
                         <div className="absolute top-2 left-2 p-2 bg-[#f7a0983d] rounded-md shadow-sm z-10">
                           <FaHeart className="text-gray-400 text-lg" />
                         </div>

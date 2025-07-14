@@ -139,8 +139,8 @@ function Orders(props) {
 
 
 <div className='px-4 sm:px-4 lg:px-8'  style={{marginTop:10,width:"100%",borderRadius:10,backgroundColor:""}}>
-<div className='text-moon-200/80  text-2xl mt-3'>
-الطلبات:
+<div className='text-moon-gray-900  text-2xl mt-3'>
+الطلبات
 </div>
 <br/>
 
