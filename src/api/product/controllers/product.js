@@ -164,7 +164,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
           case "getFullProduct":
             try {
-              const id = query.id; // or use ctx.params.id if hitting a route like /products/:id
+              const id = query.id;
 
               if (!id) {
                 return ctx.badRequest("Product ID is missing.");
@@ -256,7 +256,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
               where: {
                 id: { $in: productIds },
               },
-              populate: ["subcatagory", "varients", "varients.colors"],
+              populate: ["images", "subcatagory", "varients", "varients.colors"],
             });
 
             const productsWithSales = allSoldProducts.map((product) => ({
@@ -448,7 +448,7 @@ break;
                 },
               },
             });
-          
+
 
             const sanitizedEntitysubo = await this.sanitizeOutput(ressubo, ctx);
             return sanitizedEntitysubo;
