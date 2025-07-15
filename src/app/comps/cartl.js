@@ -207,24 +207,18 @@ const notify = (type,msg)=>{
                     style={{fontWeight:"bold",textAlign:"right"}}
                     className="text-lg font-medium text-gray-900  ">المفضلة </Dialog.Title> */}
 
-                    <div  style={{
+                    <div dir='rtl' style={{
                       display:"flex",
                       width:"100%",
-                      color:Theme.primary,
                       justifyContent:"between",
                       alignItems:"center",
-                      fontWeight:"bold",
                       paddingBottom:20,
                       borderBottom:"2px solid "+ Theme.primary,
                       fontSize:25,
                     }} >
 
-                      <div style={{
-                        marginRight:10
-                      }}>
-                        <BsHeartFill/>
-                      </div>
-                                <div>
+                
+                                <div className='text-lg'>
                                 المفضلة
                                 </div>
                                 
@@ -236,7 +230,7 @@ const notify = (type,msg)=>{
               
                      
 
-                     <div id="scrol"   style={{height:"100vh",overflowY:'scroll', overflowX:'hidden',padding:10}}>
+                     {/* <div id="scrol"   style={{height:"100vh",overflowY:'scroll', overflowX:'hidden',padding:10}}>
                  
                      {likesData&&likesData.length!=0?likesData.map((like,index)=>(
                 like.products.length!=0?
@@ -270,7 +264,7 @@ const notify = (type,msg)=>{
                      
                   
                     
-                     </div>
+                     </div> */}
    
                     {/* <div style={{padding:20,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                         <div style={{fontSize:15,fontWeight:'bold'}}></div>

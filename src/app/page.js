@@ -321,7 +321,7 @@ bg-[url('../../public/amblemblack.svg')] "  >
 
 </div>
 
-<div className="overflow-x-auto md:overflow-x-visible w-full">
+<div className="">
   <HorDiv data={subcat.products} btn={true} />
 </div>
 

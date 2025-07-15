@@ -10,6 +10,8 @@ function LikeEl(props) {
     return (
 
     <motion.div
+
+    dir="rtl"
         //whileHover={{ scale: 1.03 }}
         //whileTap={{ scale: 0.9 }}
      //onClick={()=>{revalidatePath('/products?pid=${props.id}') ; props.closeModal()}}
@@ -33,11 +35,11 @@ function LikeEl(props) {
           </div>
         </a>
 
-        <div className="bg-moon-200 text-white px-2 mx-2 py-1 text-sm rounded-full ">
+        <div className="flex flex-col text-gray-900 px-2 mx-2 py-1 text-sm rounded-full ">
           {props.code}
-        </div>
-      
-    <div className='flex flex-col px-2' dir='rtl' >
+
+     
+          <div className=' ' dir='rtl' >
                <div className='text-gray-400 text-lg'>
                {props.name.length>10?props.name.slice(0,40)+"...":props.name }
                </div>
@@ -46,12 +48,22 @@ function LikeEl(props) {
       </div>
                  </div>
 
+
+        </div>
+ <div>
+
+ hhhhhh
+ </div>
+
                  <div
       onClick={()=>{props.removeFav(props.lid)}}
       style={{display:props.order?"none":"flex",alignItems:"center",justifyContent:"center",borderRight:"0px solid lightgrey",paddingRight:10}}>
-        <div style={{backgroundColor:"red",padding:2.5,borderRadius:100}}>
-        <BsX style={{color:"white",fontSize:25}} />
-        </div>
+         <div
+          className="border border-moon-200 rounded-md  text-moon-200"
+            style={{  padding: 2.5 }}
+          >
+            <BsX style={{ color: "", fontSize: 25 }} />
+          </div>
   
       </div>
                 
