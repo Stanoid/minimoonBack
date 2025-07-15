@@ -130,7 +130,7 @@ module.exports = createCoreController('api::like.like', ({ strapi }) => ({
 
     },
     populate: [
-      'products',"products.varients"
+      'products',"products.varients, products.images"
     ],
   });
   return ressubp;
