@@ -119,27 +119,25 @@ module.exports = createCoreController('api::like.like', ({ strapi }) => ({
 
       switch (query.func) {
 
-    case "getLikes":
-  const ressubp = await strapi.db
-    .query("api::like.like")
-    .findMany({
-      where: {
-        users_permissions_user: regid,
-      },
-      populate: {
-        product: {
-          populate: {
-            varients: true,
-            images: true,
-          }
-        }
-      },
-    });
 
-  console.log(ressubp);
-  return ressubp;
-  break;
+        case "getLikes":
 
+        const ressubp = await strapi.db
+        .query("api::like.like")
+        .findMany({
+          select: ["*"],
+          where: {
+            users_permissions_user: regid,
+
+          },
+          populate: [
+            'products',"products.varients, products.images"
+          ],
+        });
+
+        console.log(ressubp);
+        return ressubp;
+                 break;
 
 
       }
