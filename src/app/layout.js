@@ -408,7 +408,7 @@ className="flex cursor-pointer items-center" >
  
             
             <section className={`${bgColorClass} el-messiri-text`}>
-            <div className="max-w-[1280px] w-full  lg:px-8 overflow-hidden mt-8 lg:mt-16 mx-auto min-h-screen">
+            <div className="max-w-[1280px] w-full  lg:px-8  mt-8 lg:mt-16 mx-auto min-h-screen">
               
                   {children}
                 </div>

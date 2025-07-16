@@ -7,7 +7,8 @@ import { FaArrowLeft, FaArrowRight, FaStar, FaHeart } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Theme } from '../local'; // Ensure Theme is imported for dot colors if needed
+import { Theme } from '../local'; 
+import Image from 'next/image';
 
 export default function MostDemanded() {
   const [subcats, setSubcats] = useState([]);
@@ -15,11 +16,11 @@ export default function MostDemanded() {
   const [products, setProducts] = useState([]);
   const [loadingSubcats, setLoadingSubcats] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  const [loading, setLoading] = useState(false); // This 'loading' state is for the individual card click
+  const [loading, setLoading] = useState(false); 
 
   const productScrollRef = useRef(null);
   const router = useRouter();
-  const CURRENCY = "د.ج"; // Defined here, consistent with Product component
+  const CURRENCY = "د.ج"; 
 
   useEffect(() => {
     const fetchSubcategories = async () => {
@@ -35,7 +36,10 @@ export default function MostDemanded() {
     };
     fetchSubcategories();
   }, []);
-
+  
+  
+  console.log(IMG_URL)
+  
   useEffect(() => {
     const fetchProducts = async () => {
       setLoadingProducts(true);
@@ -46,8 +50,11 @@ export default function MostDemanded() {
         }
         const res = await fetch(url);
         const data = await res.json();
-        // Adjusting data structure to match expected array of products
-        // If selectedSubcat, data might be a single object, so wrap it in an array
+
+        console.log("most demanded", data.images)
+    
+        // console.log(`ful image url ${IMG_URL}${data.data.images[0]?.formats?.medium?.url}`)
+        
         const finalProducts = selectedSubcat ? (data ? [data] : []) : (data || []);
         setProducts(finalProducts);
       } catch (err) {
@@ -99,8 +106,8 @@ export default function MostDemanded() {
             size="sm"
             className={`rounded-md border ${
               selectedSubcat === null
-                ? 'bg-white border-gray-300 text-gray-800' // Changed to match active button style
-                : 'bg-moon-200 border-pink-100 text-gray-700' // Changed to match inactive button style
+                ? 'bg-white border-gray-300 text-gray-800' 
+                : 'bg-moon-200 border-pink-100 text-gray-700' 
             }`}
             onClick={() => setSelectedSubcat(null)}
           >
@@ -136,7 +143,6 @@ export default function MostDemanded() {
                   ? Math.round(((varient.old_price - varient.price) / varient.old_price) * 100)
                   : null;
 
-              // Helper to get unique colors from all variants of a product
               const getUniqueColors = (product) => {
                 if (!Array.isArray(product.varients)) {
                   return [];
@@ -164,10 +170,8 @@ export default function MostDemanded() {
                     setLoading(true);
                     router.push(`/products?pid=${product.id}`);
                   }}
-                  // Card Container Styling - Matching Product component
                   className="lg:w-[270.25px] lg:h-[501px] w-[167px] h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative shrink-0 snap-start"
                 >
-                  {/* Image Section */}
                   <div className="relative mx-h-[169px] h-full lg:max-w-[308px] lg:max-h-[308px] w-full">
                     {loading ? ( // This 'loading' is from the MostDemanded component's state
                       <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
@@ -181,7 +185,8 @@ export default function MostDemanded() {
                                    className='rounded-t-lg' 
                            
                                    // src={IMG_URL + props.data?.images?.[0]?.formats?.thumbnail?.url}
-                                    src={`${IMG_URL}${product.data?.images[0]?.formats?.medium?.url}`} 
+                                  src={`${IMG_URL}${product.data?.images[0]?.formats?.medium?.url}`} 
+                                     
                                    alt={product.data?.name_ar}
                                  />
                         <div className="absolute top-2 left-2 p-2 bg-[#f7a0983d] rounded-md shadow-sm z-10">

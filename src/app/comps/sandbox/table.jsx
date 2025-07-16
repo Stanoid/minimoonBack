@@ -398,7 +398,6 @@
             const srcd = imageUrl.startsWith("http") ? imageUrl : `${IMG_URL}${imageUrl}`;
             const src = imageUrl?.startsWith("http") ? imageUrl : `${IMG_URL}${imageUrl}`;
 
-cosole.log("gere is tehimaegbsrc " ,src)
             return (
               <div className="w-16 h-16 relative">
                 <Image

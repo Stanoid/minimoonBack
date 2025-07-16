@@ -52,9 +52,6 @@ export default function Product(props) {
     return parseInt(oldPrice);
   }
 
-console.log("images url",IMG_URL)
-  console.log("Image URL:", props.data.images[0]?.formats?.thumbnail?.url);
-console.log(`ful image url ${IMG_URL}${props.data.images[0]?.formats?.medium?.url}`)
 
   
   return (

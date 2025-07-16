@@ -6,6 +6,8 @@ import { FaArrowUp, FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { IMG_URL, Theme } from '../local';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import ImageZoom from 'react-image-zooom';
+
 
 const GlobalStyles = createGlobalStyle`
   #root {
@@ -165,7 +167,7 @@ function Lens({ data = [] }) {
 
             <div className="relative flex items-center justify-center w-full h-full bg-white rounded-lg">
               <button
-                className="absolute left-0 top-1/2 -translate-y-1/2 p-4 bg-gradient-to-l from-white to-white text-moon-100 rounded-full text-2xl z-10" // Add z-index to buttons
+                className="absolute left-0 top-1/2 -translate-y-1/2 p-4 bg-gradient-to-l from-moon-100 to-white text-white hover:text-moon-200 rounded-full text-2xl z-10" // Add z-index to buttons
                 onClick={() => {
                   setCurrentModalImageIndex(i => (i === 0 ? data.length - 1 : i - 1));
                   setModalZoomLevel(1); 
@@ -175,13 +177,13 @@ function Lens({ data = [] }) {
                 <FaAngleLeft />
               </button>
               <div
-                className="relative w-full h-full overflow-hidden" 
+                className="relative w-full flex items-center justify-center h-full overflow-hidden" 
                 onClick={handleModalImageClick}
                 onMouseMove={handleModalMouseMove}
                 ref={modalImageRef}
-                style={{ cursor: modalZoomLevel === 1 ? 'zoom-in' : 'zoom-out' }}
+                style={{ cursor: modalZoomLevel === 2 ? 'zoom-in' : 'zoom-out' }}
               >
-                <Image
+                <ImageZoom
                   src={IMG_URL + data[currentModalImageIndex].attributes?.url}
                   alt={`modal-${currentModalImageIndex}`}
                   fill
@@ -192,11 +194,11 @@ function Lens({ data = [] }) {
                     transition: 'transform 0.1s ease-out', 
                     pointerEvents: modalZoomLevel > 1 ? 'auto' : 'none', 
                   }}
-                  className="rounded-md"
+                  className="rounded-md max-w-[400px] "
                 />
               </div>
               <button
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-4 bg-gradient-to-r from-moon-100 to-white text-moon-100 rounded-full text-2xl z-10" // Add z-index to buttons
+                className="absolute right-0 top-1/2 -translate-y-1/2 p-4 bg-gradient-to-r from-moon-100 to-white text-white hover:text-moon-200 rounded-full text-2xl z-10" // Add z-index to buttons
                 onClick={() => {
                   setCurrentModalImageIndex(i => (i === data.length - 1 ? 0 : i + 1));
                   setModalZoomLevel(1); // Reset zoom on image change
@@ -207,7 +209,7 @@ function Lens({ data = [] }) {
               </button>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto mt-4">
+            <div className="flex gap-2  mt-2">
               {data.map((img, i) => (
                 <div
                   key={i}
