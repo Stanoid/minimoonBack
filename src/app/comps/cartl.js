@@ -230,7 +230,7 @@ const notify = (type,msg)=>{
               
                      
 
-                     {/* <div id="scrol"   style={{height:"100vh",overflowY:'scroll', overflowX:'hidden',padding:10}}>
+                     <div id="scrol"   style={{height:"100vh",overflowY:'scroll', overflowX:'hidden',padding:10}}>
                  
                      {likesData&&likesData.length!=0?likesData.map((like,index)=>(
                 like.products.length!=0?
@@ -243,7 +243,7 @@ const notify = (type,msg)=>{
                  like.products[0]?.images &&
                  like.products[0].images?.[0].url
                    ? like.products[0].images[0].url
-                   : "/default-image.png" // Fallback image
+                   : "/default-image.png" 
                }
              />
     :<></>
@@ -264,7 +264,7 @@ const notify = (type,msg)=>{
                      
                   
                     
-                     </div> */}
+                     </div>
    
                     {/* <div style={{padding:20,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                         <div style={{fontSize:15,fontWeight:'bold'}}></div>

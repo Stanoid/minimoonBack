@@ -1,12 +1,19 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Image from "next/image"
-import {CURRENCY} from '../local'
+import {CURRENCY, IMG_URL} from '../local'
 import { useRouter } from 'next/navigation'
 import { BsX } from 'react-icons/bs'
+import { useDispatch,useSelector } from 'react-redux';
+import { addToCart,removeFromCart } from '../lib/actions/counterAction';
+
 function LikeEl(props) {
 // 
     const router = useRouter();
+
+
+
+
     return (
 
     <motion.div
@@ -17,18 +24,17 @@ function LikeEl(props) {
      //onClick={()=>{revalidatePath('/products?pid=${props.id}') ; props.closeModal()}}
       //  onClick={()=>{ router.refresh(); router.push(`/products?pid=${props.id}`);  props.closeModal()}}
         transition={{ type: "spring", stiffness: 400, damping: 17 }} key={props.index} className='flex flex-row  
-        shadow-md rounded-sm p-2 items-center justify-between align-middle ' > 
+ rounded-sm p-2 items-center justify-between align-middle ' > 
   <a  href={`/products?pid=${props.id}`} >
     <div sty className='w-20 h-24 min-w-20  ' style={{position:"relative"}} >
-      <Image fill objectFit='cover'
+      {/* <Image fill objectFit='cover'
       alt={props.name}
       quality={25}
        onClick={()=>{router.push(`/products?pid=${props.id}`); props.closeModal() }}  className=' rounded-md  ' 
-        src={props.img} 
+               src={`${IMG_URL}${props.data?.images[0]?.formats?.medium?.url}`} 
     
-      />
+      /> */}
       
-    {/* </object> */}
         
     
        
@@ -40,7 +46,7 @@ function LikeEl(props) {
 
      
           <div className=' ' dir='rtl' >
-               <div className='text-gray-400 text-lg'>
+               <div className='text-gray-900 text-lg'>
                {props.name.length>10?props.name.slice(0,40)+"...":props.name }
                </div>
                <div className='text-black font-bold' >
@@ -50,10 +56,10 @@ function LikeEl(props) {
 
 
         </div>
- <div>
+ {/* <div>
+        <BsCartPlusFil />
 
- hhhhhh
- </div>
+ </div> */}
 
                  <div
       onClick={()=>{props.removeFav(props.lid)}}

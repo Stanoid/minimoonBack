@@ -184,6 +184,7 @@ export default function NavbarC(props) {
           >
             <input
               type="text"
+              onChange={handleSearch}
               placeholder="واش راكي تدوّري عليه؟"
               className="flex-grow h-full py-2
                          pr-4 pl-[80px] /* Adjusted padding for placeholder */
@@ -237,9 +238,9 @@ export default function NavbarC(props) {
 </motion.div>
 
 {userData && !userData.error ? (
-  <motion.div className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1 space-x-reverse">
+  <motion.div onClick={() => handleAccount(userData.data.user.type)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1 space-x-reverse">
     <span className="text-sm hidden sm:block">حسابي</span>
-    <Button onClick={() => handleAccount(userData.data.user.type)} isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
+    <Button  isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
       </svg>

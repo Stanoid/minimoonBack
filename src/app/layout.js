@@ -119,43 +119,43 @@ export default function RootLayout({ children, isProductPage = false }) {
   };
   const [utype, setutype] = useState(0);
 
-  const handleSearch = (el) =>{
-//
+//   const handleSearch = (el) =>{
+// //
 
-// if(el.target.value.lenght<4){
-//   
+// // if(el.target.value.lenght<4){
+// //   
 
-//   return;
+// //   return;
+// // }
+
+
+
+// if(el.target.value.length<3){
+
+//   setSugges([]);
+  
+// }else{
+
+//   const requestOptions = {
+//     method: 'GET',
+//     headers: {
+//         "Content-Type": "application/json",
+//         // "Authorization": 'Bearer ' + ls.get("atkn")
+//     },
+//   };
+//   fetch(`${API_URL}products?func=SearchWithkeyword&keyword=${el.target.value}`, requestOptions)
+//     .then((response) => response.json())
+//     .then((data) => {
+      
+//       setSugges(data)
+//     }).then(()=>{
+  
+//     })
+
 // }
 
 
-
-if(el.target.value.length<3){
-
-  setSugges([]);
-  
-}else{
-
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-        "Content-Type": "application/json",
-        // "Authorization": 'Bearer ' + ls.get("atkn")
-    },
-  };
-  fetch(`${API_URL}products?func=SearchWithkeyword&keyword=${el.target.value}`, requestOptions)
-    .then((response) => response.json())
-    .then((data) => {
-      
-      setSugges(data)
-    }).then(()=>{
-  
-    })
-
-}
-
-
-  }
+//   }
 
 
 
@@ -408,11 +408,11 @@ className="flex cursor-pointer items-center" >
  
             
             <section className={`${bgColorClass} el-messiri-text`}>
-            <div className="max-w-[1280px] w-full  lg:px-8  mt-8 lg:mt-16 mx-auto min-h-screen">
-              
-                  {children}
-                </div>
-            </section>
+    <div className="max-w-[1280px] w-full lg:px-8 mt-8 lg:mt-16 mx-auto min-h-screen">
+        {/* Your HorDiv component (children) will be rendered here */}
+        {children}
+    </div>
+</section>
             <section>
   
 

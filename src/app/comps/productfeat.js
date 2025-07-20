@@ -72,7 +72,7 @@ function ProductFeat(props) {
   const bajama5QetaaCategory = cat.find(c => c.name_ar === 'بجامة 5 قطع') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728386450/minimoon_assets/lhk4iab2siopdhvpfopv.jpg', name_ar: 'بجامة 5 قطع', id: 'default-bajama5' };
 
   return (
-    <div dir='rtl' className="py-4 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div dir='rtl' className="py-4 w-full max-w-7xl mx-auto sm:px-6 ">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl lg:text-2xl font-black text-gray-900">أفضل الأقسام</h2>
         <a href="/products" className="text-sm text-gray-700 hover:text-moon-200 transition-colors duration-200">

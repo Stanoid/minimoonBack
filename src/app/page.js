@@ -208,14 +208,14 @@ if (firstRenderRef.current) {
 
 
 
-<div style={{backgroundSize:50}} className="w-full flex items-center justify-center py-5 ">
+<div  className="w-full flex  items-center justify-center py-5 ">
   <ProductFeat  />
 </div>
 
-<div className="">
+{/* <div className="">
 
 <MostDemanded  />
-  </div>
+  </div> */}
 {/* 
 
 <Most

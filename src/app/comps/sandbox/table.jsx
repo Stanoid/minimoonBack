@@ -398,7 +398,7 @@
             const srcd = imageUrl.startsWith("http") ? imageUrl : `${IMG_URL}${imageUrl}`;
             const src = imageUrl?.startsWith("http") ? imageUrl : `${IMG_URL}${imageUrl}`;
 
-            return (
+          return (
               <div className="w-16 h-16 relative">
                 <Image
                   fill
