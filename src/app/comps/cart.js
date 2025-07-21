@@ -232,7 +232,7 @@ const Cart = forwardRef((props, ref) => {
                         </div>
 
    
-                        <div className="mt-6">
+                        <div className=" text-sm" >
   {isLogged ? (
     <div className="flex justify-center">
       <LoadingBtn
@@ -243,9 +243,9 @@ const Cart = forwardRef((props, ref) => {
       />
     </div>
   ) : (
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex  lg:flex-row flex-col items-center lg:justify-between gap-2">
       <LoadingBtn
-        icon={<FaLock className="" />}
+        // icon={<FaLock className="" />}
         act={() => {
           router.push("/login");
           props.openHandler(false);
@@ -253,12 +253,12 @@ const Cart = forwardRef((props, ref) => {
         text={"سجل الدخول للمتابعة"}
         color={Theme.secondaryDark}
         lod={lod}
-        className="w-2/5 py-2 text-base rounded-md"
+        className="w-2/5  text-base rounded-md"
       />
       <button
         onClick={guestCheckout}
         style={{ backgroundColor: Theme.primary }}
-        className="w-3/5 bg-moon-200 text-white py-3 px-4 rounded-md text-sm font-meduim"
+        className="lg:w-3/5 w-full bg-moon-200 text-white py-3 px-4 rounded-md text-sm font-meduim"
         dir="rtl"
       >
         متابعة كزائر

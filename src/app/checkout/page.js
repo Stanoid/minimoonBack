@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {useEffect,useState,useRef,useContext } from 'react';
-import { API_URL, CURRENCY} from '../local';
+import { API_URL, CURRENCY, IMG_URL} from '../local';
 import { Button } from '@nextui-org/react';
 import { FaCheckCircle,FaExchangeAlt,FaListAlt,FaShoppingBasket } from 'react-icons/fa';
 import { clearCart } from '../lib/actions/counterAction';
@@ -305,7 +305,7 @@ setRefr(!refr);
       fetch(`${API_URL}orders?func=initPaymentSessionGuest`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        console.log("shshshshshshshsgaaahahajsjskski",data)
         setLod(false)
    window.location= data.url;
       }).then(()=>{
@@ -323,7 +323,7 @@ setRefr(!refr);
 
   return (
   
-<div className='flex-col md:flex-row lg:grid grid-cols-3 lg:mt-8 lg:mb-32 w-full '   >
+<div className='flex-col md:flex-row lg:grid grid-cols-3 lg:pt-12 lg:mb-32 w-full '   >
 
 <div className='flex flex-1 flex-col lg:mt-[30px] px-3 w-full  '>
 
@@ -363,8 +363,8 @@ setRefr(!refr);
                     // const productImage = cart.data.attributes.images?.data?.[0]?.attributes?.url
                     // const productImage = `${API_URL.replace(/\/$/, "")}${cart.data.attributes.images?.data?.[0]?.attributes?.url || ""}`;
                     const productImage = cart.data.attributes.images?.data?.[0]?.attributes?.url;
-
-console.log("checkoutimage",productImage)
+const fullProductImage = `${IMG_URL}${productImage}`;
+console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
 
                     const productSize = selectedVariant?.attributes.sizes.data[0]?.attributes.name_ar + " - " + selectedVariant?.attributes.sizes.data[0]?.attributes.icon || "";
                     const productColorName = selectedVariant?.attributes.colors.data[0]?.attributes.name_ar || "";
@@ -391,7 +391,7 @@ console.log("checkoutimage",productImage)
 
                             <div className="flex-shrink-0">
                                 <Image
-                                    src={productImage}
+                                    src={fullProductImage}
                                     alt={productName}
                                     width={60}
                                     height={60}

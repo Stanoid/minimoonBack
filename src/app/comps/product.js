@@ -66,12 +66,12 @@ export default function Product(props) {
           router.push(`/products?pid=${props.data.id}`)
         }} 
         className="
-        lg:w-[308px] lg:h-[501px]  w-[167px] h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative" 
+        lg:w-[308px] lg:h-[501px]  w-full  h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative" 
       >
   
         <div className='relative mx-h-[169px] h-full lg:max-w-[308px] lg:max-h-[308px] w-full' style={{  }}> 
           {loading ? (
-            <div className='absolute inset-0 flex items-center justify-center bg-gray-100 z-20'>
+            <div className='absolute inset-0 flex items-center justify-center bg-gray-100 '>
               <div style={{ zIndex: 10 }}>
                 <div style={{ justifyContent: "center", alignItems: "center" }} className="lds-facebook"><div></div><div></div><div></div></div>
               </div>
@@ -92,7 +92,7 @@ export default function Product(props) {
           )}
         </div>
   
-        <div dir="ltr" className="flex flex-col p-2 lg:max-h-[193px] h-full max-w-[167px]  lg:max-w-[308px] w-full bg-white  items-end"> 
+        <div dir="ltr" className="flex flex-col p-2 lg:max-h-[193px] h-full  lg:max-w-[308px] w-full bg-white  items-end"> 
   
           <div className="lg:text-lg text-base hidden  lg:flex sm:hidden lg:flex:row font-medium mb-2 text-gray-800 text-right "> 
   {props.data.name_ar} - {props.data.code}
@@ -129,8 +129,7 @@ export default function Product(props) {
               <FaStar className="text-gray-300 text-sm" />
             </div>
           </div>
-  
-          <div className="flex flex-col items-end  w-[276px] lg:mt-2 h-[64px]"> 
+  <div className="flex flex-col items-end  w-[276px] lg:mt-2 h-[64px]"> 
             <div className="text-lg font-bold text-gray-900 flex items-baseline">
               <div className="ml-1">{CURRENCY}</div> 
   
@@ -140,11 +139,17 @@ export default function Product(props) {
              </div>
             {/* {props.data.varients[0].old_price > 0 &&
               props.data.varients[0].old_price > props.data.varients[0].price && ( */}
-                <div className="text-sm text-gray-300 line-through flex items-baseline">
-                  <div className="ml-1">{CURRENCY}</div>
-                1<div>{props.data.varients[0].old_price}</div>
+                <div className="text-sm text-gray-900 line-through flex items-baseline">
+                {/* 1<div>{props.data.varients[0].old_price} </div> */}
+                <div className="ml-1">{CURRENCY}</div>
+        <div>
+          {(
+            props.data.varients[0].price /
+            (1 - props.data.varients[0].old_price / 100)
+          ).toFixed(2)}
+        </div>
                 </div>
-              {/* )} */}
+  
           </div>
         </div>
         

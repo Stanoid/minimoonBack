@@ -65,7 +65,7 @@ export default function Product(props) {
 
       <div className='relative  h-full lg:max-w-[308px] lg:max-h-[308px] w-full' style={{  }}> 
         {loading ? (
-          <div className='absolute inset-0 flex items-center justify-center bg-gray-100 z-20'>
+          <div className='absolute inset-0 flex items-center justify-center bg-gray-100 '>
             <div style={{ zIndex: 10 }}>
               <div style={{ justifyContent: "center", alignItems: "center" }} className="lds-facebook"><div></div><div></div><div></div></div>
             </div>
@@ -136,11 +136,17 @@ export default function Product(props) {
            </div>
           {/* {props.data.varients[0].old_price > 0 &&
             props.data.varients[0].old_price > props.data.varients[0].price && ( */}
-              <div className="text-sm text-gray-300 line-through flex items-baseline">
+              <div className="text-sm text-gray-900 line-through flex items-baseline">
                 <div className="ml-1">{CURRENCY}</div>
-              1<div>{props.data.varients[0].old_price}</div>
+              {/* 1<div>{props.data.varients[0].old_price} </div> */}
+      <div>
+        {(
+          props.data.varients[0].price /
+          (1 - props.data.varients[0].old_price / 100)
+        ).toFixed(2)}
+      </div>
               </div>
-            {/* )} */}
+
         </div>
       </div>
       
