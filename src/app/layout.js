@@ -119,43 +119,43 @@ export default function RootLayout({ children, isProductPage = false }) {
   };
   const [utype, setutype] = useState(0);
 
-//   const handleSearch = (el) =>{
-// //
+  const handleSearch = (el) =>{
+//
 
-// // if(el.target.value.lenght<4){
-// //   
+// if(el.target.value.lenght<4){
+//   
 
-// //   return;
-// // }
-
-
-
-// if(el.target.value.length<3){
-
-//   setSugges([]);
-  
-// }else{
-
-//   const requestOptions = {
-//     method: 'GET',
-//     headers: {
-//         "Content-Type": "application/json",
-//         // "Authorization": 'Bearer ' + ls.get("atkn")
-//     },
-//   };
-//   fetch(`${API_URL}products?func=SearchWithkeyword&keyword=${el.target.value}`, requestOptions)
-//     .then((response) => response.json())
-//     .then((data) => {
-      
-//       setSugges(data)
-//     }).then(()=>{
-  
-//     })
-
+//   return;
 // }
 
 
-//   }
+
+if(el.target.value.length<3){
+
+  setSugges([]);
+  
+}else{
+
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+        "Content-Type": "application/json",
+        // "Authorization": 'Bearer ' + ls.get("atkn")
+    },
+  };
+  fetch(`${API_URL}products?func=SearchWithkeyword&keyword=${el.target.value}`, requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      
+      setSugges(data)
+    }).then(()=>{
+  
+    })
+
+}
+
+
+  }
 
 
 
@@ -218,100 +218,74 @@ export default function RootLayout({ children, isProductPage = false }) {
         <NavbarC rel={false} searchTog={searchTog} setSearchTog={(sta)=>{setSearchTog(sta)}} cat={cat} openCart={(t)=>{handleOpenCart(t)}}  openFav={handleOpenCartl}  />
        
 
-        <div style={{display:searchTog?"flex":"none"  }} className="flex-1 flex mt-3 items-center">
-                      <div className=" w-full sm:m-full lg:w-1/2  flex md:ml-0">
-                        <label for="search_field" className="sr-only">
-                          Search
-                        </label>
-                        <div className="relative w-full text-white focus-within:text-gray-600">
-                          <div className="absolute inset-y-0 left-0 flex items-center  p-2 pointer-events-none">
-                            <svg
-                              className="h-5 w-5 text-moon-200"
-                            fill={Theme.secondary}
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                              />
-                            </svg>
-                          </div>
-                          <input
-                          // onBlur={()=>{setDraw(false)}}
-                          onFocus={(el)=>{drawSugg(el)}}
-                          autoComplete="off"
-                          onChange={(el)=>{
-                            handleSearch(el);
-                          }}
-                            id="search_field"
-                            className="block w-full 
-                          border-2 border-moonsec-100
-                            pl-8 pr-3 py-2 rounded-md text-moon-300/40
-                             placeholder-moon-300/40 focus:outline-none focus:placeholder-gray-400 sm:text-sm"
-                            placeholder="إبحث إسم منتج أو كود المنتج"
-                          />
-                        </div>
-                      </div>
-                      
-   <div
-   className="z-30 border-2 border-t-0 border-b-5 border-moonsec-100 shadow-md"
-   style={{ 
-  position:"absolute",
-  top:eltop+36,
-  left:eleft,
-  fontSize:15,
-  width:searwidth,
-  backgroundColor:"white",
-  borderRadius:"0px 0px 10px 10px",
-  padding:10,
-  
-  
-  display: draw?"block":"none", 
+        {searchTog && (
+  <div
+  onClick={() => {
+    // setSearchTog(false);
+    // setDraw(false);
   }}
+  className="fixed inset-0 z-50 flex justify-center items-start pt-32 bg-black/50">
 
-   >
+    <div className="w-full max-w-2xl px-4">
+      <div className="relative bg-white border-2 border-moon-200 rounded-md shadow-xl">
 
-<div className="flex w-full text-red-500  text-2xl font-bold justify-end align-middle items-center">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="h-5 w-5 text-moon-200" fill={Theme.secondary} viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              />
+            </svg>
+          </div>
+          <input
+            id="search_field"
+            placeholder="إبحث إسم منتج أو كود المنتج"
+            autoComplete="off"
+            onFocus={drawSugg}
+            onChange={handleSearch}
+            className="w-full border-2 border-moon-200 pl-10 pr-4 py-3 text-moon-300/40 rounded-md placeholder-moon-300/40 focus:outline-none focus:placeholder-gray-800 sm:text-sm"
+          />
+        </div>
 
-<div
-onClick={()=>{ setDraw(false) }}
-className="flex cursor-pointer items-center" >
-  <div className="text-sm font-bold text-moon-300/60 " >
-  إخفاء
-  </div>
-  
+        {draw && (
+          <div dir="rtl" className="absolute left-0 right-0 mt-1 bg-white border-x-2 border-b-2 border-moon-200 rounded-b-md z-30 p-3">
+            <div className="flex justify-end mb-2 text-red-500 font-bold text-sm">
+              <button onClick={() => setDraw(false)} className="flex items-center gap-1 cursor-pointer text-moon-300/60">
+                إخفاء <BsX />
+              </button>
+            </div>
 
-<BsX/>
-</div>
-
-</div>
-
- {sugges&&sugges.length==0?
-  <div className="h-40 flex text-moon-200 w-full justify-center items-center align-middle">
-<div className="inline">
-لاتوجد نتائج
-
-
-</div>
- </div> :sugges.map((sug,index)=>(
-
-<div key={index} onClick={()=>{location.href=("/products?pid="+sug.id);setDraw(false)}} className="hover:bg-slate-100" style={{color:"grey",padding:10,borderRadius:5,cursor:"pointer"}}>
-    {sug.name_ar} / {sug.name_ar} 
-    <h5  className="text-sm  
-        tracking-normal  text-white bg-moon-200 inline mx-2 font-bold px-4 py-1  rounded-full "> {sug.code}</h5>
+            {sugges?.length === 0 ? (
+              <div className="h-32 flex flex-col justify-center items-center text-moon-200">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                لاتوجد نتائج
+              </div>
+            ) : (
+              sugges.map((sug, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    location.href = "/products?pid=" + sug.id;
+                    setDraw(false);
+                  }}
+                  className="hover:bg-slate-100 text-gray-700 px-4 py-2 rounded cursor-pointer"
+                >
+                  {sug.name_ar} 
+                  <span className="text-sm border border-moon-200 text-moon-200 font-bold px-3 py-1 rounded-full ml-2">{sug.code}</span>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </div>
-
-))}
-    
-    
-    
-
-  
-
-   </div>                  
   </div>
-       
+)}
+
        
         <div style={{maxWidth:"100%",}} className="  text-moon-300  text-md whitespace-nowrap  font-medium  transition-colors  py-0.5 w-full
           space-x-2 flex mt-1 pb-1

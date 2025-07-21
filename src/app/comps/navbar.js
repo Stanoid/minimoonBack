@@ -174,7 +174,7 @@ export default function NavbarC(props) {
     
 
         <div className="lg:flex  items-center order-1 lg:order-3 flex-grow justify-end lg:justify-start">
-          <div
+          <form
             dir="rtl"
             className="relative lg:flex  items-center flex-grow
                        max-w-md lg:max-w-none lg:w-[776px] h-[46px]
@@ -184,7 +184,7 @@ export default function NavbarC(props) {
           >
             <input
               type="text"
-              onChange={handleSearch}
+              onClick={handleSearch}
               placeholder="واش راكي تدوّري عليه؟"
               className="flex-grow h-full py-2
                          pr-4 pl-[80px] /* Adjusted padding for placeholder */
@@ -204,7 +204,7 @@ export default function NavbarC(props) {
               بحث
             </button>
 
-          </div>
+          </form>
           <Logowhite
   style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
   onClick={() => router.push("/")}
