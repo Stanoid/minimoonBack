@@ -2,7 +2,7 @@
 import "./globals.css";
 import './custom.css';
 import { React, useEffect, useState, useRef, useContext } from "react";
-import { API_URL ,Theme} from "./local";
+import { API_URL ,Theme, IMG_URL} from "./local";
 import Cart from "./comps/cart";
 import { NextUIProvider } from "@nextui-org/react";
 import CatDrop from "./comps/catDrop";
@@ -38,6 +38,8 @@ export default function RootLayout({ children, isProductPage = false }) {
   const router = useRouter();
   const pathname = usePathname()
    isProductPage = pathname.includes('/products');
+   const inputRef = useRef(null);
+
   
   const bgColorClass = isProductPage ? 'bg-white' : 'bg-gray-50';
 
@@ -76,6 +78,16 @@ export default function RootLayout({ children, isProductPage = false }) {
 
 
 
+
+  useEffect(() => {
+    if (searchTog && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchTog]);
+
+  
+
+  
   const getCats=()=>{
          
     
@@ -146,7 +158,7 @@ if(el.target.value.length<3){
   fetch(`${API_URL}products?func=SearchWithkeyword&keyword=${el.target.value}`, requestOptions)
     .then((response) => response.json())
     .then((data) => {
-      
+      console.log(`the data for te search sug`, data)
       setSugges(data)
     }).then(()=>{
   
@@ -221,17 +233,25 @@ if(el.target.value.length<3){
         {searchTog && (
   <div
   onClick={() => {
-    // setSearchTog(false);
-    // setDraw(false);
+    setSearchTog(false);
+    setDraw(false);
   }}
-  className="fixed inset-0 z-50 flex justify-center items-start pt-32 bg-black/50">
 
+    className="fixed inset-0 z-50 flex justify-center items-start pt-32 bg-black/40 overflow-y-auto"
+  >
     <div className="w-full max-w-2xl px-4">
-      <div className="relative bg-white border-2 border-moon-200 rounded-md shadow-xl">
-
+      <div
+        className="relative bg-white border border-moon-200 rounded-xl shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Search Input */}
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg className="h-5 w-5 text-moon-200" fill={Theme.secondary} viewBox="0 0 20 20">
+            <svg
+              className="h-5 w-5 text-moon-200"
+              fill={Theme.secondary}
+              viewBox="0 0 20 20"
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -240,27 +260,42 @@ if(el.target.value.length<3){
             </svg>
           </div>
           <input
+            ref={inputRef}
             id="search_field"
             placeholder="إبحث إسم منتج أو كود المنتج"
             autoComplete="off"
             onFocus={drawSugg}
             onChange={handleSearch}
-            className="w-full border-2 border-moon-200 pl-10 pr-4 py-3 text-moon-300/40 rounded-md placeholder-moon-300/40 focus:outline-none focus:placeholder-gray-800 sm:text-sm"
+            className="w-full border-none pl-10 pr-4 py-4 text-moon-300/80 placeholder-moon-300/60 rounded-t-xl focus:outline-none sm:text-base"
           />
         </div>
 
         {draw && (
-          <div dir="rtl" className="absolute left-0 right-0 mt-1 bg-white border-x-2 border-b-2 border-moon-200 rounded-b-md z-30 p-3">
-            <div className="flex justify-end mb-2 text-red-500 font-bold text-sm">
-              <button onClick={() => setDraw(false)} className="flex items-center gap-1 cursor-pointer text-moon-300/60">
-                إخفاء <BsX />
+          <div className="max-h-96 overflow-y-auto bg-white border-t border-moon-100 z-30 p-3">
+            <div className="flex justify-end mb-3 text-red-500 font-semibold text-sm">
+              <button
+                onClick={() => setDraw(false)}
+                className="flex items-center gap-1 text-moon-300/70 hover:text-moon-300 transition"
+              >
+                إخفاء <BsX className="text-lg" />
               </button>
             </div>
 
             {sugges?.length === 0 ? (
               <div className="h-32 flex flex-col justify-center items-center text-moon-200">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 mb-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                  />
                 </svg>
                 لاتوجد نتائج
               </div>
@@ -272,10 +307,25 @@ if(el.target.value.length<3){
                     location.href = "/products?pid=" + sug.id;
                     setDraw(false);
                   }}
-                  className="hover:bg-slate-100 text-gray-700 px-4 py-2 rounded cursor-pointer"
+                  className="flex items-center gap-3 hover:bg-moon-50 px-3 py-2 rounded-lg transition cursor-pointer"
                 >
-                  {sug.name_ar} 
-                  <span className="text-sm border border-moon-200 text-moon-200 font-bold px-3 py-1 rounded-full ml-2">{sug.code}</span>
+                  <img
+                    src={
+                      sug.images?.[0]?.url
+                        ? `${IMG_URL || ''}${sug.images[0].url}`
+                        : "/no-image.jpg"
+                    }
+                    alt={sug.name_ar}
+                    className="w-14 h-14 object-cover rounded-lg border border-gray-200"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-gray-800">
+                      {sug.name_ar}
+                    </span>
+                    <span className="text-xs border border-moon-200 text-moon-300 font-bold px-2 py-0.5 rounded-full mt-1 w-fit">
+                      {sug.code}
+                    </span>
+                  </div>
                 </div>
               ))
             )}
