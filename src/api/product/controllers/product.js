@@ -151,7 +151,7 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
 
            ]
             },
-            select: ["name_ar", "name_en", "id","code"],
+            select: ["name_ar", "name_en", "id","code", "images"],
 
           });
 
