@@ -124,40 +124,26 @@ module.exports = createCoreController("api::product.product", ({ strapi }) => ({
             return sanitizedEntityf;
             break;
 
-        case "SearchWithkeyword":
-          const ress = await strapi.db.query("api::product.product").findMany({
-            // fillters:{
-            //  $or:{
-            //   name_ar:{
-            //     $containsi: query.keyword
-            //   }
-            //   ,
-            //   {
+            case "SearchWithkeyword":
+              const ress = await strapi.db.query("api::product.product").findMany({
+                limit: 6,
+                where: {
+                  $or: [
+                    { name_ar: { $containsi: query.keyword } },
+                    { name_en: { $containsi: query.keyword } },
+                    { code: { $containsi: query.keyword } },
+                  ],
+                },
+                select: ["name_ar", "name_en", "id", "code"],
+                populate: {
+                  images: {
+                    fields: ["url"], // or leave empty to return all image fields (recommended in development)
+                  },
+                },
+              });
 
-            //   }
-            //  }
-            // },
-            limit : 6,
-            where: {
-           $or:[
-           { name_ar: {$containsi: query.keyword,}},
-           { name_en: {$containsi: query.keyword,}},
-           {
-              code: {
-                $containsi: query.keyword
-              }
-            }
-
-
-           ]
-            },
-            select: ["name_ar", "name_en", "id","code", "images"],
-
-          });
-
-          const sanitizedEntitys = await this.sanitizeOutput(ress, ctx);
-          return sanitizedEntitys;
-          break;
+              const sanitizedEntitys = await this.sanitizeOutput(ress, ctx);
+              return sanitizedEntitys;
 
 
 
