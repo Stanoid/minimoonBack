@@ -225,7 +225,7 @@ setRefr(!refr);
         useNotifi("error", "رقم الهاتف غير متطابق");
         return;
     }
-    if (address.length < 3) {
+    if (address.length < 3  && deliveryMeth===1) {
       useNotifi("error", "الرجاء إدخال عنوان صالح");
       return;
     }

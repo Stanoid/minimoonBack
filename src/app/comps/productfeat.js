@@ -65,12 +65,36 @@ function ProductFeat(props) {
     </div>
   );
 
-  const largeCategory = cat.find(c => c.name_ar === 'بجامة 3 قطع') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728386450/minimoon_assets/lhk4iab2siopdhvpfopv.jpg', name_ar: 'بجامة 3 قطع', id: 'default-large' };
-  const robaatCategory = cat.find(c => c.name_ar === 'روبات') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728387477/minimoon_assets/g2lsfkim9mi7dwc1ofxs.jpg', name_ar: 'روبات', id: 'default-robaat' };
-  const hawamelCategory = cat.find(c => c.name_ar === 'حوامل') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728386450/minimoon_assets/lhk4iab2siopdhvpfopv.jpg', name_ar: 'حوامل', id: 'default-hawamel' };
-  const hagemKabeerCategory = cat.find(c => c.name_ar === 'حجم كبير') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728387477/minimoon_assets/g2lsfkim9mi7dwc1ofxs.jpg', name_ar: 'حجم كبير', id: 'default-hagem-kabeer' };
-  const bajama5QetaaCategory = cat.find(c => c.name_ar === 'بجامة 5 قطع') || { img: 'https://res.cloudinary.com/strapimedia/image/upload/v1728386450/minimoon_assets/lhk4iab2siopdhvpfopv.jpg', name_ar: 'بجامة 5 قطع', id: 'default-bajama5' };
-
+  const largeCategory = cat.find(c => c.name_ar === 'بجامة 3 قطع') || {
+    img: '/offers/bajama3.jpg',
+    name_ar: 'بجامة 3 قطع',
+    id: 'default-large'
+  };
+  
+  const robaatCategory = cat.find(c => c.name_ar === 'روبات') || {
+    img: '/offers/robaat.jpg',
+    name_ar: 'روبات',
+    id: 'default-robaat'
+  };
+  
+  const hawamelCategory = cat.find(c => c.name_ar === 'حوامل') || {
+    img: '/offers/minimoonpreg.jpeg',
+    name_ar: 'حوامل',
+    id: 'default-hawamel'
+  };
+  
+  const hagemKabeerCategory = cat.find(c => c.name_ar === 'حجم كبير') || {
+    img: '/offers/minimoonbigsdizes.jpeg',
+    name_ar: 'حجم كبير',
+    id: 'default-hagem-kabeer'
+  };
+  
+  const bajama5QetaaCategory = cat.find(c => c.name_ar === 'بجامة 5 قطع') || {
+    img: '/offers/minimoonbigsdizes.jpeg',
+    name_ar: 'بجامة 5 قطع',
+    id: 'default-bajama5'
+  };
+  
   return (
     <div dir='rtl' className="py-4 w-full max-w-7xl mx-auto sm:px-6 ">
       <div className="flex justify-between items-center mb-6">

@@ -307,6 +307,7 @@ if(el.target.value.length<3){
                     location.href = "/products?pid=" + sug.id;
                     setDraw(false);
                   }}
+                  dir="rtl"
                   className="flex items-center gap-3 hover:bg-moon-50 px-3 py-2 rounded-lg transition cursor-pointer"
                 >
                   <img
@@ -316,7 +317,7 @@ if(el.target.value.length<3){
                         : "/no-image.jpg"
                     }
                     alt={sug.name_ar}
-                    className="w-14 h-14 object-cover rounded-lg border border-gray-200"
+                    className="w-14 h-14 lg:w-20 lg:h-20 object-cover rounded-lg border border-gray-200"
                   />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-gray-800">

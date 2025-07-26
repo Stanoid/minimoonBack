@@ -110,7 +110,7 @@ export default (props) => {
 
       {loaded && instanceRef.current && (
         <>
-          <div className="dots absolute bottom-12 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+          <div className="dots absolute bottom-12 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
             {[
               ...Array(instanceRef.current.track.details.slides.length).keys(),
             ].map((idx) => {

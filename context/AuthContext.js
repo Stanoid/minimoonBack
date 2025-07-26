@@ -15,7 +15,28 @@ export const AuthProvider = (props)=>{
     const[stype,setStype] = useState(null);
     const [loading,setLoading]= useState(false);
     const router = useRouter();
-    const ls = require("local-storage")
+    // const ls = require("local-storage")
+
+
+    const saveToken = (token) => {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("atkn", token);
+      }
+    };
+    
+    const getToken = () => {
+      if (typeof window !== "undefined") {
+        return localStorage.getItem("atkn");
+      }
+      return null;
+    };
+    
+    const removeToken = () => {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("atkn");
+      }
+    };
+    
    //const hello ="hello from provider";
     /**
      * adds user to email
