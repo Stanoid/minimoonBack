@@ -134,7 +134,7 @@ export default function Product(props) {
               <div className="ml-1">{CURRENCY}</div> 
   
   <div>
-                <div>{props.data.varients[0].price}</div> 
+                <div>{props.data.varients[0]?.price}</div> 
     </div> 
              </div>
             {/* {props.data.varients[0].old_price > 0 &&
@@ -144,8 +144,8 @@ export default function Product(props) {
                 <div className="ml-1">{CURRENCY}</div>
         <div>
           {(
-            props.data.varients[0].price /
-            (1 - props.data.varients[0].old_price / 100)
+            props.data.varients[0]?.price /
+            (1 - props.data.varients[0]?.old_price / 100)
           ).toFixed(2)}
         </div>
                 </div>
