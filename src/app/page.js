@@ -307,28 +307,13 @@ bg-[url('../../public/amblemblack.svg')] "  >
 {subcats&&subcats.map(subcat=>(
 
 <div className="  py-6">
-<div className="lg:p-4  hidden lg:flex justify-between  ">
+<div className="lg:p-4  flex justify-between  ">
 <motion.div className=' p-0 sm:px-0  flex align-middle justify-end ' whileTap={{ scale: 1.03 }}>
       {/* <LoadingBtn act={()=>{router.push("/login")} } color={Theme.primary} textColor={"white"} icon={<FaLock  />} text={"تسجيل دخول"}  /> */}
      <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } className="text-moon-200 underline text-lg "> {subcat.catagory.name_ar} </Button>
      </motion.div>
      <div>
      <h5 className="text-2xl mb-4 font-black text-right tracking-normal text-moon-300/80 mt-2 ">{subcat.name_ar}</h5>
-
-     </div>
-
-
-
-</div>
-
-
-
-<div className="lg:p-4  lg:hidden flex   ">
-<motion.div className=' p-0 sm:px-0  flex align-middle justify-end ' whileTap={{ scale: 1.03 }}>
-      {/* <LoadingBtn act={()=>{router.push("/login")} } color={Theme.primary} textColor={"white"} icon={<FaLock  />} text={"تسجيل دخول"}  /> */}
-     <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } className="text-moon-200 underline text-lg "> {subcat.catagory.name_ar} </Button>
-     </motion.div>
-     <div>
 
      </div>
 

@@ -1,66 +1,63 @@
 import React from 'react';
 import ProductCopm from './saveproduct';
 
-function HorDiv(props) {
+function HorDiv({ data, btn }) {
   return (
     <>
-      {/* Mobile Layout (Visible only on small screens) */}
+      {/* Mobile Layout */}
       <div
         dir="rtl"
         className="
-          scrollable-content
           w-full
-          p-2
-          flex                 
+          p-3
+          flex
+          gap-4
+          scrollbar-hide
+          lg:hidden
+          snap-x
           overflow-x-scroll
-          gap-4                
-          lg:hidden            
+          snap-mandatory
         "
       >
-        {props.data && props.data.map((product, index) =>
-          product.status ? (
-            <div
-              key={index}
-              className="
-                flex-shrink-0    /* Prevents items from shrinking, preserving min-w and gap */
-                min-w-56         /* Minimum width for each product card on mobile */
-              "
-            >
-              <ProductCopm atcbtn={props.btn} data={product} />
-            </div>
-          ) : null
+        {data?.map(
+          (product, index) =>
+            product.status && (
+              <div
+                key={index}
+                className="
+                  flex-shrink-0
+                  min-w-[14rem]  /* Ensures proper scrollable width */
+                  snap-start
+                "
+              >
+                <ProductCopm atcbtn={btn} data={product} />
+              </div>
+            )
         )}
       </div>
 
-      {/* Desktop Layout (Visible only on large screens and up) */}
+      {/* Desktop Layout */}
       <div
         dir="rtl"
         className="
           hidden
-          lg:block             
-          w-full               
-          lg:grid              
-          lg:grid-cols-1       
-          md:grid-cols-2       
-          lg:grid-cols-3       
-          xl:grid-cols-4       
-          lg:gap-8        
-          justify-items-center 
-          /* Important: Do NOT add lg:max-w-screen-xl or lg:mx-auto here if your parent div already handles that (which it likely does, from your <section> example). */
+          lg:grid
+          w-full
+          gap-8
+          grid-cols-1
+          md:grid-cols-2
+          lg:grid-cols-3
+          xl:grid-cols-4
+          justify-items-center
         "
       >
-        {props.data && props.data.map((product, index) =>
-          product.status ? (
-            <div
-              key={index}
-              className="
-                w-full
-                min-w-0                 
-              "
-            >
-              <ProductCopm atcbtn={props.btn} data={product} />
-            </div>
-          ) : null
+        {data?.map(
+          (product, index) =>
+            product.status && (
+              <div key={index} className="w-full min-w-0">
+                <ProductCopm atcbtn={btn} data={product} />
+              </div>
+            )
         )}
       </div>
     </>
