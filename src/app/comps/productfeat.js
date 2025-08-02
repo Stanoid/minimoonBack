@@ -66,13 +66,13 @@ function ProductFeat(props) {
   );
 
   const largeCategory = cat.find(c => c.name_ar === 'بجامة 3 قطع') || {
-    img: '/offers/bajama3.jpg',
+    img: '/offers/pjneswan.jpeg',
     name_ar: 'بجامة 3 قطع',
     id: 'default-large'
   };
   
   const robaatCategory = cat.find(c => c.name_ar === 'روبات') || {
-    img: '/offers/robaat.jpg',
+    img: '/offers/setttan.jpeg',
     name_ar: 'روبات',
     id: 'default-robaat'
   };
@@ -84,7 +84,7 @@ function ProductFeat(props) {
   };
   
   const hagemKabeerCategory = cat.find(c => c.name_ar === 'حجم كبير') || {
-    img: '/offers/minimoonbigsdizes.jpeg',
+    img: '/offers/jebba.jpeg',
     name_ar: 'حجم كبير',
     id: 'default-hagem-kabeer'
   };

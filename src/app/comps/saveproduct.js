@@ -138,7 +138,7 @@ export default function Product(props) {
             props.data.varients[0].old_price > props.data.varients[0].price && ( */}
               <div className="text-sm text-gray-900 line-through flex items-baseline">
                 <div className="ml-1">{CURRENCY}</div>
-              {/* 1<div>{props.data.varients[0].old_price} </div> */}
+
       <div>
         {(
           props.data.varients[0].price /
@@ -151,7 +151,7 @@ export default function Product(props) {
       </div>
       
         <span className="absolute bottom-4 left-4 bg-moon-100 text-moon-200 text-xs font-bold px-3 py-1 rounded-full z-10"> 
-          {`%25 خصم`} 
+        {props.data.varients[0].old_price}
         </span>
       {/* )}s */}
     </motion.div>

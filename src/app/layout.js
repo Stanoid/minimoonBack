@@ -99,7 +99,7 @@ export default function RootLayout({ children, isProductPage = false }) {
        
       },
     
-  };
+  };    
 
     fetch(`${API_URL}sections?func=getAllSubcat`, requestOptions)
       .then((response) => response.json())
@@ -433,10 +433,17 @@ if(el.target.value.length<3){
  
             
             <section className={`${bgColorClass} el-messiri-text`}>
-    <div className="max-w-[1280px] w-full lg:px-8 mt-8 lg:mt-16 mx-auto min-h-screen">
-        {/* Your HorDiv component (children) will be rendered here */}
-        {children}
-    </div>
+  <div
+    className="max-w-[1280px] w-full lg:px-8 mt-8 lg:mt-16 mx-auto min-h-screen"
+    style={{
+      maxWidth: "1280px", // Set a consistent max width
+      margin: "0 auto", // Center the content horizontally
+      padding: "0 16px", // Add padding to prevent content from touching the edges
+      boxSizing: "border-box", // Ensure padding is included in the width calculation
+    }}
+  >
+    {children}
+  </div>
 </section>
             <section>
   
