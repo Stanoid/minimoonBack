@@ -307,7 +307,7 @@ bg-[url('../../public/amblemblack.svg')] "  >
 {subcats&&subcats.map(subcat=>(
 
 <div className="  py-6">
-<div className="lg:p-4  flex justify-between  ">
+<div className="lg:p-4 px-5  flex justify-between  ">
 <motion.div className=' p-0 sm:px-0  flex align-middle justify-end ' whileTap={{ scale: 1.03 }}>
       {/* <LoadingBtn act={()=>{router.push("/login")} } color={Theme.primary} textColor={"white"} icon={<FaLock  />} text={"تسجيل دخول"}  /> */}
      <Button onClick={()=>{router.push(`/categories?cid=${subcat.catagory.id}`)} } className="text-moon-200 underline text-lg "> {subcat.catagory.name_ar} </Button>
@@ -321,7 +321,7 @@ bg-[url('../../public/amblemblack.svg')] "  >
 
 </div>
 
-<div className="">
+<div className="overflow-scroll">
   <HorDiv data={subcat.products} btn={true} />
 </div>
 

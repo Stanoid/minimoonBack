@@ -4,39 +4,58 @@ import ProductCopm from './saveproduct';
 function HorDiv({ data, btn }) {
   return (
     <>
-      {/* Mobile Layout */}
+      {/* Mobile Layout - Satisfying Horizontal Scroll */}
       <div
-        dir="rtl"
         className="
           w-full
-          p-3
-          flex
-          gap-4
+          overflow-x-auto
           scrollbar-hide
           lg:hidden
           snap-x
-          overflow-x-scroll
           snap-mandatory
+          scroll-smooth
         "
+        style={{
+          scrollSnapType: 'x mandatory',
+          WebkitOverflowScrolling: 'touch', // momentum scroll on iOS
+        }}
       >
-        {data?.map(
-          (product, index) =>
-            product.status && (
-              <div
-                key={index}
-                className="
-                  flex-shrink-0
-                  min-w-[14rem]  /* Ensures proper scrollable width */
-                  snap-start
-                "
-              >
-                <ProductCopm atcbtn={btn} data={product} />
-              </div>
-            )
-        )}
+        <div
+          dir="rtl"
+          className="
+            flex
+            gap-4
+            px-4
+          "
+        >
+          {/* Spacer before first card for nicer feel */}
+          <div className="flex-shrink-0 w-2" />
+
+          {data?.map(
+            (product, index) =>
+              product.status && (
+                <div
+                  key={index}
+                  className="
+                    flex-shrink-0
+                    min-w-[14rem]
+                    snap-start
+                    transition-transform
+                    duration-300
+                    ease-in-out
+                  "
+                >
+                  <ProductCopm atcbtn={btn} data={product} />
+                </div>
+              )
+          )}
+
+          {/* Spacer after last card */}
+          <div className="flex-shrink-0 w-2" />
+        </div>
       </div>
 
-      {/* Desktop Layout */}
+      {/* Desktop Layout - Grid */}
       <div
         dir="rtl"
         className="

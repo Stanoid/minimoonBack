@@ -431,12 +431,23 @@ if(el.target.value.length<3){
             </section>
 
  
-            
             <section className={`${bgColorClass} el-messiri-text`}>
-    <div className="lg:max-w-[1280px] w-full lg:px-8 mt-8 lg:mt-16 lg:mx-auto  overflow-auto min-h-screen">
-        {children}
-    </div>
+  <div
+    className="
+      lg:max-w-[1280px] 
+      w-full 
+      lg:px-8 
+      overflow-auto
+      mt-8 
+      lg:mt-16 
+      lg:mx-auto  
+      min-h-screen
+    "
+  >
+    {children}
+  </div>
 </section>
+
             <section>
   
 
