@@ -1,86 +1,56 @@
-import React from 'react';
-import ProductCopm from './saveproduct';
+import React from 'react'
+import ProductCopm from './saveproduct'
 
-function HorDiv({ data, btn }) {
+function HorDiv(props) {
   return (
     <>
-      {/* Mobile Layout - Satisfying Horizontal Scroll */}
+      {/* Mobile Layout - improved gap */}
       <div
-        className="
-          w-full
-          overflow-x-auto
-          scrollbar-hide
-          lg:hidden
-          snap-x
-          snap-mandatory
-          scroll-smooth
-        "
-        style={{
-          scrollSnapType: 'x mandatory',
-          WebkitOverflowScrolling: 'touch', // momentum scroll on iOS
-        }}
+        dir='rtl'
+        className='scrollable-content w-lvw flex items-center p-2 px-4 gap-4 overflow-x-scroll lg:hidden'
       >
-        <div
-          dir="rtl"
-          className="
-            flex
-            gap-4
-            px-4
-          "
-        >
-          {/* Spacer before first card for nicer feel */}
-          <div className="flex-shrink-0 w-2" />
-
-          {data?.map(
-            (product, index) =>
-              product.status && (
-                <div
-                  key={index}
-                  className="
-                    flex-shrink-0
-                    min-w-[14rem]
-                    snap-start
-                    transition-transform
-                    duration-300
-                    ease-in-out
-                  "
-                >
-                  <ProductCopm atcbtn={btn} data={product} />
-                </div>
-              )
-          )}
-
-          {/* Spacer after last card */}
-          <div className="flex-shrink-0 w-2" />
-        </div>
+        {props.data && props.data.map((product, index) => (
+          product.status ? (
+            <div
+              key={index}
+              className="flex justify-center items-center min-w-56 rounded-md shadow-md shadow-gray-300"
+            >
+              <ProductCopm atcbtn={props.btn} data={product} /> 
+            </div>
+          ) : null
+        ))}
       </div>
 
-      {/* Desktop Layout - Grid */}
+      {/* Desktop Layout - centered and clean */}
       <div
         dir="rtl"
         className="
           hidden
           lg:grid
           w-full
-          gap-8
+          max-w-[1280px]
+          mx-auto
+          gap-6
           grid-cols-1
-          md:grid-cols-2
-          lg:grid-cols-3
+          sm:grid-cols-2
+          md:grid-cols-3
           xl:grid-cols-4
-          justify-items-center
+          px-4
         "
       >
-        {data?.map(
-          (product, index) =>
-            product.status && (
-              <div key={index} className="w-full min-w-0">
-                <ProductCopm atcbtn={btn} data={product} />
-              </div>
-            )
-        )}
+        {props.data && props.data.map((product, index) => (
+          product.status ? (
+            <div
+              key={index}
+              className="rounded-md shadow-md shadow-gray-300 flex justify-center items-center"
+            >
+              <ProductCopm atcbtn={props.btn} data={product} /> 
+            </div>
+          ) : null
+        ))}
       </div>
     </>
-  );
+  )
 }
 
-export default HorDiv;
+export default HorDiv
