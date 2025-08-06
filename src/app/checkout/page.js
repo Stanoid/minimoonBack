@@ -659,14 +659,25 @@ gridTemplateAreas:`
 
   </div>
 
-
+{/* 
   <div className='text-sm'>
     
   <LoadingBtn  className="text-sm"   act={()=>{
                        handleOrder() ; 
                        }}  text={"تاكيد الطلب   "} lod={lod} />
 
-  </div>
+  </div> */}
+<div className="text-center px-4  mx-auto">
+  <button
+    disabled
+    className="w-full py-2 bg-yellow-400 text-yellow-900 font-semibold rounded-md cursor-not-allowed opacity-60"
+  >
+    تاكيد الطلب
+  </button>
+  <p className="mt-2 text-yellow-800 text-sm">
+    نأسف، لا نقوم بالتوصيل في الوقت الحالي
+  </p>
+</div>
 
 
     </div>   

@@ -86,29 +86,18 @@ export default function NavbarC(props) {
     <>
     <nav className="bg-white  lg:max-[218px]  w-full">
     <div
-  className="bg-gradient-to-r from-moon-200 via-moon-100 to-moon-200 border-b border-moon-100 flex justify-center select-none duration-300"
+  className="bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-200 border-b border-yellow-200 flex justify-center items-center select-none duration-300 w-full px-4 py-2"
   style={{
-    width: '1440px',
-    height: '45px',
-    paddingTop: '3px',
-    paddingBottom: '3px',
-    borderBottomWidth: '1px',
-    fontFamily: '"El Messiri", sans-serif',
-    fontWeight: 500,
-    fontSize: '14px',
-    lineHeight: '150%',
-    letterSpacing: '0%',
-    textAlign: 'center',
+    minHeight: '50px', // slightly taller for mobile
     backgroundSize: '200% 100%',
     animation: 'waveGradient 6s ease infinite',
+    fontFamily: '"El Messiri", sans-serif',
+    fontWeight: 500,
   }}
 >
-  <div className="flex items-center space-x-2">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
-    </svg>
-
-    <span>لا تفوّت عروضنا الحصرية وتخفيضات الصيف المذهلة! </span>
+  <div className="flex items-center gap-2 text-yellow-800 text-sm sm:text-base text-center flex-wrap justify-center leading-relaxed">
+ 
+    <span>نأسف، لا نقوم بالتوصيل في الوقت الحالي</span>
   </div>
 
   <style jsx>{`
@@ -125,6 +114,7 @@ export default function NavbarC(props) {
     }
   `}</style>
 </div>
+
 
 
       <div className="container   lg:flex hidden mx-auto px-4 py-2  justify-between items-center text-gray-500 text-sm border-b border-gray-200 rtl">
@@ -294,6 +284,51 @@ onClick={() => {
       
     </nav>
 {/* mobile nav */}
+
+
+<div
+  className="lg:hidden bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-200 border-b border-yellow-200 flex justify-center items-center select-none duration-300 w-full px-4 py-2"
+  style={{
+    minHeight: '50px', // slightly taller for mobile
+    backgroundSize: '200% 100%',
+    animation: 'waveGradient 6s ease infinite',
+    fontFamily: '"El Messiri", sans-serif',
+    fontWeight: 500,
+  }}
+>
+  <div className="flex items-center gap-2 text-yellow-800 text-sm sm:text-base text-center flex-wrap justify-center leading-relaxed">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
+      />
+    </svg>
+    <span>نأسف، لا نقوم بالتوصيل في الوقت الحالي</span>
+  </div>
+
+  <style jsx>{`
+    @keyframes waveGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  `}</style>
+</div>
+
     <div dir="rtl" className="lg:hidden  w-full fixed top-0 left-0 z-50">
         <div className="bg-white  w-full flex items-center justify-between px-4 py-3">
           <Logowhite onClick={() => router.push("/")} className="w-16 cursor-pointer" />
