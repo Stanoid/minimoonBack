@@ -38,31 +38,37 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
      var url_parts = url.parse(ctx.request.url, true);
      var query = url_parts.query;
      switch (query.func) {
-       case "AddSubCat":
-//
+      case "AddSubCat":
+        if (utype == 1) {
+          const { name_ar, name_en, catagory } = ctx.request.body;
+          const { files } = ctx.request; // uploaded files
 
-       if(utype==1){
-        const {name_ar,name_en,catagory} = ctx.request.body;
+          let imageEntry = null;
+          if (files && files.img) {
+            // upload the file
+            const uploaded = await strapi.plugin('upload').service('upload').upload({
+              data: {},
+              files: files.img,
+            });
+            imageEntry = uploaded[0]; // single file
+          }
 
+          const entry = await strapi.entityService.create('api::subcatagory.subcatagory', {
+            data: {
+              name_ar,
+              name_en,
+              catagory,
+              status: true,
+              publishedAt: new Date(),
+              ...(imageEntry ? { img: imageEntry.id } : {}) // attach image if uploaded
+            },
+          });
 
-        const entry = await strapi.entityService.create('api::subcatagory.subcatagory', {
-          data: {
-            name_ar:name_ar,
-            name_en:name_en,
-            status: true,
-            catagory:catagory,
-            publishedAt :  Date.now() ,
-          },
-        });
-  return entry
-
-       }else{
-         return "unauthorized (:";
-       }
-         break;
-          default:
-        return "no function selected"
-         break;
+          return entry;
+        } else {
+          return "unauthorized (:";
+        }
+        break;
      }
       // try {
       // } catch (err) {
