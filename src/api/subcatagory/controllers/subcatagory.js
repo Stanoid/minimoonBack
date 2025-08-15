@@ -39,36 +39,41 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
      var query = url_parts.query;
      switch (query.func) {
       case "AddSubCat":
-        if (utype == 1) {
-          const { name_ar, name_en, catagory } = ctx.request.body;
-          const { files } = ctx.request; // uploaded files
+  if (utype == 1) {
+    const { name_ar, name_en, catagory } = ctx.request.body;
+    const { files } = ctx.request;
 
-          let imageEntry = null;
-          if (files && files.img) {
-            // upload the file
-            const uploaded = await strapi.plugin('upload').service('upload').upload({
-              data: {},
-              files: files.img,
-            });
-            imageEntry = uploaded[0]; // single file
-          }
+    let imageEntry = null;
+    if (files && files.img) {
+      const uploaded = await strapi
+        .plugin("upload")
+        .service("upload")
+        .upload({
+          data: {},
+          files: files.img,
+        });
+      imageEntry = uploaded[0]; // single file
+    }
 
-          const entry = await strapi.entityService.create('api::subcatagory.subcatagory', {
-            data: {
-              name_ar,
-              name_en,
-              catagory,
-              status: true,
-              publishedAt: new Date(),
-              ...(imageEntry ? { img: imageEntry.id } : {}) // attach image if uploaded
-            },
-          });
+    const entry = await strapi.entityService.create(
+      "api::subcatagory.subcatagory",
+      {
+        data: {
+          name_ar,
+          name_en,
+          catagory,
+          status: true,
+          publishedAt: new Date(),
+          ...(imageEntry ? { img: imageEntry } : {}), // attach full object, not just ID
+        },
+      }
+    );
 
-          return entry;
-        } else {
-          return "unauthorized (:";
-        }
-        break;
+    return entry;
+  } else {
+    return "unauthorized (:";
+  }
+
      }
       // try {
       // } catch (err) {
