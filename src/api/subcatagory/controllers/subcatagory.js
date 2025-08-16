@@ -42,21 +42,26 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
         if (utype == 1) {
           const { name_ar, name_en, catagory } = ctx.request.body;
           const { files } = ctx.request;
-
+      
           let imageEntry = null;
-
+      
           if (files && files.img) {
+            // Handle array or single object
+            const fileData = Array.isArray(files.img) ? files.img : [files.img];
+      
             const uploaded = await strapi
               .plugin("upload")
               .service("upload")
               .upload({
                 data: {},
-                files: files.img,
+                files: fileData,
               });
-
-            imageEntry = uploaded[0]; // first uploaded file
+      
+            if (uploaded.length > 0) {
+              imageEntry = uploaded[0];
+            }
           }
-
+      
           const entry = await strapi.entityService.create(
             "api::subcatagory.subcatagory",
             {
@@ -66,15 +71,16 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                 catagory,
                 status: true,
                 publishedAt: new Date(),
-                ...(imageEntry ? { img: [imageEntry.id] } : {}), // ✅ link by ID array
+                ...(imageEntry ? { img: imageEntry.id } : {}),
               },
             }
           );
-
+      
           return entry;
         } else {
           return "unauthorized (:";
         }
+      
 
 
 
