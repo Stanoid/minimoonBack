@@ -15,28 +15,7 @@ export const AuthProvider = (props)=>{
     const[stype,setStype] = useState(null);
     const [loading,setLoading]= useState(false);
     const router = useRouter();
-    // const ls = require("local-storage")
-
-
-    const saveToken = (token) => {
-      if (typeof window !== "undefined") {
-        localStorage.setItem("atkn", token);
-      }
-    };
-    
-    const getToken = () => {
-      if (typeof window !== "undefined") {
-        return localStorage.getItem("atkn");
-      }
-      return null;
-    };
-    
-    const removeToken = () => {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("atkn");
-      }
-    };
-    
+    const ls = require("local-storage")
    //const hello ="hello from provider";
     /**
      * adds user to email
@@ -65,10 +44,10 @@ export const AuthProvider = (props)=>{
                     if(data.jwt){
                         ls.set("atkn",data.jwt);
                   //   
-                     setUser(data.user.username);
-                     setuserData(data.user);
-                     setStype(data.user.type)
-                     switch(data.user.type){
+                     setUser(data?.user?.username);
+                     setuserData(data?.user);
+                     setStype(data?.user?.type)
+                     switch(data?.user?.type){
                        case 1:
                      //   notify("success",`مرحبآ بك  ${data.user.username}, يتم تسجيل دخولك.`)
                         router.replace("/")

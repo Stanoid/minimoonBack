@@ -1,365 +1,234 @@
-'use client'
+'use client' 
 
-import React from 'react';
-import { useContext,useEffect,useState } from 'react';
-import { Theme ,API_URL} from '../local';
+import React, { useContext, useEffect, useState } from 'react';
+import { API_URL } from '../local';
 import InputEl from '../comps/inputel';
-import axios from 'axios';
-import { useRouter } from 'next/navigation'
-import { TiThMenu } from "react-icons/ti";
-import { FaTimes,FaEdit } from 'react-icons/fa';
 import LoadingBtn from '../comps/loadingbtn';
 import { AuthCon } from '../contexts/AuthCon';
-import TableComp from "../comps/sandbox/table"
+import TableComp from "../comps/sandbox/table";
 import { useSelector } from 'react-redux';
 
 function AddSubCat(props) {
-    const ls = require("local-storage")
-    const {logindata,logoutUser}  = useContext(AuthCon);
+    const { logindata, logoutUser } = useContext(AuthCon);
+    const udata = useSelector((state) => state.root.auth.data && state.root.auth.data);
 
-    const [namear,setNamear] = useState("");
-    const [nameen,setNameen] = useState("");
-    const [sicon,setSicon] = useState("");
-    const [sizes,setSizes] = useState([]);
-    const [cat,setCat] = useState(null)
-    const [subcats,setSubcats] = useState([]);
-    const [catid,setCatid]= useState(null);
-    const router = useRouter(); 
-    const [lod,setlod] = useState(false)
-
-    const udata = useSelector((state) => state.root.auth.data&&state.root.auth.data)
+    const [namear, setNamear] = useState("");
+    const [nameen, setNameen] = useState("");
+    const [cat, setCat] = useState([]);
+    const [subcats, setSubcats] = useState([]);
+    const [catid, setCatid] = useState(null);
+    const [editSubcat, setEditSubcat] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const [lod, setlod] = useState(false);
 
     useEffect(() => {
-    getCats();
-   
-    },[])
-    
-   
- 
-   
+        getCats();
+    }, []);
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-  
-
-    
-    };
-
-
-    
-    
-        
-        const getCats=()=>{
-         
-    
-             props.setLod(true)
-        const requestOptions = {
-          method: 'GET',
-          headers: {
-              "Content-Type": "application/json",
-              "Authorization": 'Bearer ' + udata.data.jwt
-          },
-        
-      };
-    
-        fetch(`${API_URL}catagories`, requestOptions)
-          .then((response) => response.json())
-          .then((data) => {
-            
-           setCat(data.data);
-          }).then(()=>{
-         
-          getSubcats()
-          })
-    
-    
-        }
-
-
-        const getSubcats=()=>{
-         
-          props.setLod(true)
-    
-             
-          const requestOptions = {
+    const getCats = () => {
+        props.setLod(true);
+        fetch(`${API_URL}catagories`, {
             method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-                // "Authorization": 'Bearer ' + udata.data.jwt
-            },
-          
-        };
-      
-          fetch(`${API_URL}subcatagories?func=getAllSubcat`, requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-              
-              console.log(data)
-    
-              let arr = [];
-              for (let i = 0; i < data.length; i++) {
-                if(data[i].catagory){
-                  let ob = {};
-                  ob.id = data[i].id
-                   ob.name_ar = data[i].name_ar;
-                   ob.name_en = data[i].name_en;  
-                   ob.cat = data[i].catagory.name_ar;
-                   ob.scate = data[i].createdAt;
-                   ob.feat = data[i].feat;
-        
-                   arr.push(ob) 
-                }
-           
-               // console.log("rrrr",ob)
-               
-              }
-     
-              return arr
-
-
-
-
-             setSubcats(data);
-            }).then((arr)=>{
-           setSubcats(arr)
-            props.setLod(false);
-            })
-      
-      
-          }
-  
-
-      
-
-    
-
-          const deleteEntry=(id)=>{        
-            const requestOptions = {
-              method: 'DELETE',
-              headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": 'Bearer ' + udata.data.jwt
-              },
-            
-          };
-        
-            fetch(`${API_URL}subcatagories/${id}`, requestOptions)
-              .then((response) => response.json())
-              .then((data) => {
-                props.notifi("success"," تم حذف الفئة الفرعية") ;
-  
-             getCats();
-              }).then(()=>{
-             
-              
-              })
-        
-        
-            }
-
-   
-
-
-            const toggleFeat = (subcat)=>{
-
-              const requestOptions = {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": 'Bearer ' + udata.data.jwt
-                },
-                body: JSON.stringify(
-                    {
-                        "status":!subcat.feat,
-                      }
-                  )
-              
-            };
-              fetch(`${API_URL}subcatagories/${subcat.id}?func=togFeat`, requestOptions)
-                .then((response) => response.json())
-                .then((data) => {
-                  
-              
-                  props.notifi("success"," تم تعديل الفئة الفرعية")
-    
-    
-                  setlod(false);
-                getSubcats();
-                 
-                }).then(()=>{
-             
-                
-                })
-          
-            }
-
-
- const submitload = ()=>{
-
-
-
-  if(namear==""||nameen==""||catid==null){
-    alert("Empty Feilds")
-    return;
-  }
-
-
-        setlod(true);
-
-      
-        
-
-        const requestOptions = {
-            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": 'Bearer ' + udata.data.jwt
             },
-            body: JSON.stringify(
-                {
-                
-                    "name_ar":namear,
-                    "name_en":nameen,
-                    "catagory":catid
-                              
-             
-                  }
-              )
-          
-        };
-      
-          fetch(`${API_URL}subcatagories?func=AddSubCat`, requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-              
-             getSubcats();
-           props.notifi("success","تمت إضافة الفئة الفرعية")
-
-              setlod(false);
-            }).then(()=>{
-         
-            
-            })
-      
-
-
-
+        })
+        .then(res => res.json())
+        .then(data => {
+            setCat(data.data);
+        })
+        .then(() => getSubcats());
     }
-   
 
+    const getSubcats = () => {
+        props.setLod(true);
+        fetch(`${API_URL}subcatagories?func=getAllSubcat`, {
+            method: 'GET',
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const arr = data
+                .filter(s => s.catagory)
+                .map(s => ({
+                    id: s.id,
+                    img: s.img 
+                        ? `${API_URL.replace('/api', '')}${s.img.data?.attributes?.url || s.img.url}` 
+                        : null,
+                    name_ar: s.name_ar,
+                    name_en: s.name_en,
+                    cat: s.catagory?.name_ar || "—",
+                    createdAt: s.createdAt,
+                    feat: s.feat,
+                }));
+            setSubcats(arr);
+            props.setLod(false);
+        });
+    }
 
- 
+    const deleteEntry = (id) => {
+        fetch(`${API_URL}subcatagories/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer ' + udata.data.jwt
+            }
+        })
+        .then(res => res.json())
+        .then(() => {
+            props.notifi("success", "تم حذف الفئة الفرعية");
+            getSubcats();
+        });
+    }
 
+    const toggleFeat = (subcat) => {
+        fetch(`${API_URL}subcatagories/${subcat.id}?func=togFeat`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": 'Bearer ' + udata.data.jwt
+            },
+            body: JSON.stringify({ status: !subcat.feat })
+        })
+        .then(res => res.json())
+        .then(() => {
+            props.notifi("success", "تم تعديل الفئة الفرعية");
+            getSubcats();
+        });
+    }
 
- 
-
-  return (
-  
-
-
-
+    const submitload = () => {
+        if (!namear || !nameen || !catid) {
+            alert("Empty Fields");
+            return;
+        }
     
-<div 
-    style={{
-      
-      display:"flex",
-      alignItems:"center",
-      flexDirection:"column",
-      justifyContent:"center",
-      padding:5
-      
- }}>
-
-   
-
-
-
-   <div style={{
-    width:"100%",
-display:"grid",
-gap:10,
-gridTemplateAreas:`
-' namear  namear  nameen nameen  ' 
-'cat cat . .'
-
-`
-
-   }} >
-
-
-    <div style={{gridArea:"namear"}}>
-      <InputEl outputfunc={(val)=>{setNamear(val)}} label={"إسم الفئة الفرعية (العربية)"}/>
-    </div>
-
-    <div style={{gridArea:"nameen"}}>
-      <InputEl outputfunc={(val)=>{setNameen(val)}} label={"إسم الفئة الفرعية (الأنجليزية)"}/>
-    </div>
-
-    <div style={{gridArea:"cat"}}>
-    <InputEl value={catid} outputfunc={(val)=>{setCatid(val)}} select={true} data={cat}   label={"الفئة"}/>
-    </div>
-
-
-
-  
-  
-
-   </div>
-
-  
-
-   <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-
-
-<LoadingBtn act={()=>{submitload()}} lod={lod} text={"إضافة فئة فرعية"} />
-</div>
-
-
-<div  className='mt-12 w-full' >
-
-
-{
-  subcats?<TableComp
-
-  deleteProduct={deleteEntry}
-editScat={(scat)=>{props.setpage(19,scat.id)}}
-togfeat={(stat)=>{toggleFeat(stat)}}
-  columns={
-    [
-      {name: "ID", uid: "id", sortable: true},
-      {name: "الإسم (العربية)", uid: "name_ar", sortable: true},
-      {name: "الإسم (الإنجليزية)", uid: "name_en", sortable: true}, 
-      {name: "الفئة", uid: "cat", sortable: true},
-      {name: "فئة مميزة", uid: "feat", sortable: true},
+        setlod(true);
     
-      {name: "الخيارات", uid: "scate"},
-    ]
-   }
-   
-   data={subcats}
-    />:
-  <div style={{
-    display:lod?'flex':'none' ,
-    alignItems:"center",
-    justifyContent:"center"
-  }}>
-  <div style={{zIndex:10}}>
-        <div style={{justifyContent:"center",alignItems:"center"}} className="lds-facebook"><div></div><div></div><div></div></div>
+        const formData = new FormData();
+        formData.append("name_ar", namear);
+        formData.append("name_en", nameen);
+        formData.append("catagory", catid);
+        if (imageFile) formData.append("img", imageFile);
+    
+        let url, method;
+        if (editSubcat) {
+            url = `${API_URL}subcatagories/${editSubcat.id}`; // update existing
+            method = "PUT";
+        } else {
+            url = `${API_URL}subcatagories?func=AddSubCat`; // create new
+            method = "POST";
+        }
+    
+        fetch(url, {
+            method,
+            headers: { "Authorization": 'Bearer ' + udata.data.jwt },
+            body: formData
+        })
+        .then(async (res) => {
+            const text = await res.text();
+            try {
+                return JSON.parse(text);
+            } catch {
+                throw new Error(text);
+            }
+        })
+        .then(() => {
+            getSubcats();
+            props.notifi("success", editSubcat ? "تم تعديل الفئة الفرعية" : "تمت إضافة الفئة الفرعية");
+            setlod(false);
+            setEditSubcat(null);
+            setNamear("");
+            setNameen("");
+            setCatid(null);
+            setImageFile(null);
+        })
+        .catch(err => {
+            console.error("Error updating/adding subcategory:", err);
+            props.notifi("error", err.message);
+            setlod(false);
+        });
+    }
+    
+    const startEdit = (scat) => {
+        setEditSubcat(scat);
+        setNamear(scat.name_ar);
+        setNameen(scat.name_en);
+        const selectedCat = cat.find(c => c.name_ar === scat.cat);
+        setCatid(selectedCat ? selectedCat.id : null);
+        setImageFile(null);
+    }
+
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: 5 }}>
+            <div style={{
+                width: "100%",
+                display: "grid",
+                gap: 10,
+                gridTemplateAreas: `
+                    'namear namear nameen nameen'
+                    'cat cat image image'
+                `
+            }}>
+                <div style={{ gridArea: "namear" }}>
+                    <InputEl value={namear} outputfunc={setNamear} label="إسم الفئة الفرعية (العربية)" />
+                </div>
+
+                <div style={{ gridArea: "nameen" }}>
+                    <InputEl value={nameen} outputfunc={setNameen} label="إسم الفئة الفرعية (الأنجليزية)" />
+                </div>
+
+                <div style={{ gridArea: "cat" }}>
+                    <InputEl value={catid} outputfunc={setCatid} select data={cat} label="الفئة" />
+                </div>
+
+                <div style={{ gridArea: "image" }}>
+                    <label>صورة الفئة الفرعية</label>
+                    <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
+                    {imageFile ? (
+                        <img src={URL.createObjectURL(imageFile)} alt="Preview" style={{ width: 100, height: 100, marginTop: 5 }} />
+                    ) : editSubcat?.img ? (
+                        <img src={editSubcat.img} alt="Current" style={{ width: 100, height: 100, marginTop: 5 }} />
+                    ) : null}
+                </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+                <LoadingBtn act={submitload} lod={lod} text={editSubcat ? "تعديل الفئة الفرعية" : "إضافة فئة فرعية"} />
+            </div>
+
+            <div className="mt-12 w-full">
+                {subcats ? (
+                    <TableComp
+                        deleteProduct={deleteEntry}
+                        editScat={startEdit}
+                        togfeat={toggleFeat}
+                        columns={[
+                            { name: "ID", uid: "id", sortable: true },
+                            {
+                                name: "الصورة",
+                                uid: "img",
+                                render: (item) => (
+                                    item.img ? <img src={item.img} alt="subcat" style={{ width: 50, height: 50, objectFit: 'cover' }} /> : 'No image'
+                                )
+                            },
+                            { name: "الإسم (العربية)", uid: "name_ar", sortable: true },
+                            { name: "الإسم (الإنجليزية)", uid: "name_en", sortable: true },
+                            { name: "الفئة", uid: "cat", sortable: true },
+                            { name: "فئة مميزة", uid: "feat", sortable: true },
+                            { name: "الخيارات", uid: "scate" },
+                        ]}
+                        data={subcats}
+                    />
+                ) : (
+                    <div style={{ display: lod ? 'flex' : 'none', alignItems: "center", justifyContent: "center" }}>
+                        <div className="lds-facebook"><div></div><div></div><div></div></div>
+                    </div>
+                )}
+            </div>
         </div>
-  </div>
-}
-
-
-</div>
-
-      
-    </div>
-    
-
-
-
-
-  )
+    )
 }
 
 export default AddSubCat;

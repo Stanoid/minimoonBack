@@ -321,7 +321,8 @@ onClick={() => {
           <Logowhite onClick={() => router.push("/")} className="w-16 cursor-pointer" />
 
 
-
+<></>
+<></>
           <motion.div onClick={() => { props.openCart(true); }} 
   className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer"
 >
@@ -351,10 +352,10 @@ onClick={() => {
    
 
         <motion.div
-initial={{ y: "100%" }}
+initial={{ x: "100%" }}
 animate={{ y: isMenuOpen ? "0%" : "100%" }}
           transition={{ duration: 0.3 }}
-          className="fixed bottom-0 right-0 h-full backdrop-blur-md max-h-[80%] w-full bg-white z-50 overflow-y-auto p-4"
+          className="fixed  right-0 h-screen  backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4"
         >
           <div className="flex justify-between items-center mb-6">
             <Button
@@ -388,7 +389,7 @@ animate={{ y: isMenuOpen ? "0%" : "100%" }}
             >
               السلة ({cartData})
             </Button> */}
-<div className="w-full flex divide-x divide-gray-200">
+<div className="w-full flex divide-x ">
   <Button
     onClick={() => props.openFav(true)}
     className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
