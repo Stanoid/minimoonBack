@@ -305,28 +305,45 @@ case "getAllSubcat":
      var url_parts = url.parse(ctx.request.url, true);
      var query = url_parts.query;
      switch (query.func) {
-       case "EditSubCat":
-//
+      case "EditSubCat":
+  if (utype == 1) {
+    // Parse text fields from request body
+    const { name_ar, name_en, catagory } = ctx.request.body;
 
-       if(utype==1){
-        const {name_ar,name_en,catagory} = ctx.request.body;
-        const subcatEdit = await strapi.entityService.update('api::subcatagory.subcatagory',id, {
-          data: {
-              status:true,
-              name_ar:name_ar,
-              name_en:name_en,
-              catagory:catagory,
-              updatedAt: Date.now()
-            },
-          });
+    // Prepare update data
+    let updateData = {
+      status: true,
+      name_ar,
+      name_en,
+      catagory,
+      updatedAt: Date.now(),
+    };
 
+    // Handle uploaded image if present
+    const files = ctx.request.files?.img; // 'img' matches the frontend FormData field
+    if (files) {
+      const uploadedFiles = await strapi
+        .plugin('upload')
+        .service('upload')
+        .upload({ data: {}, files });
 
-  return subcatEdit
+      if (uploadedFiles && uploadedFiles.length > 0) {
+        updateData.img = uploadedFiles[0].id; // attach media ID to the subcategory
+      }
+    }
 
-       }else{
-         return "unauthorized (:";
-       }
-         break;
+    // Update subcategory
+    const subcatEdit = await strapi.entityService.update(
+      'api::subcatagory.subcatagory',
+      id,
+      { data: updateData }
+    );
+
+    return subcatEdit;
+  } else {
+    return "unauthorized (:";
+  }
+  break;
 
 
          case "togFeat":
