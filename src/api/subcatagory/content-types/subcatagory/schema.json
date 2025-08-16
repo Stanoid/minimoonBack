@@ -46,6 +46,9 @@
     },
     "feat": {
       "type": "boolean"
+    },
+    "topsec": {
+      "type":"boolean"
     }
   }
 }
