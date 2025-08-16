@@ -281,15 +281,23 @@ case "getAllSubcat":
   async update(ctx) {
     const { id } = ctx.params;
 
+    console.log("=== EditSubCat Request ===");
+    console.log("Params:", ctx.params);
+    console.log("Body:", ctx.request.body);
+    console.log("Files:", ctx.request.files);
+
     if (!ctx.request?.header?.authorization) {
       ctx.status = 403;
       return { error: "Unauthorized access" };
     }
 
     const udata = await strapi.plugins["users-permissions"].services.jwt.getToken(ctx);
-    const user = await strapi.entityService.findOne("plugin::users-permissions.user", udata.id);
-    const utype = user.type;
+    console.log("User data from JWT:", udata);
 
+    const user = await strapi.entityService.findOne("plugin::users-permissions.user", udata.id);
+    console.log("User record:", user);
+
+    const utype = user.type;
     if (utype !== 1) {
       ctx.status = 403;
       return { error: "Unauthorized" };
@@ -298,17 +306,26 @@ case "getAllSubcat":
     const { name_ar, name_en, catagory } = ctx.request.body;
     let updateData = { name_ar, name_en, catagory, updatedAt: new Date() };
 
-    // Handle image upload if a new file is provided
     if (ctx.request.files?.img) {
+      console.log("Uploading new image...");
       const files = Array.isArray(ctx.request.files.img) ? ctx.request.files.img : [ctx.request.files.img];
-      const uploadedFiles = await strapi.plugin('upload').service('upload').upload({
-        data: {},
-        files,
-      });
+      console.log("Files array:", files);
 
-      if (uploadedFiles.length > 0) {
-        updateData.img = uploadedFiles[0].id; // attach uploaded file ID
+      try {
+        const uploadedFiles = await strapi.plugin('upload').service('upload').upload({
+          data: {},
+          files,
+        });
+
+        console.log("Uploaded files:", uploadedFiles);
+        if (uploadedFiles.length > 0) {
+          updateData.img = uploadedFiles[0].id;
+        }
+      } catch (err) {
+        console.error("Image upload failed:", err);
       }
+    } else {
+      console.log("No new image provided, keeping existing image.");
     }
 
     const updated = await strapi.entityService.update(
@@ -317,9 +334,9 @@ case "getAllSubcat":
       { data: updateData }
     );
 
+    console.log("Updated subcategory:", updated);
     return this.sanitizeOutput(updated, ctx);
-  }
-,
+  },
 
 
 
