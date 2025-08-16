@@ -42,13 +42,13 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
         if (utype == 1) {
           const { name_ar, name_en, catagory } = ctx.request.body;
           const { files } = ctx.request;
-      
+
           let imageEntry = null;
-      
+
           if (files && files.img) {
             // Handle array or single object
             const fileData = Array.isArray(files.img) ? files.img : [files.img];
-      
+
             const uploaded = await strapi
               .plugin("upload")
               .service("upload")
@@ -56,12 +56,12 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
                 data: {},
                 files: fileData,
               });
-      
+
             if (uploaded.length > 0) {
               imageEntry = uploaded[0];
             }
           }
-      
+
           const entry = await strapi.entityService.create(
             "api::subcatagory.subcatagory",
             {
@@ -75,12 +75,12 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
               },
             }
           );
-      
+
           return entry;
         } else {
           return "unauthorized (:";
         }
-      
+
 
 
 
@@ -191,12 +191,11 @@ module.exports = createCoreController('api::subcatagory.subcatagory', ({ strapi 
 
 break;
 
-                 case "getAllSubcat":
-                  // return query.sid;
-                     const res = await strapi.db.query("api::subcatagory.subcatagory").findMany({
-                       select: ["*"],
-                         populate: ["catagory"],
-                     });
+case "getAllSubcat":
+  const res = await strapi.db.query("api::subcatagory.subcatagory").findMany({
+    select: ["*"],
+    populate: ["catagory", "img"], // populate image
+  });
 
                      const sanitizedEntity = await this.sanitizeOutput(res, ctx);
 
