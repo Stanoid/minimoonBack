@@ -279,112 +279,47 @@ case "getAllSubcat":
 
 
   async update(ctx) {
-
-
-
     const { id } = ctx.params;
 
-    if (ctx.request && ctx.request.header && ctx.request.header.authorization) {
+    if (!ctx.request?.header?.authorization) {
+      ctx.status = 403;
+      return { error: "Unauthorized access" };
+    }
 
+    const udata = await strapi.plugins["users-permissions"].services.jwt.getToken(ctx);
+    const user = await strapi.entityService.findOne("plugin::users-permissions.user", udata.id);
+    const utype = user.type;
 
+    if (utype !== 1) {
+      ctx.status = 403;
+      return { error: "Unauthorized" };
+    }
 
-      const udata = await strapi.plugins[
-        "users-permissions"
-      ].services.jwt.getToken(ctx);
-
-     udata.id;
-
-
-     const user = await strapi.entityService.findOne(
-      "plugin::users-permissions.user",
-    udata.id,
-
-    );
-     const utype = user.type
-     var url = require("url");
-     var url_parts = url.parse(ctx.request.url, true);
-     var query = url_parts.query;
-     switch (query.func) {
-      case "EditSubCat":
-  if (utype == 1) {
-    // Parse text fields from request body
     const { name_ar, name_en, catagory } = ctx.request.body;
+    let updateData = { name_ar, name_en, catagory, updatedAt: new Date() };
 
-    // Prepare update data
-    let updateData = {
-      status: true,
-      name_ar,
-      name_en,
-      catagory,
-      updatedAt: Date.now(),
-    };
+    // Handle image upload if a new file is provided
+    if (ctx.request.files?.img) {
+      const files = Array.isArray(ctx.request.files.img) ? ctx.request.files.img : [ctx.request.files.img];
+      const uploadedFiles = await strapi.plugin('upload').service('upload').upload({
+        data: {},
+        files,
+      });
 
-    // Handle uploaded image if present
-    const files = ctx.request.files?.img; // 'img' matches the frontend FormData field
-    if (files) {
-      const uploadedFiles = await strapi
-        .plugin('upload')
-        .service('upload')
-        .upload({ data: {}, files });
-
-      if (uploadedFiles && uploadedFiles.length > 0) {
-        updateData.img = uploadedFiles[0].id; // attach media ID to the subcategory
+      if (uploadedFiles.length > 0) {
+        updateData.img = uploadedFiles[0].id; // attach uploaded file ID
       }
     }
 
-    // Update subcategory
-    const subcatEdit = await strapi.entityService.update(
+    const updated = await strapi.entityService.update(
       'api::subcatagory.subcatagory',
       id,
       { data: updateData }
     );
 
-    return subcatEdit;
-  } else {
-    return "unauthorized (:";
+    return this.sanitizeOutput(updated, ctx);
   }
-  break;
-
-
-         case "togFeat":
-          //
-
-                 if(utype==1){
-                  const {status} = ctx.request.body;
-                  const subcatEdit = await strapi.entityService.update('api::subcatagory.subcatagory',id, {
-                    data: {
-
-                        feat:status,
-
-                      },
-                    });
-
-
-            return subcatEdit
-
-                 }else{
-                   return "unauthorized (:";
-                 }
-                   break;
-          default:
-        return "no function selected"
-         break;
-     }
-      // try {
-      // } catch (err) {
-      //   return "nauthorized request catch triggred";
-      // }
-  } else {
-    //puplic functions goes here
-    return "unauthorized access."
-   }
-
-
-
-
-
-  },
-
+,
 
 
 
