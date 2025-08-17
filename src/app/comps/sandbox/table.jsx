@@ -827,7 +827,7 @@
                               <div className="py-1 font-bold text-gray-600 ">  إظهار\إخفاء المميزة </div>  </DropdownItem>
 
                               <DropdownItem textValue="a"   onClick={()=>{ props.toggleTopsec(user)}} startContent={<FaToggleOn style={{marginRight:4}} />} key={"view"} >
-                              <div className="py-1 font-bold text-gray-600 ">  إظهار\إخفاء sectopns </div>  </DropdownItem>
+                              <div className="py-1 font-bold text-gray-600 ">  إظهار\إخفاء أفضل الأقسام </div>  </DropdownItem>
             
                               <DropdownItem textValue="a"  onClick={()=>{props.deleteProduct(user.id)}} startContent={<FaTrash className="text-red-600" style={{marginRight:4}} />} key={"del"} >
                               <div className="py-2 font-medium text-red-500">   حذف الفئة الفرعية </div> </DropdownItem>

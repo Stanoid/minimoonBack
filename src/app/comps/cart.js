@@ -73,7 +73,7 @@ const Cart = forwardRef((props, ref) => {
   };
 
 
-  console.log("Full cart from Redux:", cartg);
+  // console.log("Full cart from Redux:", cartg);
   
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -122,6 +122,7 @@ const Cart = forwardRef((props, ref) => {
                     >
                       <XIcon
                         className="h-6 w-6 text-gray-500"
+
                         aria-hidden="true"
                       />
                     </div>

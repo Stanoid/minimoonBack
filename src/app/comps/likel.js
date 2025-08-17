@@ -27,13 +27,13 @@ function LikeEl(props) {
  rounded-sm p-2 items-center justify-between align-middle ' > 
   <a  href={`/products?pid=${props.id}`} >
     <div sty className='w-20 h-24 min-w-20  ' style={{position:"relative"}} >
-      {/* <Image fill objectFit='cover'
+      <Image fill objectFit='cover'
       alt={props.name}
       quality={25}
        onClick={()=>{router.push(`/products?pid=${props.id}`); props.closeModal() }}  className=' rounded-md  ' 
                src={`${IMG_URL}${props.data?.images[0]?.formats?.medium?.url}`} 
     
-      /> */}
+      />
       
         
     

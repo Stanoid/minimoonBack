@@ -24,20 +24,28 @@ export default function Cartel(props) {
   const [varients, setVarients] = useState(null);
   const dispatch = useDispatch();
 
+  
+const handleQuantityChange = (action) => {
+    if (action === "increase") {
+      props.setQty(props.qty + 1);
+    } else if (action === "decrease" && props.qty > 1) {
+      props.setQty(props.qty - 1);
+    }
+  };
+
+
   useEffect(() => {
     setVarients(props.data.attributes.varients.data);
     // setVarient(props.data.attributes.varients.data[0]);
-    
+
     for (let i = 0; i < props.data.attributes.varients.data.length; i++) {
-      if(props.data.attributes.varients.data[i].id==props.selvar){
+      if (props.data.attributes.varients.data[i].id == props.selvar) {
         setVarient(props.data.attributes.varients.data[i]);
       }
-      
     }
-    
-    console.log("here daddy",props.data.attributes.varients.data)
 
-  },[]);
+    console.log("here daddy", props.data.attributes.varients.data);
+  }, []);
 
   const removeid = () => {
     props.removeItem(props.index);
@@ -75,16 +83,15 @@ export default function Cartel(props) {
             alignItems: "center",
           }}
         >
-<img
-  className="w-[84px] h-[84px] object-cover lg:w-[120px] lg:h-[120px]"
-  style={{ borderRadius: 8 }}
-  src={
-    props.data.attributes.images?.data?.[0]?.attributes?.url
-      ? IMG_URL + props.data.attributes.images.data[0].attributes.url
-      : "/default-image.png"
-  }
-/>
-
+          <img
+            className="w-[84px] h-[84px] object-cover lg:w-[120px] lg:h-[120px]"
+            style={{ borderRadius: 8 }}
+            src={
+              props.data.attributes.images?.data?.[0]?.attributes?.url
+                ? IMG_URL + props.data.attributes.images.data[0].attributes.url
+                : "/default-image.png"
+            }
+          />
         </div>
 
         <div
@@ -113,103 +120,119 @@ export default function Cartel(props) {
 
           </div> */}
 
-          <div className="flex flex-col items-end flex-grow text-right pr-4"> 
-  <div className="text-base font-semibold text-gray-800">
-    <span className="block overflow-hidden whitespace-nowrap text-ellipsis" dir="rtl">
-      {props.data.attributes.name_ar} - {props.code}
-    </span>
-  </div>
-  <div className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-gray-600 mt-1" dir="rtl">
-    
-    {varient && varient.attributes.colors.data[0] && (
-      <div
-      className="w-4 h-4 rounded-full border border-gray-500 flex-shrink-0"
-      style={{ backgroundColor: varient.attributes.colors.data[0].attributes.colorCode }}
-      >
+          <div className="flex flex-col items-end flex-grow text-right pr-4">
+            <div className="text-base font-semibold text-gray-800">
+              <span
+                className="block overflow-hidden whitespace-nowrap text-ellipsis"
+                dir="rtl"
+              >
+                {props.data.attributes.name_ar} - {props.code}
+              </span>
+            </div>
+            <div
+              className="flex items-center space-x-2 rtl:space-x-reverse text-sm text-gray-600 mt-1"
+              dir="rtl"
+            >
+              {varient && varient.attributes.colors.data[0] && (
+                <div
+                  className="w-4 h-4 rounded-full border border-gray-500 flex-shrink-0"
+                  style={{
+                    backgroundColor:
+                      varient.attributes.colors.data[0].attributes.colorCode,
+                  }}
+                ></div>
+              )}
+              {varient && varient.attributes.colors.data[0] && (
+                <span className="text-gray-600 text-sm font-medium">
+                  {varient.attributes.colors.data[0].attributes.name_ar} -
+                </span>
+              )}
 
-      </div>
-    )}
- {varient && varient.attributes.colors.data[0] && (
-      <span className="text-gray-600 text-sm font-medium">
-        {varient.attributes.colors.data[0].attributes.name_ar} - 
-      </span>
-    )}
-
-
-    {varient && varient.attributes.sizes.data[0] && (
-      <span className="font-medium">{varient.attributes.sizes.data[0].attributes.icon}</span>
-    )}
-    {/* <span className="ml-1">الاحمر</span>  */}
-  </div>
-  <div className="flex items-center gap-2 space-x-1 rtl:space-x-reverse mt-2">
-    <button
-      onClick={() => handleQuantityChange('decrease')}
-      className="w-6 h-6 border  border-moon-200  rounded-md flex items-center justify-center text-sm"
-      style={{ color: Theme.primary, backgroundColor: 'white' }}
-    >
-      <BsDash className="w-4 h-4" />
-    </button>
-    <span className="text-base font-medium">{props.qty}</span>
-    <button
-      onClick={() => handleQuantityChange('increase')}
-      className="w-6 h-6 rounded-md flex items-center justify-center text-sm"
-      style={{ backgroundColor: Theme.primary, color: 'white' }}
-    >
-      <BsPlus className="w-4 h-4" />
-    </button>
-  </div>
-</div>
+              {varient && varient.attributes.sizes.data[0] && (
+                <span className="font-medium">
+                  {varient.attributes.sizes.data[0].attributes.icon}
+                </span>
+              )}
+              {/* <span className="ml-1">الاحمر</span>  */}
+            </div>
+            <div className="flex items-center gap-2 space-x-1 rtl:space-x-reverse mt-2">
+              <button
+                onClick={() => handleQuantityChange("decrease")}
+                className="w-6 h-6 border  border-moon-200  rounded-md flex items-center justify-center text-sm"
+                style={{ color: Theme.primary, backgroundColor: "white" }}
+              >
+                <BsDash className="w-4 h-4" />
+              </button>
+              <span className="text-base font-medium">{props.qty}</span>
+              <button
+                onClick={() => handleQuantityChange("increase")}
+                className="w-6 h-6 rounded-md flex items-center justify-center text-sm"
+                style={{ backgroundColor: Theme.primary, color: "white" }}
+              >
+                <BsPlus className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
 
-
-        {/* <div className="bg-moon-200 text-white px-2 py-1 text-sm rounded-full ">
+        <div className="bg-moon-200 text-white px-2 py-1 text-sm rounded-full ">
           {props.code}
-        </div> */}
-
-          {/* <div
+        </div>
+        <div
           className=""
+          style={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            marginLeft: 5,
+          }}
+        >
+          <div
+            className="space-x-2"
             style={{
               display: "flex",
-              alignContent: "center",
+              alignItems: "center",
               justifyContent: "center",
-              flexDirection: "row",
-              marginLeft: 5,
             }}
           >
+            {varient &&
+              varient.attributes.colors.data.map((color) => {
+                if (color.id == props.color) {
+                  return (
+                    <div
+                      style={{
+                        backgroundColor:
+                          varient &&
+                          varient.attributes.colors.data[0].attributes
+                            .colorCode,
+                      }}
+                      className="w-7 h-7 rounded-full"
+                    ></div>
+                  );
+                }
+              })}
+
             <div
-              className="space-x-2"
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor:
+                  varient &&
+                  varient.attributes.colors.data[0].attributes.colorCode,
               }}
-            >
-            
-              {varient &&
-                varient.attributes.colors.data.map((color) => {
-                  if (color.id == props.color) {
-                    return (
-                      <div
-                        style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
-                        className="w-7 h-7 rounded-full"
-                      ></div>
-                    );
-                  }
-                })} 
-
-  <div
-                        style={{ backgroundColor: varient&&varient.attributes.colors.data[0].attributes.colorCode }}
-                        className="w-7 h-7 rounded-full"
-                      ></div>
-
-            </div>
-          </div> */}
+              className="w-7 h-7 rounded-full"
+            ></div>
+          </div>
+        </div>
 
         <div
           onClick={() => {
-            dispatch(removeFromCart(
-             {id: props.selvar, color:props.color, size:props.size}
-            ));
+            dispatch(
+              removeFromCart({
+                id: props.selvar,
+                color: props.color,
+                size: props.size,
+              })
+            );
           }}
           style={{
             display: props.order ? "none" : "flex",
@@ -220,8 +243,8 @@ export default function Cartel(props) {
           }}
         >
           <div
-          className="border border-moon-200 rounded-md  text-moon-200"
-            style={{  padding: 2.5 }}
+            className="border border-moon-200 rounded-md  text-moon-200"
+            style={{ padding: 2.5 }}
           >
             <BsX style={{ color: "", fontSize: 25 }} />
           </div>
