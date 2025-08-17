@@ -41,7 +41,7 @@
     const INITIAL_VISIBLE_COLUMNS = ["name","createdAt","cat","name_en","section","icon","img","color","scate","colore","cate","colorCode","size", "city",
       "status","pstatus", "email","refid","refida","date",'phone',"feat",
       "delivery_type","total","payment_type","payment_status","total","name_ar","description_ar",
-      "code","price","images","qty","colorname","sizeo","imgsingle"];
+      "code","price","images","qty","colorname","sizeo","imgsingle","topsec"];
 
     export default function App(props) {
       const [filterValue, setFilterValue] = React.useState("");
@@ -414,11 +414,29 @@
               
               break;
 
+              case "img":
+              
+              return (
+                  <div className="w-16 h-16 relative">
+                    <img
+                      fill
+                      className="rounded-md object-cover"
+                      quality={40}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      src={cellValue}
+                      alt="product"
+                    />
+                  </div>
+                );
+        
+              
+                  
+                  break;
+              
+
           case "feat":
           
           return(
-          
-
           <div className="py-2 px-4 text-center text-white font-bold rounded-md " style={{backgroundColor:cellValue?"#2eff89":"#ff424c"}} >
             {cellValue?"نعم":"لا"}
           </div>
@@ -428,6 +446,19 @@
 
 
         break;
+
+        case "topsec":
+          
+        return(
+        <div className="py-2 px-4 text-center text-white font-bold rounded-md " style={{backgroundColor:cellValue?"#2eff89":"#ff424c"}} >
+          {cellValue?"نعم":"لا"}
+        </div>
+
+        );
+
+
+
+      break;
 
 
 
@@ -794,6 +825,9 @@
 
                               <DropdownItem textValue="a"   onClick={()=>{ props.togfeat(user)}} startContent={<FaToggleOn style={{marginRight:4}} />} key={"view"} >
                               <div className="py-1 font-bold text-gray-600 ">  إظهار\إخفاء المميزة </div>  </DropdownItem>
+
+                              <DropdownItem textValue="a"   onClick={()=>{ props.toggleTopsec(user)}} startContent={<FaToggleOn style={{marginRight:4}} />} key={"view"} >
+                              <div className="py-1 font-bold text-gray-600 ">  إظهار\إخفاء sectopns </div>  </DropdownItem>
             
                               <DropdownItem textValue="a"  onClick={()=>{props.deleteProduct(user.id)}} startContent={<FaTrash className="text-red-600" style={{marginRight:4}} />} key={"del"} >
                               <div className="py-2 font-medium text-red-500">   حذف الفئة الفرعية </div> </DropdownItem>

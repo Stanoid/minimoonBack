@@ -7,6 +7,7 @@ import LoadingBtn from '../comps/loadingbtn';
 import { AuthCon } from '../contexts/AuthCon';
 import TableComp from "../comps/sandbox/table";
 import { useSelector } from 'react-redux';
+import Image from 'next/image';
 
 function AddSubCat(props) {
     const { logindata, logoutUser } = useContext(AuthCon);
@@ -41,31 +42,46 @@ function AddSubCat(props) {
         .then(() => getSubcats());
     }
 
-    const getSubcats = () => {
+
+    const makeImgUrl = (url) => {
+        if (!url) return null;
+      
+        // Remove /api and trailing slash from API_URL
+        const base = API_URL.replace('/api', '').replace(/\/$/, '');
+        // Ensure the path starts with a single /
+        const path = url.startsWith('/') ? url : `/${url}`;
+      
+        return `${base}${path}`;
+      };
+
+      
+
+      const getSubcats = () => {
         props.setLod(true);
         fetch(`${API_URL}subcatagories?func=getAllSubcat`, {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
+          method: 'GET',
+          headers: { "Content-Type": "application/json" }
         })
         .then(res => res.json())
         .then(data => {
-            const arr = data
-                .filter(s => s.catagory)
-                .map(s => ({
-                    id: s.id,
-                    img: s.img 
-                        ? `${API_URL.replace('/api', '')}${s.img.data?.attributes?.url || s.img.url}` 
-                        : null,
-                    name_ar: s.name_ar,
-                    name_en: s.name_en,
-                    cat: s.catagory?.name_ar || "—",
-                    createdAt: s.createdAt,
-                    feat: s.feat,
-                }));
-            setSubcats(arr);
-            props.setLod(false);
+          console.log("Server response:", data); 
+          const arr = data
+            .filter(s => s.catagory)
+            .map(s => ({
+              id: s.id,
+              img: makeImgUrl(s.img?.data?.attributes?.url || s.img?.url),
+              name_ar: s.name_ar,
+              name_en: s.name_en,
+              cat: s.catagory?.name_ar || "—",
+              createdAt: s.createdAt,
+              feat: s.feat,
+              topsec: s.topsec ?? false,
+            }));
+          setSubcats(arr);
+          props.setLod(false);
         });
-    }
+      };
+      
 
     const deleteEntry = (id) => {
         fetch(`${API_URL}subcatagories/${id}`, {
@@ -81,6 +97,29 @@ function AddSubCat(props) {
             getSubcats();
         });
     }
+
+const toggleTopsec = (subcat) => {
+  fetch(`${API_URL}subcatagories/${subcat.id}`, {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer ' + udata.data.jwt
+    },
+    body: JSON.stringify({ topsec: !subcat.topsec })
+  })
+  .then(res => res.json())
+  .then(() => {
+    props.notifi("success", "تم تعديل حالة الفئة الرئيسية");
+    getSubcats();
+  }).catch(err => {
+    console.error("Error toggling top section:", err);
+    props.notifi("error", "حدث خطأ أثناء تعديل حالة الفئة الرئيسية");
+    });
+};
+
+
+
+    
 
     const toggleFeat = (subcat) => {
         fetch(`${API_URL}subcatagories/${subcat.id}?func=togFeat`, {
@@ -204,19 +243,22 @@ function AddSubCat(props) {
                         deleteProduct={deleteEntry}
                         editScat={startEdit}
                         togfeat={toggleFeat}
+                        toggleTopsec={toggleTopsec}
                         columns={[
                             { name: "ID", uid: "id", sortable: true },
-                            {
-                                name: "الصورة",
-                                uid: "img",
-                                render: (item) => (
-                                    item.img ? <img src={item.img} alt="subcat" style={{ width: 50, height: 50, objectFit: 'cover' }} /> : 'No image'
-                                )
-                            },
+                            {name: "Image", uid: "img", sortable: true},
+
+                           
+                              
+                              
+    
+                                              
                             { name: "الإسم (العربية)", uid: "name_ar", sortable: true },
                             { name: "الإسم (الإنجليزية)", uid: "name_en", sortable: true },
                             { name: "الفئة", uid: "cat", sortable: true },
                             { name: "فئة مميزة", uid: "feat", sortable: true },
+                            { name: "فئة مميزة", uid: "topsec", sortable: true },
+
                             { name: "الخيارات", uid: "scate" },
                         ]}
                         data={subcats}

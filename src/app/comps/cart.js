@@ -32,33 +32,35 @@ const Cart = forwardRef((props, ref) => {
   
   const cartg = useSelector((state) => state.root.cart.data); 
   const isLogged = useSelector((state) => state.root.auth.data);
-
   useEffect(() => {
     let calculatedSubtotal = 0;
-
+    let calculatedSavings = 0;
+  
     cartg.forEach(item => {
       const selectedVariant = item.data?.attributes?.varients?.data?.find(v => v.id === item.selvar);
       if (selectedVariant && selectedVariant.attributes?.price) {
-        calculatedSubtotal += selectedVariant.attributes.price * item.qty;
+        const price = selectedVariant.attributes.price;
+        const discountPercent = selectedVariant.attributes.old_price || 0; 
+  
+        calculatedSubtotal += price * item.qty;
+        calculatedSavings += (price * discountPercent / 100) * item.qty; 
       }
     });
+  
     setSubtotal(calculatedSubtotal);
-
-    const calculatedSavings = calculatedSubtotal >= 6950 ? 6950 : 0;
-    setSavings(calculatedSavings);
-
+    setSavings(calculatedSavings); 
+    setFinalTotal(calculatedSubtotal);
+  
     const freeShippingThreshold = 1499; 
     let currentShippingCost = 120; 
     if (calculatedSubtotal >= freeShippingThreshold) {
       currentShippingCost = 0; 
     }
     setShippingCost(currentShippingCost);
-    
-    setFinalTotal(calculatedSubtotal - calculatedSavings + currentShippingCost);
-    
-  }, [cartg]); 
+  
+  }, [cartg]);
+  
 
-  console.log("here are the porops ",props)
 
   const handleOrder = () => {
     props.openHandler(false);
@@ -70,6 +72,9 @@ const Cart = forwardRef((props, ref) => {
     router.push("/checkout");
   };
 
+
+  console.log("Full cart from Redux:", cartg);
+  
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog
@@ -82,31 +87,31 @@ const Cart = forwardRef((props, ref) => {
         <div className="absolute backdrop-blur-md inset-0 overflow-hidden">
           <Transition.Child
             as={Fragment}
-            enter="ease-in-out duration-200"
+            enter="ease-in-out duration-300"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="ease-in-out duration-100"
+            leave="ease-in-out duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
             <Dialog.Overlay className="absolute inset-0 bg-black bg-opacity-10 lg:bg-opacity-50 transition-opacity" />
           </Transition.Child>
 
-          <div className="fixed inset-x-0 bottom-0 lg:inset-y-0 lg:right-0 lg:left-auto w-full max-w-full lg:max-w-md  flex z-50">
+          <div className="fixed inset-x-0 bottom-0 lg:inset-y-0 lg:left-0  w-full max-w-full lg:max-w-md  flex z-50">
 
             <Transition.Child
-              as={Fragment}
-              enter="transform transition ease-in-out duration-200 sm:duration-300"
-              enterFrom="translate-y-full lg:translate-x-full"
-              enterTo="translate-y-0 lg:translate-x-0 "
-              leave="transform transition ease-in-out duration-200 sm:duration-300"
-              leaveFrom="translate-y-0 lg:translate-x-0 "
-              leaveTo="translate-y-full lg:translate-x-full"
+            as={Fragment}
+            enter="transform transition ease-in-out duration-300"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="transform transition ease-in-out duration-300"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
             >
               <div className="relative w-full h-full ">
                 <ToastContainer limit={3} />
 
-                <div className="h-full flex flex-col py-6  lg:max-w-[512px]  w-full rounded-t-lg rounded-r-none lg:rounded-t-none lg:rounded-r-lg bg-white shadow-lg overflow-y-hidden">
+                <div className=" flex flex-col py-6  lg:max-w-[512px]  w-full rounded-t-lg rounded-r-none lg:rounded-t-none lg:rounded-r-lg bg-white shadow-lg overflow-y-hidden">
                   <div className="px-4 sm:px
                   -6 flex items-center justify-between">
                     <div
@@ -217,14 +222,20 @@ const Cart = forwardRef((props, ref) => {
                           <span className="text-base font-bold">{subtotal.toFixed(2)} {CURRENCY}</span>
                         </div>
                         <div className="flex justify-between items-center mb-2" dir="rtl">
-                          <span className="text-sm text-gray-700">تم توفير</span>
-                          <span className="text-base font-bold text-green-600">{savings.toFixed(2)} {CURRENCY}</span>
-                        </div>
+                        <span className="text-sm text-gray-700">تم توفير</span>
+                        <span className="text-base font-bold text-green-600">
+                          {/* {(old_price - price).toFixed(2)} {CURRENCY} */}
+                        </span>
+                      </div>
+
                    
-                        <div className="flex justify-between items-center mb-4" dir="rtl">
-                          <span className="text-sm text-gray-700">مصاريف الشحن و التوصيل</span>
-                          <span className="text-base font-bold text-gray-700">{shippingCost.toFixed(2)} {CURRENCY}</span>
-                        </div>
+                      <div className="flex justify-between items-center mb-2" dir="rtl">
+  <span className="text-sm text-gray-700">تم توفير</span>
+  <span className="text-base font-bold text-green-600">
+    {savings.toFixed(2)} {CURRENCY}
+  </span>
+</div>
+
 
                         <div className="flex justify-between items-center text-lg font-bold text-gray-900 mb-6" dir="rtl">
                           <span>الإجمالي</span>

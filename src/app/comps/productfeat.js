@@ -1,33 +1,60 @@
-import React, { useState, useEffect, useRef } from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { API_URL } from '../local';
+import { motion } from 'framer-motion';
 
 function ProductFeat() {
-  const [cat, setCat] = useState([]);
-  const firstRenderRef = useRef(true);
+  const [subcats, setSubcats] = useState([]);
+  const [startIndex, setStartIndex] = useState(0);
 
   useEffect(() => {
-    if (firstRenderRef.current) {
-      firstRenderRef.current = false;
-      fetchCategories();
-    }
+    fetchTopSubcats();
   }, []);
 
-  const fetchCategories = async () => {
+  useEffect(() => {
+    if (subcats.length === 0) return;
+
+    const interval = setInterval(() => {
+      setStartIndex((prev) => (prev + 1) % subcats.length);
+    }, 5000); 
+
+    return () => clearInterval(interval);
+  }, [subcats]);
+
+  const fetchTopSubcats = async () => {
     try {
-      const response = await fetch(`${API_URL}sections?func=getAllSubcat`, {
+      const res = await fetch(`${API_URL}subcatagories?func=getTopSecSubcats`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
-      const data = await response.json();
-      console.log("te data ya man   ",data)
-      setCat(data[0]?.catagories || []);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+      const data = await res.json();
+      console.log("Top subcategories:", data);
+      setSubcats(data);
+    } catch (err) {
+      console.error("Error fetching top subcategories:", err);
     }
   };
 
+  const getImageUrl = (img) => {
+    if (!img || !img.url) {
+      return 'https://place-hold.it/300x500/666/fff/000.gif';
+    }
+    let url = img.url;
+    if (!url.startsWith('http')) {
+      const base = API_URL.replace(/\/api\/?$/, '');
+      return base + url;
+    }
+    return url;
+  };
+
   const CategoryCard = ({ img, name, link, isLarge = false }) => (
-    <div
+    <motion.div
+      key={link} // unique per card
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
       className={`relative rounded-lg overflow-hidden shadow-lg cursor-pointer  
         ${isLarge ? 'col-span-2 row-span-2 min-h-[400px] lg:min-h-[500px]' : 'min-h-[200px] lg:min-h-[240px]'}
         flex items-end`}
@@ -56,44 +83,13 @@ function ProductFeat() {
           {name}
         </h3>
       </div>
-    </div>
+    </motion.div>
   );
 
-  // Force featured images even if fetched category exists
-  const largeCategory = {
-    ...cat.find(c => c.name_ar === 'بجامة 3 قطع') || {},
-    img: '/featured/IMG-20250802-WA0002.jpg',
-    name_ar: 'بجامة 3 قطع',
-    id: cat.find(c => c.name_ar === 'بجامة 3 قطع')?.id || 'default-large',
-  };
-
-  const robaatCategory = {
-    ...cat.find(c => c.name_ar === 'shasnbura') || {},
-    img: '/featured/IMG-20250802-WA0010.jpg',
-    name_ar: 'shambyra',
-    id: cat.find(c => c.name_ar === 'shasnbura')?.id || 'default-robaat',
-  };
-
-  const hawamelCategory = {
-    ...cat.find(c => c.name_ar === 'حوامل') || {},
-    img: '/featured/IMG-20250802-WA0012.jpg',
-    name_ar: 'حوامل',
-    id: cat.find(c => c.name_ar === 'حوامل')?.id || 'default-hawamel',
-  };
-
-  const hagemKabeerCategory = {
-    ...cat.find(c => c.name_ar === 'حجم كبير') || {},
-    img: '/featured/IMG-20250802-WA0007.jpg',
-    name_ar: 'حجم كبير',
-    id: cat.find(c => c.name_ar === 'حجم كبير')?.id || 'default-hagem-kabeer',
-  };
-
-  const bajama5QetaaCategory = {
-    ...cat.find(c => c.name_ar === 'بجامة 5 قطع') || {},
-    img: '/offers/minimoonbigsdizes.jpeg',
-    name_ar: 'بجامة 5 قطع',
-    id: cat.find(c => c.name_ar === 'بجامة 5 قطع')?.id || 'default-bajama5',
-  };
+  const visibleSubcats = [];
+  for (let i = 0; i < 5; i++) {
+    visibleSubcats.push(subcats[(startIndex + i) % subcats.length]);
+  }
 
   return (
     <div dir="rtl" className="py-4 w-full max-w-7xl mx-auto sm:px-6">
@@ -108,32 +104,17 @@ function ProductFeat() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
-        <CategoryCard
-          img={largeCategory.img}
-          name={largeCategory.name_ar}
-          link={`/categories?cid=${largeCategory.id}`}
-          isLarge
-        />
-        <CategoryCard
-          img={robaatCategory.img}
-          name={robaatCategory.name_ar}
-          link={`/categories?cid=${robaatCategory.id}`}
-        />
-        <CategoryCard
-          img={hawamelCategory.img}
-          name={hawamelCategory.name_ar}
-          link={`/categories?cid=${hawamelCategory.id}`}
-        />
-        <CategoryCard
-          img={hagemKabeerCategory.img}
-          name={hagemKabeerCategory.name_ar}
-          link={`/categories?cid=${hagemKabeerCategory.id}`}
-        />
-        <CategoryCard
-          img={bajama5QetaaCategory.img}
-          name={bajama5QetaaCategory.name_ar}
-          link={`/categories?cid=${bajama5QetaaCategory.id}`}
-        />
+        {visibleSubcats.map((subcat, idx) =>
+          subcat ? (
+            <CategoryCard
+              key={subcat.id + '-' + idx}
+              img={getImageUrl(subcat.img)}
+              name={subcat.name_ar}
+              link={`/categories?cid=${subcat.id}`}
+              isLarge={idx === 0}
+            />
+          ) : null
+        )}
       </div>
     </div>
   );
