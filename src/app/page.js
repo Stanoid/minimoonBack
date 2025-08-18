@@ -164,7 +164,7 @@
 
         
     
-      <div className="el-messiri-text bg-gray-50" style={{display:'flex',justifyContent:'center',alignItems:"center",flexDirection:'column', width:'100%'}}>
+      <div className="el-messiri-text bg-gray-50 lg:px-0 px-4" style={{display:'flex',justifyContent:'center',alignItems:"center",flexDirection:'column', width:'100%'}}>
   {lod?<LoadingOverlay/>:<></>} 
   <Cart ref={childCompRef}   openHandler={handleOpenCart} open={openCart} />
   <div className="   to-moon-100/30 from-moon-100/30   " style={{width:"100%"}}>

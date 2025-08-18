@@ -44,7 +44,7 @@ export const DEF_IMG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANcAAACUCA
 
 
    // export const ROOT_URL = process.env.NEXT_PUBLIC_ROOT_URL || "http://192.168.51.110:1337/api/"
-   export const ROOT_URL = process.env.NEXT_PUBLIC_ROOT_URL || "http://5.189.163.66:5000/api/"
+   export const ROOT_URL = process.env.NEXT_PUBLIC_ROOT_URL || "https://minimoondz.com/api/"
 
     export const IMG_CONFIG_URL = process.env.NEXT_PUBLIC_IMG_CONFIG_URL || "http://res.cloudinary.com/"
 

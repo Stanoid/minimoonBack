@@ -353,7 +353,7 @@ onClick={() => {
 
         <motion.div
 initial={{ x: "100%" }}
-animate={{ y: isMenuOpen ? "0%" : "100%" }}
+animate={{ x: isMenuOpen ? "0%" : "100%" }}
           transition={{ duration: 0.3 }}
           className="fixed  right-0 h-screen  backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4"
         >

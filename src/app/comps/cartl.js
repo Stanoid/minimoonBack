@@ -175,31 +175,31 @@ const notify = (type,msg)=>{
       
       <Dialog as="div" style={{height:"100vh"}} className="fixed inset-0 overflow-hidden z-20" onClose={()=>{props.openHandler(true)}}>
         <div  className="absolute inset-0 overflow-hidden">
-          <Transition.Child
-            as={Fragment}
-            enter="ease-in-out duration-200"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in-out duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+         <Transition.Child
+                    as={Fragment}
+                    enter="ease-in-out duration-300"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="ease-in-out duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
             <Dialog.Overlay  className="absolute inset-0 bg-black lg:bg-black  bg-opacity-10 lg:bg-opacity-50 transition-opacity" />
           </Transition.Child>
-          <div className="fixed top-0 right-0 lg:top-0 max-h-1/2 text-right   max-w-md flex ">
+          <div className="fixed top-0 left-0 lg:top-0 max-h-1/2 text-right   max-w-md flex ">
             <Transition.Child
-              as={Fragment}
-              enter="ease-in-out duration-200"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in-out duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-            >
+                     as={Fragment}
+                     enter="transform transition ease-in-out duration-300"
+                     enterFrom="-translate-x-full"
+                     enterTo="translate-x-0"
+                     leave="transform transition ease-in-out duration-300"
+                     leaveFrom="translate-x-0"
+                     leaveTo="-translate-x-full"
+                     >
               <div className="relative w-screen ">
               <ToastContainer  limit={3}/>
                 
-                <div className="h-screen flex flex-col py-6 rounded-t-lg rounded-r-lg lg:rounded-r-none lg:rounded-t-none  bg-white shadow-lg overflow-y-hidden">
+                <div className="h-full flex flex-col py-6 rounded-t-lg rounded-r-lg lg:rounded-r-none lg:rounded-t-none  bg-white -lg overflow-y-hidden">
             
                   <div className="px-4 sm:px-6 flex align-middle justify-between">
                     
@@ -207,24 +207,26 @@ const notify = (type,msg)=>{
                     style={{fontWeight:"bold",textAlign:"right"}}
                     className="text-lg font-medium text-gray-900  ">المفضلة </Dialog.Title> */}
 
-                    <div dir='rtl' style={{
-                      display:"flex",
-                      width:"100%",
-                      justifyContent:"between",
-                      alignItems:"center",
-                      paddingBottom:20,
-                      borderBottom:"2px solid "+ Theme.primary,
-                      fontSize:25,
-                    }} >
+<div
+  dir="rtl"
+  style={{
+    display: "flex",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 20,
+    borderBottom: "2px solid " + Theme.primary,
+    fontSize: 25,
+  }}
+>
+  <div className="text-lg">المفضلة</div>
+  <div>
+  <div className=' lg:block' onClick={()=>{props.openHandler(false)}} >   <XIcon className="h-8 w-8 p-1      " aria-hidden="true" /></div>
+  </div>
+</div>
 
-                
-                                <div className='text-lg'>
-                                المفضلة
-                                </div>
-                                
-                  
-                    </div>
-                    <div className=' lg:block' onClick={()=>{props.openHandler(false)}} >   <XIcon className="h-8 w-8 p-1 border-2 rounded-full border-black  " aria-hidden="true" /></div>
+
+
                   </div>
                   <div className="mt-6 relative flex-1 px-4 sm:px-6">
               
@@ -242,7 +244,7 @@ const notify = (type,msg)=>{
                img={
                  like.products[0]?.images &&
                  like.products[0].images?.[0].url
-                   ? like.products[0].images[0].url
+                   ?  IMG_URL + like.products[0].images[0].url
                    : "/default-image.png" 
                }
              />

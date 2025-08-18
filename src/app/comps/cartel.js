@@ -175,9 +175,6 @@ const handleQuantityChange = (action) => {
           </div>
         </div>
 
-        <div className="bg-moon-200 text-white px-2 py-1 text-sm rounded-full ">
-          {props.code}
-        </div>
         <div
           className=""
           style={{
@@ -213,14 +210,7 @@ const handleQuantityChange = (action) => {
                 }
               })}
 
-            <div
-              style={{
-                backgroundColor:
-                  varient &&
-                  varient.attributes.colors.data[0].attributes.colorCode,
-              }}
-              className="w-7 h-7 rounded-full"
-            ></div>
+            
           </div>
         </div>
 
