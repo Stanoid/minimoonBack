@@ -173,6 +173,7 @@ const notify = (type,msg)=>{
   return (
     <Transition.Root  show={props.open} as={Fragment}>
       
+      
       <Dialog as="div" style={{height:"100vh"}} className="fixed inset-0 overflow-hidden z-20" onClose={()=>{props.openHandler(true)}}>
         <div  className="absolute inset-0 overflow-hidden">
          <Transition.Child
