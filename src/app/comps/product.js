@@ -66,7 +66,7 @@ export default function Product(props) {
           router.push(`/products?pid=${props.data.id}`)
         }} 
         className="
-        lg:w-[308px] lg:h-[501px]  w-[308px]  h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative" 
+        lg:w-[308px] lg:h-[501px]  w-full  h-[330px] rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative" 
       >
   
         <div className='relative mx-h-[169px] h-full lg:max-w-[308px] lg:max-h-[308px] w-full' style={{  }}> 

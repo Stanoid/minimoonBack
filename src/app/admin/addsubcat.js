@@ -153,10 +153,10 @@ const toggleTopsec = (subcat) => {
     
         let url, method;
         if (editSubcat) {
-            url = `${API_URL}subcatagories/${editSubcat.id}`; // update existing
+            url = `${API_URL}subcatagories/${editSubcat.id}`; 
             method = "PUT";
         } else {
-            url = `${API_URL}subcatagories?func=AddSubCat`; // create new
+            url = `${API_URL}subcatagories?func=AddSubCat`; 
             method = "POST";
         }
     

@@ -129,7 +129,7 @@ export default function Home() {
                   </div>
 
                   {index % 2 === 0 ? (
-                    <div className="px-0 grid w-full gap-y-4 my-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-4 grid-cols-2">
+                    <div className="px-0 grid w-full gap-y-4 gap-2 my-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-4 grid-cols-2">
                       {sub.products?.map(
                         (prd) =>
                           prd.status && (
