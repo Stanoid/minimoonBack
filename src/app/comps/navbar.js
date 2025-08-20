@@ -3,7 +3,7 @@ import { Button, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Tooltip,
 import { MdMenu, MdOutlineShoppingBag, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { FaHeart, FaUserCircle, FaSearch, FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
-
+import Subcatmenu from "./subcatmenu";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -26,10 +26,10 @@ export default function NavbarC(props) {
     fetch(`${API_URL}subcatagories?func=getAllSubcat`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
+        console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
   
         if (Array.isArray(data)) {
-          setSubCat(data.slice(0, 8)); 
+          setSubCat(data); 
         } else {
           setSubCat([]);
         }
@@ -54,6 +54,7 @@ export default function NavbarC(props) {
   //       }
   //     });
   // };
+  
   
   const handleSearch = () => {
     props.setSearchTog(!props.searchTog);
@@ -88,7 +89,7 @@ export default function NavbarC(props) {
     <div
   className="bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-200 border-b border-yellow-200 flex justify-center items-center select-none duration-300 w-full px-4 py-2"
   style={{
-    minHeight: '50px', // slightly taller for mobile
+    minHeight: '50px', 
     backgroundSize: '200% 100%',
     animation: 'waveGradient 6s ease infinite',
     fontFamily: '"El Messiri", sans-serif',
@@ -249,36 +250,7 @@ export default function NavbarC(props) {
 
   
 
-      <div className="container mx-auto px-4  border-t bg-white  lg:max-h-[53px] border-gray-200 rtl hidden lg:block"> 
-    
-       {subCat && subCat.length > 0 ? (
-  <ul className="flex justify-end  max-w-full items-center text-gray-700 text-sm font-medium">
-
-    {subCat.map((item, index) => (
-      <li key={index} className="flex justify-between hover:border-b border-moon-200 text-gray-500 hover:text-gray-900  items-center px-3">
-        <a
-
-onClick={() => {
-            const catId = item.catagory?.id;
-            if (catId) {
-              router.push(`/categories?cid=${catId}`);
-            } else {
-              console.warn("Category ID not found", item);
-            }
-          }}
-                    className="flex-1 text-right py-4 border-b hover:cursor-pointer    text-gray-900 text-sm rounded-md "
-        >
-          {item.name_ar}
-        </a>
-        {/* <span className="text-moon-200 text-base">←</span> */}
-      </li>
-    ))}
-  </ul>
-) : (
-  <p className="text-gray-500 text-sm">لا توجد تصنيفات متاحة</p>
-)}
-
-      </div>
+      <Subcatmenu subCat={subCat}/>
 
 
       
@@ -386,7 +358,7 @@ animate={{ x: isMenuOpen ? "0%" : "100%" }}
               onClick={() => props.openCart(true)}
               fullWidth
               className="bg-moon-200 text-white"
-            >
+            >Subcatmenu
               السلة ({cartData})
             </Button> */}
 <div className="w-full flex divide-x ">
@@ -443,39 +415,7 @@ animate={{ x: isMenuOpen ? "0%" : "100%" }}
 </div>
 
 
-<div dir="rtl" className="border-t text-sm space-y-2">
-  <p className="text-sm font-semibold">التصنيفات</p>
-  {subCat && subCat.length > 0 ? (
-    <ul className="flex flex-col max-w-full text-gray-700 text-sm font-medium">
-      {subCat.map((item, index) => (
-        <li
-          key={index}
-          className="flex justify-between items-center w-full px-3 hover:underline"
-        >
-          <button
-            onClick={() => {
-              const catId = item.catagory?.id;
-              if (catId) {
-                router.push(`/categories?cid=${catId}`);
-              } else {
-                console.warn("Category ID not found", item);
-              }
-            }}
-            className="flex-1 text-right py-4 border-b hover:cursor-pointer hover:text-moon-200 text-gray-900 text-sm rounded-md"
-          >
-            {item.name_ar}
-          </button>
-
-          <span className="text-moon-200 text-base">←</span>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p className="text-gray-500 text-sm">لا توجد تصنيفات متاحة</p>
-  )}
-</div>
-
-
+<Subcatmenu subCat={subCat}/>
 
           </div>
         </motion.div>
