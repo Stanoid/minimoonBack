@@ -246,11 +246,15 @@ export default function NavbarC(props) {
 )}
 </div>
 
+
+
       </div>
+<div className="hidden lg:block">
 
-  
+      <Subcatmenu subCat={subCat} />
+</div>
 
-      <Subcatmenu subCat={subCat}/>
+
 
 
       
