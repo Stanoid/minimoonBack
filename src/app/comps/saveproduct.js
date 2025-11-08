@@ -61,7 +61,7 @@ export default function Product(props) {
         router.push(`/products?pid=${props.data.id}`);
       }}
       className="
-      w-[400px] h-[501px]   rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative"
+      w-[400px] h-[401px]   rounded-lg border border-gray-200 bg-white shadow-md cursor-pointer flex flex-col overflow-hidden relative"
     >
       <div
         className="relative  h-full lg:max-w-[308px] lg:max-h-[308px] w-full"
@@ -128,7 +128,6 @@ export default function Product(props) {
               ))}
           </div>
 
-          {/* Rating */}
           <div className="flex items-center space-x-1">
             <div className="text-xs text-gray-600">(3.4k)</div>
             <FaStar className="text-yellow-400 text-sm" />
@@ -139,7 +138,7 @@ export default function Product(props) {
           </div>
         </div>
 
-        <div className="flex flex-col items-end  w-[276px] lg:mt-2 h-[64px]">
+        <div className="flex flex-col items-end  w-[276px] lg:mt-2 h-fit">
           <div className="text-lg font-bold text-gray-900 flex items-baseline">
             <div className="ml-1">{CURRENCY}</div>
 
@@ -156,18 +155,11 @@ export default function Product(props) {
         {props.data.varients[0].old_price}
       </span>
 
-      <span
-        dir="rtl"
-        className="text-base p-2 text-gray-500 line-through flex items-baseline"
-      >
-        <div>
-          {(
-            props.data.varients[0].price /
-            (1 - props.data.varients[0].old_price / 100)
-          ).toFixed(2)}
-        </div>
-        <div className="ml-1">{CURRENCY}</div>
-      </span>
+      <span dir="rtl" className="text-base text-gray-500 line-through flex items-baseline absolute bottom-4 right-4">
+  <div>{(props.data.varients[0].price / (1 - props.data.varients[0].old_price / 100)).toFixed(2)}</div>
+  <div className="ml-1">{CURRENCY}</div>
+</span>
+
 
       {/* )}s */}
     </motion.div>

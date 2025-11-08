@@ -50,7 +50,7 @@ export default function Product({}) {
   const udata = useSelector((state) => state.root.auth.data&&state.root.auth.data)
 
   useEffect(() => {
-  
+
     setmimg(0);
     //
 
@@ -60,10 +60,10 @@ export default function Product({}) {
 
       // callback function to call when event triggers
       const onPageLoad = () => {
-        
+
        // setLod(true);
       };
-  
+
       // Check if the page has already loaded
       if (document.readyState === 'complete') {
         onPageLoad();
@@ -77,11 +77,11 @@ export default function Product({}) {
 
       // for (let i = 0; i < product.data.length; i++) {
       //   if (product.data[i].id == getQueryVariable("pid")) {
-      //     
-        
-  
-        
-  
+      //
+
+
+
+
       //   } else {
       //   }
       // }
@@ -108,7 +108,7 @@ for (let i = 0; i < vrs.length; i++) {
   setDiscount(vrs[i].attributes.old_price)
  // console.log(vrs[i].attributes.old_price,vrs[i].attributes.price)
  }
-  
+
 }
 
 
@@ -120,7 +120,7 @@ for (let i = 0; i < vrs.length; i++) {
 
 
   const getFullProduct = ()=>{
-        
+
     setLod(true);
     const requestOptions = {
         method: 'GET',
@@ -128,9 +128,9 @@ for (let i = 0; i < vrs.length; i++) {
             "Content-Type": "application/json",
             // "Authorization": 'Bearer ' + ls.get("atkn")
         },
-      
+
     };
-  
+
       fetch(`${API_URL}products/${getQueryVariable("pid")}?func=getFullProduct`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
@@ -152,7 +152,7 @@ for (let i = 0; i < vrs.length; i++) {
           setDb(data.data);
         }).then(() => {
         setLod(false);
-        
+
         });
 
 
@@ -166,9 +166,9 @@ for (let i = 0; i < vrs.length; i++) {
     useContext(CartCon);
 
   const HandleAddToCart = () => {
-   dispatch(addToCart({ 
-    data: db, 
-    selvar: selectedV, 
+   dispatch(addToCart({
+    data: db,
+    selvar: selectedV,
     name:db.attributes.name_ar,
     code:db.attributes.code,
     // img: db.attributes.img[0].url,
@@ -178,22 +178,22 @@ for (let i = 0; i < vrs.length; i++) {
           ? db.attributes.img[0].url
           : "/default-image.png",
     product_ref:pref,
-    qty: qty, 
+    qty: qty,
   }))
 
   if (typeof window.fbq !== "undefined") {
     window.fbq("track", "AddToCart", {
-      content_name: db.attributes.name_ar, 
-      content_ids: [db.attributes.code], 
-      content_type: "product", 
-      value: db.attributes.price, 
-      currency: "USD", 
-      quantity: qty, 
+      content_name: db.attributes.name_ar,
+      content_ids: [db.attributes.code],
+      content_type: "product",
+      value: db.attributes.price,
+      currency: "USD",
+      quantity: qty,
     });
   }
-   //   
+   //
       useNotifi("success", "تمت إضافة المنتج إلى السلة");
-  
+
   };
 
 
@@ -231,14 +231,14 @@ for (let i = 0; i < vrs.length; i++) {
       },
       body: JSON.stringify(
           {
-          
+
               "pid":db.id,
-           
-                     
-       
+
+
+
             }
         )
-    
+
   };
 
     fetch(`${API_URL}likes?func=AddToLikes`, requestOptions)
@@ -247,10 +247,10 @@ for (let i = 0; i < vrs.length; i++) {
 
         useNotifi("success", "تمت إضافة المنتج إلى المفضلة");
 
-    
+
       }).then(()=>{
-          
-    
+
+
       })
 
 
@@ -258,7 +258,7 @@ for (let i = 0; i < vrs.length; i++) {
 
     // if (favData.length == 0) {
     //   addTofav(db);
-      
+
     //   //useNotifi("success","Product has been added to Liked")
     // } else {
     //   if (
@@ -266,10 +266,10 @@ for (let i = 0; i < vrs.length; i++) {
     //     undefined
     //   ) {
     //     addTofav(db);
-        
+
     //     // useNotifi("success","Product has been added to Liked")
     //   } else {
-        
+
     //     removeFromFav(db.id);
     //   }
 
@@ -278,10 +278,10 @@ for (let i = 0; i < vrs.length; i++) {
     //   // old cart handler (uncontrollable for loop)
     //   // for (let i = 0; i < cartData.length; i++) {
     //   //   if(cartData[i].id===parseInt(getQueryVariable("pid"))){
-    //   //     
+    //   //
     //   //    return
     //   //   }else{
-    //   //     
+    //   //
     //   //     addToCart(db);
 
     //   //   }
@@ -305,11 +305,11 @@ for (let i = 0; i < vrs.length; i++) {
         return decodeURIComponent(pair[1]);
       }
     }
-    
+
   }
 
   return (
-    <div dir='rtl' className='lg:pt-20 mt-12 ' >
+    <div dir='rtl' className='lg:pt-12  ' >
       <Head>
         {/* <title>{"Minimoon | " + db.attributes&&db.attributes.name_en} </title>
         <meta name="description" content={db.attributes.descriptionEn} /> */}
@@ -325,7 +325,7 @@ for (let i = 0; i < vrs.length; i++) {
 
     {
   !lod? <div className="main p-2 " style={{ width: "100%"}}>
-        
+
 
   <div
     className="flex-col lg:flex-row sm:flex-col md:flex-col "
@@ -337,9 +337,9 @@ for (let i = 0; i < vrs.length; i++) {
       alignItems: "flex-start",
     }}
   >
-    
-   
-   
+
+
+
    <div className='w-full '>
     {/* <Lens data={imgs} /> */}
 
@@ -349,19 +349,19 @@ for (let i = 0; i < vrs.length; i++) {
 
 
 
-   
+
     <div
     className='mt-4 sm:mt-4 lg:mt-2 pl-0 sm:pl-0 lg:pl-3'
       style={{
         width: "100%",
         height: "100%",
-        
+
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "flex-end",
-   
-   
+
+
       }}
     >
       <div className=" w-full px-2">
@@ -377,7 +377,7 @@ for (let i = 0; i < vrs.length; i++) {
           className="px-2.5 py-0.5 text-xs   rounded-xl "
         >
         {db&&db.attributes.subcatagory.data.attributes.name_ar}
-        
+
         </span>
         <div
         className=''
@@ -385,8 +385,8 @@ for (let i = 0; i < vrs.length; i++) {
             display: "flex",
       alignItems:"center",
       justifyContent:"space-between",
-           
-           
+
+
           }}
         >
 
@@ -403,14 +403,14 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
               style={{
                 color: "#FA5882",
                 backgroundColor: "white",
-                
+
                 fontSize: 25,
                 padding: "8px 12px",
                 paddingTop: 9,
                 paddingBottom: 7,
                 borderRadius: 8,
-               
-              
+
+
               }}
             >
               <BsHeartFill />
@@ -422,10 +422,10 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             <h2
               style={{
                 fontWeight: "bold",
-            
+
                 width:"100%",
                 lineHeight:"150%"
-                
+
               }}
               className="max-w-xl mt-2 text-base lg:text-lg   font-semibold leading-loose tracking-tight text-gray-900  "
             >
@@ -439,7 +439,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 fontWeight: "bold",
                 fontSize: 20,
                 width:"100%",
-                
+
                 lineHeight: 1.3,
               }}
               className="max-w-xl mt-6  text-right font-semibold leading-loose tracking-tight text-gray-700  "
@@ -448,18 +448,18 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             </h2>
           </div>
 
-       
 
-         
+
+
 
    </div>
-         
-          
-          </div>
-        
 
-      
-  
+
+          </div>
+
+
+
+
 
         <p
         dir='rtl'
@@ -469,7 +469,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
           {db&&db.attributes.description_ar}
         </p>
 
-        <div className="flex items-center my-4 space-x-1"> 
+        <div className="flex items-center my-4 space-x-1">
             <FaStar className="text-yellow-400 text-base" />
             <FaStar className="text-yellow-400 text-base" />
             <FaStar className="text-yellow-400 text-base" />
@@ -485,26 +485,26 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
             fontWeight: "bold",
             textAlign:"right",
             fontSize: 25,
-         
+
             width:"100%",
             color: "black",
           }}
           className="inline-block lg:text-3xl lg:font-extrabold text-lg  "
         >
-          <span>  {price} {CURRENCY} </span> 
+          <span>  {price} {CURRENCY} </span>
           {discount ==0
           ?<></>: (<span
             style={{
               marginLeft: "0.5 rem",
               fontSize: "1 rem",
               lineHeight: "1.5 rem",
-              
+
               textDecorationLine: "line-through",
             }}
             className="ml-3 text-base font-medium  text-red-600 line-through dark:text-gray-400"
-          > 
+          >
             {oldPrice(price,discount)} {CURRENCY}
-          </span>)} 
+          </span>)}
         </p>
       </div>
 
@@ -516,46 +516,46 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "flex-start",
-       
+
         }}
       >
         <div style={{width:"100%"}} className='   py-4 mb-4 rounded-md' >
-         <OptionEL varselect={(vid)=>{varselectHandler(vid)}} 
+         <OptionEL varselect={(vid)=>{varselectHandler(vid)}}
          vari={selectedV}
          selid={selectedV} vars={varients} />
 
-    
+
                </div>
 
 
-            
+
 
                <div
-            
+
              className=' py-4 pb-5 '
             style={{
-             
-             
+
+
               color: "white",
-           
+
               cursor: "pointer",
               display:"flex",
               alignItems:"center",
               width:"100%",
               justifyContent:"center",
               flexDirection:"column",
-              
+
               borderRadius: "0px 0px 10px 10px",
             }}
           >
- 
+
 
 
  {/* <div >
  <QuantEl qty={qty} quantHandler={(q)=>{setQty(q)}} stock={stock}/>
  </div> */}
 
-       
+
 
 <div class='flex flex-col  lg:flex-row space-x-2 lg:gap-[16px] gap-4'>
   {stock <= 0 ? (
@@ -573,7 +573,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
         height: '52px',
         whiteSpace: 'nowrap',
       }}
-    
+
     >
       <div
       className='flex items-center'
@@ -622,11 +622,11 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
               cart
             </div>
             <div onClick={()=>{handleRemoveCart()}} className='w-8 h-8 bg-red-800 text-white rounded-sm shadow-md '>
-              remove from cart 
+              remove from cart
               </div> */}
           </div>
-             
-        
+
+
 
         <div style={{ marginTop: 14, width: "100%" }}>
           <div
@@ -646,7 +646,7 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
         </div>
 
 
-        
+
       </div>
 
 
@@ -691,24 +691,24 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
       <li>عند ارسال الطلبية , في حالة حدوث خطا في المقاس من طرف الشركة تتكفل الشركة المسؤولية و جميع التكاليف (سعر التوصيل ) في حالة قام العميل بطلب مقاس ما و عند استلام الطلبية وجد ان المقاس لا يناسبه يتحمل العميل المسؤولية الكاملة و جميع التكاليف في حالة ما اراد تغيير المنتج بمقاس اخر ( التكاليف تتمثل في سعر الشحن )</li>
     </ul>
   </div>
-</div> 
+</div>
 </div>
 :<div  style={{ width: "100%",opacity:0.4, padding: "20px 10px" }}>
- 
+
  <SkeletonTheme baseColor="white" highlightColor={Theme.primary}>
- 
+
    <div className='px-2' >
    <Skeleton count={4} />
-    </div> 
+    </div>
 
     <div className='flex mt-2 items-center justify-between w-full ' >
-      
+
       <div className='mx-2 flex-grow ' >
         <Skeleton count={3} />
       </div>
-  
-   
-    
+
+
+
 
 
     </div>
@@ -717,12 +717,12 @@ transition={{ type: "spring", stiffness: 400, damping: 17 }}
     <div className='mx-2 mt-2 flex-grow ' >
         <Skeleton count={3} />
       </div>
-   
+
   </SkeletonTheme>
 
 
 
- 
+
 </div>
 
     }

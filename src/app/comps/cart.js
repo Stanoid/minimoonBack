@@ -27,39 +27,40 @@ const Cart = forwardRef((props, ref) => {
 
   const [subtotal, setSubtotal] = useState(0);
   const [savings, setSavings] = useState(0);
-  const [shippingCost, setShippingCost] = useState(0); 
-  const [finalTotal, setFinalTotal] = useState(0); 
-  
-  const cartg = useSelector((state) => state.root.cart.data); 
+  const [shippingCost, setShippingCost] = useState(0);
+  const [finalTotal, setFinalTotal] = useState(0);
+
+  const cartg = useSelector((state) => state.root.cart.data);
+  console.log("cartg",cartg);
   const isLogged = useSelector((state) => state.root.auth.data);
   useEffect(() => {
     let calculatedSubtotal = 0;
     let calculatedSavings = 0;
-  
+
     cartg.forEach(item => {
       const selectedVariant = item.data?.attributes?.varients?.data?.find(v => v.id === item.selvar);
       if (selectedVariant && selectedVariant.attributes?.price) {
         const price = selectedVariant.attributes.price;
-        const discountPercent = selectedVariant.attributes.old_price || 0; 
-  
+        const discountPercent = selectedVariant.attributes.old_price || 0;
+
         calculatedSubtotal += price * item.qty;
-        calculatedSavings += (price * discountPercent / 100) * item.qty; 
+        calculatedSavings += (price * discountPercent / 100) * item.qty;
       }
     });
-  
+
     setSubtotal(calculatedSubtotal);
-    setSavings(calculatedSavings); 
+    setSavings(calculatedSavings);
     setFinalTotal(calculatedSubtotal);
-  
-    const freeShippingThreshold = 1499; 
-    let currentShippingCost = 120; 
+
+    const freeShippingThreshold = 1499;
+    let currentShippingCost = 120;
     if (calculatedSubtotal >= freeShippingThreshold) {
-      currentShippingCost = 0; 
+      currentShippingCost = 0;
     }
     setShippingCost(currentShippingCost);
-  
+
   }, [cartg]);
-  
+
 
 
   const handleOrder = () => {
@@ -74,7 +75,7 @@ const Cart = forwardRef((props, ref) => {
 
 
   // console.log("Full cart from Redux:", cartg);
-  
+
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog
@@ -196,7 +197,7 @@ const Cart = forwardRef((props, ref) => {
                             height: "100%",
                             flexDirection: "column",
                           }}
-                          
+
                         >
                           <div>
                             {/* <Image src={"/void.svg"} width={200} height={200} alt="Empty cart" /> */}
@@ -229,7 +230,7 @@ const Cart = forwardRef((props, ref) => {
                         </span>
                       </div>
 
-                   
+
                       <div className="flex justify-between items-center mb-2" dir="rtl">
   <span className="text-sm text-gray-700">تم توفير</span>
   <span className="text-base font-bold text-green-600">
@@ -243,7 +244,7 @@ const Cart = forwardRef((props, ref) => {
                           <span>{finalTotal.toFixed(2)} {CURRENCY}</span>
                         </div>
 
-   
+
                         <div className=" text-sm" >
   {isLogged ? (
     <div className="flex justify-center">
@@ -282,7 +283,7 @@ const Cart = forwardRef((props, ref) => {
                       </div>
                     )}
 
-              
+
 
                   </div>
                 </div>

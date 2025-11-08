@@ -15,18 +15,32 @@ import { get } from "http";
 export default function NavbarC(props) {
   const router = useRouter();
   const userData = useSelector((state) => state.root.auth.data && state.root.auth.data);
-  const cartData = useSelector((state) => state.root.cart.data.length);
+  const cartData = useSelector((state) => state.root.cart.data);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [subCat, setSubCat] = useState([]);
 
   // console.log(`${API_URL}subcatagories?func=getAllSubCat`, "Full fetch URL");
+
+  const totalPrice = cartData?.reduce((sum, item) => {
+    const selectedVariant = item.data?.attributes?.varients?.data?.find(v => v.id === item.selvar);
+    const price = selectedVariant?.attributes?.price || 0;
+    return sum + price * item.qty;
+  }, 0) || 0;
+
+  const totalItems = cartData?.reduce((sum, item) => sum + item.qty, 0) || 0;
+
+console.log("cart data in wkhel",totalItems,totalPrice);
+  console.log(cartData,"cart data in navbar");
+  // console.log(JSON.stringify(cartData, null, 2));
+
 
 
   const getsubcatogries = () => {
     fetch(`${API_URL}subcatagories?func=getAllSubcat`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
+        // console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
 
         if (Array.isArray(data)) {
           setSubCat(data);
@@ -121,7 +135,7 @@ export default function NavbarC(props) {
       <div className="container   lg:flex hidden mx-auto px-4 py-2  justify-between items-center text-gray-500 text-sm border-b border-gray-200 rtl">
         <div className="flex items-center gap-2 space-x-4 space-x-reverse">
           <a href="#" className="flex items-center space-x-1 space-x-reverse hover:text-gray-900">
-            <span>اتصل بنا</span>
+            <span>اتصل بنا </span>
 
              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -143,18 +157,18 @@ export default function NavbarC(props) {
 
           <div className="flex items-center space-x-1 space-x-reverse cursor-pointer hover:text-gray-900">
              {/* Using generic SVG for exact match of image's pricing icon */}
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+             {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.727A8 8 0 0118 8a8 8 0 00-8-8c-4.418 0-8 3.582-8 8s3.582 8 8 8c.707 0 1.397-.091 2.062-.257M10 20v-3m0 0l-2.5-2.5M10 17l2.5-2.5M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+            </svg> */}
             <span className="text-sm">افضل الاسعار</span> {/* Explicitly small text */}
-            <MdOutlineKeyboardArrowDown className="h-3 w-3" />
+            {/* <MdOutlineKeyboardArrowDown className="h-3 w-3" /> */}
           </div>
 
 
           <div className="flex items-center space-x-1 space-x-reverse cursor-pointer hover:text-gray-900">
-
+          <span className=" font-medium mx-2"> | </span>
             <span className="text-sm">اسرع توصيل</span> {/* Explicitly small text */}
-            <MdOutlineKeyboardArrowDown className="h-3 w-3" />
+            {/* <MdOutlineKeyboardArrowDown className="h-3 w-3" /> */}
           </div>
         </div>
       </div>
@@ -203,7 +217,7 @@ export default function NavbarC(props) {
 />
         </div>
 
-        <div className="lg:flex hidden mx-4 items-center space-x-6 space-x-reverse order-2 lg:order-1 flex-row-reverse">
+        <div className="lg:flex hidden mx-2 items-center space-x-6 space-x-reverse order-2 lg:order-1 flex-row-reverse">
 
 {/* 1. Favorites */}
 {userData && !userData.error && (
@@ -217,11 +231,15 @@ export default function NavbarC(props) {
   </motion.div>
 )}
 
-<motion.div  onClick={() => props.openCart(true)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer">
-  <span className="ml-2 text-sm hidden sm:block">
-    {cartData?.totalPrice || 0} $ {cartData?.totalItems || 0} منتجات
+<motion.div  onClick={() => props.openCart(true)} className="flex w-full items-center text-gray-700 hover:text-gray-900 cursor-pointer">
+  <span className=" text-sm w-full hidden sm:block">
+    {/* {cartData?.totalPrice || 0} $ {cartData?.totalItems || 0} منتجات */}
+    {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} منتجات
+    {/* <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+</svg> */}
   </span>
-  <Button isIconOnly size="md" aria-label="Cart">
+  <Button isIconOnly size="sm" aria-label="Cart">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
     </svg>
@@ -262,7 +280,7 @@ export default function NavbarC(props) {
 {/* mobile nav */}
 
 
-<div
+{/* <div
   className="lg:hidden bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-200 border-b border-yellow-200 flex justify-center items-center select-none duration-300 w-full px-4 py-2"
   style={{
     minHeight: '50px', // slightly taller for mobile
@@ -290,25 +308,26 @@ export default function NavbarC(props) {
       }
     }
   `}</style>
-</div>
+</div> */}
 
     <div dir="rtl" className="lg:hidden  w-full fixed top-0 left-0 z-50">
         <div className="bg-white  w-full flex items-center justify-between px-4 py-3">
           <Logowhite onClick={() => router.push("/")} className="w-16 cursor-pointer" />
 
 
-<></>
-<></>
-          <motion.div onClick={() => { props.openCart(true); }}
+{/* <></> */}
+{/* mobile */}
+           <motion.div onClick={() => { props.openCart(true); }}
   className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer"
 >
-  <Button isIconOnly className="mr-20" size="md" aria-label="Cart">
+  <Button isIconOnly className="mr-5" size="md" aria-label="Cart">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
       </svg>
     </Button>
     <span className="ml-2 text-sm flex items-center sm:block">
-    106.25 $ 4 منتجات <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
+    {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} منتجات
+    <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>
   </span>

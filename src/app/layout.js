@@ -40,7 +40,7 @@ export default function RootLayout({ children, isProductPage = false }) {
    isProductPage = pathname.includes('/products');
    const inputRef = useRef(null);
 
-  
+
   const bgColorClass = isProductPage ? 'bg-white' : 'bg-gray-50';
 
   //const userData = useSelector((state) => state.root.auth.data&&state.root.auth.data)
@@ -59,22 +59,22 @@ export default function RootLayout({ children, isProductPage = false }) {
   const [sugges,setSugges] = useState([])
   //let { cart } = useContext(CartContext);
   const ls = require("local-storage");
-  
+
   useEffect(() => {
-   
+
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
-      getCats();   
+      getCats();
     } else {
-          
+
     }
 
 
-    
+
   //loginval();
-   
+
   }, [])
-  
+
 
 
 
@@ -85,21 +85,21 @@ export default function RootLayout({ children, isProductPage = false }) {
     }
   }, [searchTog]);
 
-  
 
-  
+
+
   const getCats=()=>{
-         
-    
-          
+
+
+
     const requestOptions = {
       method: 'GET',
       headers: {
           "Content-Type": "application/json",
-       
+
       },
-    
-  };    
+
+  };
 
     fetch(`${API_URL}sections?func=getAllSubcat`, requestOptions)
       .then((response) => response.json())
@@ -108,15 +108,15 @@ export default function RootLayout({ children, isProductPage = false }) {
 
        setCat(data);
       }).then(()=>{
-     
+
       })
 
 
     }
 
-  
+
   const logoutUser = () => {
-    
+
     ls.set("atkn", "");
 
     router.push("/logout");
@@ -135,7 +135,7 @@ export default function RootLayout({ children, isProductPage = false }) {
 //
 
 // if(el.target.value.lenght<4){
-//   
+//
 
 //   return;
 // }
@@ -145,7 +145,7 @@ export default function RootLayout({ children, isProductPage = false }) {
 if(el.target.value.length<3){
 
   setSugges([]);
-  
+
 }else{
 
   const requestOptions = {
@@ -161,7 +161,7 @@ if(el.target.value.length<3){
       console.log(`the data for te search sug`, data)
       setSugges(data)
     }).then(()=>{
-  
+
     })
 
 }
@@ -182,9 +182,9 @@ if(el.target.value.length<3){
   }
 
 
-  
 
-  
+
+
   return (
     <html className="" lang="en">
       <head>
@@ -228,7 +228,7 @@ if(el.target.value.length<3){
           backgroundSize:20,top:0,zIndex:15}} >
 
         <NavbarC rel={false} searchTog={searchTog} setSearchTog={(sta)=>{setSearchTog(sta)}} cat={cat} openCart={(t)=>{handleOpenCart(t)}}  openFav={handleOpenCartl}  />
-       
+
 
         {searchTog && (
   <div
@@ -337,7 +337,7 @@ if(el.target.value.length<3){
   </div>
 )}
 
-       
+
         <div style={{maxWidth:"100%",}} className="  text-moon-300  text-md whitespace-nowrap  font-medium  transition-colors  py-0.5 w-full
           space-x-2 flex mt-1 pb-1
         flex-row-reverse -only  justify-center items-center  ">
@@ -348,17 +348,17 @@ if(el.target.value.length<3){
 
 
 
-        
-        {/* <div onClick={()=>{router.push("/")}} className=" mx-3 
+
+        {/* <div onClick={()=>{router.push("/")}} className=" mx-3
           cursor-pointer border-b-4 border-moon-200/60 text-moon-200 pb-0.5 " > الرئيسية </div>
      */}
    <div className="blok sm:block lg:hidden "  >
     <div className="w-32"></div>
-    </div>    
-     
+    </div>
+
 
         {/* {cat&&cat.map(ct=>(
-    
+
 
     <CatDrop data={ct}  lable={ct.name_ar}/>
     ))}
@@ -369,7 +369,7 @@ if(el.target.value.length<3){
         <div className=" cursor-pointer hover:border-b-2 border-moon-300/40 pb-0.5 " > إتصل بنا </div>
        </a> */}
 
-     
+
 
 
         </div>
@@ -381,18 +381,18 @@ if(el.target.value.length<3){
 
 
 
-          </div>      
+          </div>
       <div className="h-14 sm:h-14 lg:h-24" ></div>
        <div className="w-full  p-3" >
     <div className=" flex flex-col  w-full  lg:flex-row-reverse sm:flex-col justify-between   " >
 
-  
-  
 
 
 
 
-      
+
+
+
     </div>
 </div>
 
@@ -400,8 +400,8 @@ if(el.target.value.length<3){
             </section>
 
 
-            
-          
+
+
 
             <section>
             <div className="  hidden ">
@@ -413,11 +413,10 @@ if(el.target.value.length<3){
                         />
                       </div>
                     </div>
-c1c1c1
                     <div className="  hidden">
                       <div className="flex  flex-col ">
 
-                   
+
   <Cartl
   ref={childCompRef}
   openHandler={handleOpenCartl}
@@ -425,22 +424,22 @@ c1c1c1
 />
 
 
-                    
+
                       </div>
                     </div>
             </section>
 
- 
+
             <section className={`${bgColorClass} el-messiri-text`}>
   <div
     className="
-      lg:max-w-[1280px] 
-      w-full 
-      lg:px-8 
+      lg:max-w-[1280px]
+      w-full
+      lg:px-8
       overflow-auto
-      mt-8 
-      lg:mt-16 
-      lg:mx-auto  
+      mt-8
+      lg:mt-16
+      lg:mx-auto
       min-h-screen
     "
   >
@@ -449,18 +448,18 @@ c1c1c1
 </section>
 
             <section>
-  
+
 
   <Footer />
-     
-       
+
+
             </section>
 
-          
 
 
-      
-         
+
+
+
           </AuthenContext>
         </CartContext>
   </PersistGate>
