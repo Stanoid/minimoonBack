@@ -16,19 +16,19 @@ function AccounteEl() {
   const [lod,setLod] =useState(false)
   const [refr,setRefr] = useState(true);
   const firstRenderRef = useRef(true);
-    const router = useRouter(); 
+    const router = useRouter();
     const dispatch = useDispatch();
-    const [page,setPage] = useState(1) 
+    const [page,setPage] = useState(1)
     const isLogged = useSelector((state) => state.root.auth.data&&state.root.auth.data)
     useEffect(() => {
-      dispatch(clearCart([]))    
+      dispatch(clearCart([]))
 
       // if (firstRenderRef.current) {
       //   firstRenderRef.current = false;
       //   orderhandler(getQueryVariable("orderid"));
       // } else {
       //   //orderhandler(getQueryVariable("orderid"));
-      //   setRefr(false);        
+      //   setRefr(false);
       // }
     },[])
 
@@ -53,10 +53,10 @@ setLod(true);
     .then((data) => {
       console.log(data)
    setLod(false);
- 
+
  // window.location= data.url;
     }).then(()=>{
-      
+
     });
 
 
@@ -71,13 +71,13 @@ setLod(true);
           return decodeURIComponent(pair[1]);
         }
       }
-      
+
     }
 
 
 
   return (
-  
+
 <>
 
 {lod?
@@ -85,7 +85,7 @@ setLod(true);
 <div className='h-80' style={{
   display:lod?'flex':'none' ,
   alignItems:"center",
-  
+
   flexDirection: "column",
   justifyContent:"center"
 }}>
@@ -96,7 +96,7 @@ setLod(true);
       <div className='flex justify-center items-center text-lg font-bold text-moon-200 ' > الرجاء الإنتظار </div>
 </div>
 :<div dir="rtl" className=' flex items-center text-center p-14 flex-col justify-center'>
-<div className='text-green-500' style={{fontSize:"10rem"}} >  
+<div className='text-red-500' style={{fontSize:"10rem"}} >
 <FaCheckCircle/>
 </div>
 

@@ -24,16 +24,16 @@ function AccounteEl() {
   const [lod,setLod] =useState(false)
   const [refr,setRefr] = useState(true);
   const firstRenderRef = useRef(true);
-    const router = useRouter(); 
+    const router = useRouter();
 
     const dispatch = useDispatch();
     const cartg = useSelector((state) => state.root.cart.data)
     console.log("cart  swtuff", cartg)
-    const [page,setPage] = useState(1) 
-    const [address,setAddress] = useState(""); 
-    const [phone,setPhone] = useState(""); 
-    const [phoneC,setPhoneC] = useState(""); 
-    const [email,setEmail] = useState(null); 
+    const [page,setPage] = useState(1)
+    const [address,setAddress] = useState("");
+    const [phone,setPhone] = useState("");
+    const [phoneC,setPhoneC] = useState("");
+    const [email,setEmail] = useState(null);
     const [pickups,setpickups] = useState(null);
     const [selpick,setselpick] = useState(null);
     const [deliveryPrice,setDeleveryPrice] = useState(0);
@@ -62,15 +62,15 @@ let price = 0;
 let size= "";
       for (let i = 0; i < cartg.length; i++) {
     for (let j = 0; j < cartg[i].data.attributes.varients.data.length; j++) {
-    if(cartg[i].data.attributes.varients.data[j].id==cartg[i].selvar){ 
+    if(cartg[i].data.attributes.varients.data[j].id==cartg[i].selvar){
   total = total +  cartg[i].data.attributes.varients.data[j].attributes.price * cartg[i].qty;
-     
+
   // for (let x = 0; x < cartg[i].data.attributes.varients.data[j].attributes.colors.data.length; x++) {
   //   if(cartg[i].data.attributes.varients.data[j].attributes.colors.data[x].id==cartg[i].color){
   //    colorName= cartg[i].data.attributes.varients.data[j].attributes.colors.data[x].attributes.name_ar;
   //    colorValue= cartg[i].data.attributes.varients.data[j].attributes.colors.data[x].attributes.colorCode;
   //   }
-     
+
   //   }
     colorName= cartg[i].data.attributes.varients.data[j].attributes.colors.data[0].attributes.name_ar
     colorValue= cartg[i].data.attributes.varients.data[j].attributes.colors.data[0].attributes.colorCode
@@ -96,21 +96,21 @@ let size= "";
         imgsingle:cartg[i].img,
       }
     )
-      
+
 
 
 
 
 
       }
-setCheckoutArray(checkArray);   
-console.log("checkkkkkkk",checkArray)   
+setCheckoutArray(checkArray);
+console.log("checkkkkkkk",checkArray)
 setTotal(total)
 setgTotal(total+deliveryPrice)
 
 
     }, [cartg,deliveryPrice,refr])
-  
+
      const handleDelChangle = (stat)=>{
 setsetDeliveryMeth(stat);
 handleCityChange(selpick,stat);
@@ -147,7 +147,7 @@ setRefr(!refr);
 
 
    }
-        
+
       }
 
 
@@ -155,48 +155,48 @@ setRefr(!refr);
 
 
     const getPicks=()=>{
-         
+
       //props.setLod(true);
-               
+
           const requestOptions = {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
-                
+
             },
-          
+
         };
-    
+
           fetch(`${API_URL}products?func=getPick`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
              console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",data)
               setpickups(data);
              console.log("zzzzzzzzzzzzzzzzzzzzzzz",data.data)
-  
+
           //  return data
             }).then((arr)=>{
-          
+
             })
-      
-      
+
+
           }
 
 
 
 
-          //validate phone 
+          //validate phone
           const isPhoneValid = (phoneNumber) => {
             const phoneRegex = /^[0-9]{10}$/;
             return phoneRegex.test(phoneNumber);
         }
-        //validate adtress 
+        //validate adtress
         const isAdressValid = (adress) => {
           const adressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
           return addressRegex.test(adress);}
 
 
-      //validate email 
+      //validate email
     //   const isEmailValid = (email) => {
     //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     //     return emailRegex.test(email);
@@ -215,7 +215,7 @@ setRefr(!refr);
       //       useNotifi("error", "الرجاء إدخال بريد إلكتروني صالح");
       //       return;
       //   }
-      
+
         if (!phone || !isPhoneValid(phone)) {
           useNotifi("error", "  يجب أن يتكون رقم الهاتف من 10 أرقام   ");
           return;
@@ -230,14 +230,14 @@ setRefr(!refr);
       return;
     }
 
-      
-     
+
+
 
       if(cartg.length==0){
         useNotifi("error","الرجاء إضافة منتجات")
         return
       }
-    
+
       setLod(true)
       let payarray = []
       for (let i = 0; i < cartg.length; i++) {
@@ -248,14 +248,14 @@ setRefr(!refr);
           img:cartg[i].images?.[0].data.url,
           code:cartg[i].code,
           qty: cartg[i].qty,
-          desc: cartg[i].data.attributes.description_en 
-        
+          desc: cartg[i].data.attributes.description_en
+
         })
       }
-    
-    
+
+
      // console.log();
-      
+
      if(isLogged){
       const requestOptions = {
         method: 'POST',
@@ -281,14 +281,14 @@ setRefr(!refr);
         setLod(false)
     window.location= data.url;
       }).then(()=>{
-        
+
       });
      }else{
       const requestOptions = {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            
+
 
         },
         body: JSON.stringify({
@@ -309,20 +309,20 @@ setRefr(!refr);
         setLod(false)
    window.location= data.url;
       }).then(()=>{
-        
+
       });
      }
-      
 
-    
-   
-                            
-    
+
+
+
+
+
     }
 
 
   return (
-  
+
 <div className='flex-col md:flex-row lg:grid grid-cols-3 lg:pt-12 lg:mb-32 w-full '   >
 
 <div className='flex flex-1 flex-col lg:mt-[30px] px-3 w-full  '>
@@ -340,11 +340,11 @@ setRefr(!refr);
       {name: " إسم اللون", uid: "colorname",sortable: true },
       {name: "اللون", uid: "color", sortable: true},
       {name: " المقاس", uid: "sizeo",sortable: true },
-     {name: "الصورة", uid: "imgsingle", sortable: true},  
-     
+     {name: "الصورة", uid: "imgsingle", sortable: true},
+
     ]
    }
-   
+
    delorder={()=>{}}
     /> */}
 <div id="scrol" className='flex flex-1 flex-col lg:px-3 w-full'>
@@ -403,7 +403,7 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
                 })}
             </>
         ) : (
-            null 
+            null
         )}
     </div>
 
@@ -435,19 +435,19 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
 <div className='flex  flex-row-reverse    w-full' >
       <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :المجموع </div>
       <div dir='rtl' className='text-right text-xl font-semibold ' > {total}  {CURRENCY} </div>
-    </div> 
+    </div>
 
 <div className='flex   flex-row-reverse  w-full' >
       <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :التوصيل </div>
       <div dir='rtl' className='text-right text-xl font-semibold ' > {selpick==null? <span>إختر الولاية</span> :<span>{deliveryPrice}  {CURRENCY}</span> }  </div>
-    </div> 
+    </div>
 
     <div className='flex flex-row-reverse  w-full' >
       <div className='text-moon-200 font-bold text-right text-xl mb-2 ' > :المجموع الكلي </div>
       <div dir='rtl' className='text-right text-xl font-semibold ' > {gtotal}  {CURRENCY} </div>
-    </div> 
+    </div>
 </div> */}
-      
+
 
 </div>
 
@@ -461,10 +461,10 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
 
 
 
-                        
+
     <div className='flex  flex-col space-y-4 w-full px-3 col-span-2 mt-8' >
 
-   
+
 
 
 
@@ -477,12 +477,12 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
  <div onClick={()=>{
 //  setPaymentMeth(1)
 }}
-  className={`${paymentMeth==1?" border-moon-200 bg ":" shadow-gray-400 "}  flex hover:shadow-md 
+  className={`${paymentMeth==1?" border-moon-200 bg ":" shadow-gray-400 "}  flex hover:shadow-md
    transition-shadow cursor-pointer opacity-20  w-full bg-gray-200  flex-1 border-2 p-4 rounded-md items-center justify-between`}
  >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaCreditCard/>
-    </div>  
+    </div>
     <div className='flex items-end flex-col'>
       <div className='text-gray font-semibold text-base'>
         دفع إلكتروني
@@ -491,8 +491,8 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
          الدفع بإستخدام بطاقة بنكية
       </div>
     </div>
-      
-    </div> 
+
+    </div>
 
 
 
@@ -500,11 +500,11 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
     <div onClick={()=>{setPaymentMeth(2)}}
     //  className='flex  flex-1 border-2 p-4 rounded-md border-moon-200 items-center justify-between'
     className={`${paymentMeth==2?"shadow-lg border-moon-200 bg-moon-100 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border p-4 rounded-md items-center justify-between`}
-    
+
     >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaHandHoldingDollar/>
-    </div>  
+    </div>
     <div className='flex items-end flex-col'>
       <div className='text-gray-900 font-semibold text-base'>
         دفع عند الإستلام
@@ -512,16 +512,16 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
       <div className='text-xs'>
       يتم اضافة   {deliveryPrice}     </div>
     </div>
-      
-    </div> 
-  </div> 
+
+    </div>
+  </div>
 
 
-    </div>    
+    </div>
 
 
 
-    
+
 
 
 
@@ -538,17 +538,17 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
  >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaMapPin/>
-    </div>  
+    </div>
     <div className='flex items-end flex-col'>
       <div className='text-gray-9000 font-semibold text-base'>
          توصيل لعنوان
       </div>
       <div className='text-xs'>
-        التوصيل إلى عنوان معين 
+        التوصيل إلى عنوان معين
       </div>
     </div>
-      
-    </div> 
+
+    </div>
 
 
 
@@ -556,25 +556,25 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
     <div onClick={()=>{handleDelChangle(2);}}
     //  className='flex  flex-1 border-2 p-4 rounded-md border-moon-200 items-center justify-between'
     className={`${deliveryMeth==2?"shadow-lg border-moon-200 bg-moon-100 ":" shadow-gray-800 "}  flex w-full hover:shadow-md transition-shadow cursor-pointer flex-1 border p-4 rounded-md items-center justify-between`}
-    
+
     >
     <div className='bg-moon-200 text-white text-2xl p-3 rounded-full ' >
     <FaMapLocation/>
-    </div>  
+    </div>
     <div className='flex items-end flex-col'>
       <div className='text-gray-900 font-semibold text-base'>
             نقطة توزيع
       </div>
       <div className='text-xs'>
-                 من نقطة التوزيع  
+                 من نقطة التوزيع
       </div>
     </div>
-      
-    </div> 
-  </div> 
+
+    </div>
+  </div>
 
 
-    
+
   </div>
 
   <div className='mt-4 bg-white border border-gray-200  p-3'>
@@ -582,7 +582,7 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
   {/* <InputEl
             value={selpick}
             outputfunc={(val) => {
-             handleCityChange(val);           
+             handleCityChange(val);
             }}
             iden={"color"}
             data={pickups}
@@ -591,7 +591,7 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
             label={"الولاية"}
           /> */}
 
-<div className='mt-4 bg-white p-3 rounded-md'> 
+<div className='mt-4 bg-white p-3 rounded-md'>
     <InputEl
         value={selpick}
         outputfunc={(val) => {
@@ -634,40 +634,40 @@ console.log(`checkoutimagim ${IMG_URL} ${productImage}`)
         </div>
     </div>
 </div>
-{/* 
+{/*
    <div style={{
     width:"100%",
 display: deliveryMeth==2?"grid":"none",
 gap:10,
 gridTemplateAreas:`
-' city  city  . .   ' 
-' phone phone . .    ' 
+' city  city  . .   '
+' phone phone . .    '
 
 
 `
    }} >
-    
+
     <div style={{gridArea:"phone"}}>
       <InputEl outputfunc={(val)=>{setNameen(val)}} label={"إختر نقطة الإستلام"}/>
-    </div>  
-
-   
+    </div>
 
 
-   
+
+
+
    </div> */}
 
   </div>
 
-{/* 
+
   <div className='text-sm'>
-    
+
   <LoadingBtn  className="text-sm"   act={()=>{
-                       handleOrder() ; 
+                       handleOrder() ;
                        }}  text={"تاكيد الطلب   "} lod={lod} />
 
-  </div> */}
-<div className="text-center px-4  mx-auto">
+  </div>
+{/* <div className="text-center px-4  mx-auto">
   <button
     disabled
     className="w-full py-2 bg-yellow-400 text-yellow-900 font-semibold rounded-md cursor-not-allowed opacity-60"
@@ -677,10 +677,10 @@ gridTemplateAreas:`
   <p className="mt-2 text-yellow-800 text-sm">
     نأسف، لا نقوم بالتوصيل في الوقت الحالي
   </p>
-</div>
+</div> */}
 
 
-    </div>   
+    </div>
 
 
 

@@ -16,7 +16,7 @@ export default function NavbarC(props) {
   const router = useRouter();
   const userData = useSelector((state) => state.root.auth.data && state.root.auth.data);
   const cartData = useSelector((state) => state.root.cart.data.length);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [subCat, setSubCat] = useState([]);
 
   // console.log(`${API_URL}subcatagories?func=getAllSubCat`, "Full fetch URL");
@@ -27,9 +27,9 @@ export default function NavbarC(props) {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
-  
+
         if (Array.isArray(data)) {
-          setSubCat(data); 
+          setSubCat(data);
         } else {
           setSubCat([]);
         }
@@ -38,14 +38,14 @@ export default function NavbarC(props) {
         console.error("Error fetching subcategories:", err);
       });
   };
-  
+
   useEffect(() => {
     getsubcatogries();
   }, []);
   // const getSubCat = (cat) => {
   //   fetch(`/api/categories?cat=${cat}`)
   //     .then((res) => res.json())
-  //     .then((data) => { 
+  //     .then((data) => {
   //       if (data && data.data) {
   //         props.setSubCat(data.data);
   //         console.log("categories", data.data);
@@ -54,8 +54,8 @@ export default function NavbarC(props) {
   //       }
   //     });
   // };
-  
-  
+
+
   const handleSearch = () => {
     props.setSearchTog(!props.searchTog);
   };
@@ -86,10 +86,10 @@ export default function NavbarC(props) {
   return (
     <>
     <nav className="bg-white  lg:max-[218px]  w-full">
-    <div
+    {/* <div
   className="bg-gradient-to-r from-yellow-200 via-yellow-50 to-yellow-200 border-b border-yellow-200 flex justify-center items-center select-none duration-300 w-full px-4 py-2"
   style={{
-    minHeight: '50px', 
+    minHeight: '50px',
     backgroundSize: '200% 100%',
     animation: 'waveGradient 6s ease infinite',
     fontFamily: '"El Messiri", sans-serif',
@@ -97,7 +97,7 @@ export default function NavbarC(props) {
   }}
 >
   <div className="flex items-center gap-2 text-yellow-800 text-sm sm:text-base text-center flex-wrap justify-center leading-relaxed">
- 
+
     <span>نأسف، لا نقوم بالتوصيل في الوقت الحالي</span>
   </div>
 
@@ -114,7 +114,7 @@ export default function NavbarC(props) {
       }
     }
   `}</style>
-</div>
+</div> */}
 
 
 
@@ -140,7 +140,7 @@ export default function NavbarC(props) {
           </div>
         </div>
         <div className="flex items-center space-x-4 space-x-reverse">
-         
+
           <div className="flex items-center space-x-1 space-x-reverse cursor-pointer hover:text-gray-900">
              {/* Using generic SVG for exact match of image's pricing icon */}
              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -162,7 +162,7 @@ export default function NavbarC(props) {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center rtl">
 
         {/* Hamburger Menu Icon (visible on small screens) */}
-    
+
 
         <div className="lg:flex  items-center order-1 lg:order-3 flex-grow justify-end lg:justify-start">
           <form
@@ -171,7 +171,7 @@ export default function NavbarC(props) {
                        max-w-md lg:max-w-none lg:w-[776px] h-[46px]
                        rounded-[8px] border border-gray-300 bg-gray-100
                        focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-500
-                       overflow-hidden mr-4 lg:mr-0" 
+                       overflow-hidden mr-4 lg:mr-0"
           >
             <input
               type="text"
@@ -202,7 +202,7 @@ export default function NavbarC(props) {
   className=" lg:ml-3 hidden lg:block"
 />
         </div>
-        
+
         <div className="lg:flex hidden mx-4 items-center space-x-6 space-x-reverse order-2 lg:order-1 flex-row-reverse">
 
 {/* 1. Favorites */}
@@ -257,7 +257,7 @@ export default function NavbarC(props) {
 
 
 
-      
+
     </nav>
 {/* mobile nav */}
 
@@ -299,7 +299,7 @@ export default function NavbarC(props) {
 
 <></>
 <></>
-          <motion.div onClick={() => { props.openCart(true); }} 
+          <motion.div onClick={() => { props.openCart(true); }}
   className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer"
 >
   <Button isIconOnly className="mr-20" size="md" aria-label="Cart">
@@ -325,7 +325,7 @@ export default function NavbarC(props) {
           </Button>
         </div>
 
-   
+
 
         <motion.div
 initial={{ x: "100%" }}

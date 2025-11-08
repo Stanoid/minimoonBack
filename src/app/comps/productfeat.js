@@ -17,7 +17,7 @@ function ProductFeat() {
 
     const interval = setInterval(() => {
       setStartIndex((prev) => (prev + 1) % subcats.length);
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [subcats]);
@@ -49,23 +49,23 @@ function ProductFeat() {
   };
 
   const CategoryCard = ({ img, name, link, isLarge = false }) => (
-    <motion.div
-      key={link} // unique per card
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`relative rounded-lg overflow-hidden shadow-lg cursor-pointer  
-        ${isLarge ? 'col-span-2 row-span-2 min-h-[400px] lg:min-h-[500px]' : 'min-h-[200px] lg:min-h-[240px]'}
-        flex items-end`}
-      style={{
-        backgroundImage: `url(${img})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
+    <div
       onClick={() => link && window.location.assign(link)}
+      className={`relative rounded-lg overflow-hidden shadow-lg cursor-pointer
+        ${isLarge ? 'col-span-2 row-span-2 min-h-[300px] lg:min-h-[350px]' : 'min-h-[150px] lg:min-h-[180px]'}
+        flex items-end`}
     >
+   <motion.img
+  key={img}
+  src={img}
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ duration: 1.2, ease: "easeInOut" }}
+  className="absolute inset-0 w-full h-full object-cover"
+/>
+
+
       <div
         className="absolute bottom-0 left-0 right-0 p-4 flex items-center justify-center"
         style={{
@@ -77,13 +77,13 @@ function ProductFeat() {
       >
         <h3
           className={`text-white font-bold text-center w-full z-10 ${
-            isLarge ? 'text-3xl' : 'text-xl'
+            isLarge ? 'text-2xl' : 'text-lg'
           }`}
         >
           {name}
         </h3>
       </div>
-    </motion.div>
+    </div>
   );
 
   const visibleSubcats = [];
