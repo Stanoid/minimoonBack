@@ -102,14 +102,14 @@ function ProductFeat() {
       scale: 1.2,
       opacity: 0.8,
     },
-    // animate: {
-    //   scale: 1,
-    //   opacity: 1,
-    //   transition: {
-    //     duration: 0.8,
-    //     ease: [0.25, 0.46, 0.45, 0.94],
-    //   },
-    // },
+    animate: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
     hover: {
       scale: 1.15,
       transition: {
@@ -134,15 +134,15 @@ function ProductFeat() {
       y: 20,
       opacity: 0,
     },
-    // animate: {
-    //   y: 0,
-    //   opacity: 1,
-    //   transition: {
-    //     delay: 0.4,
-    //     duration: 0.5,
-    //     ease: "easeOut",
-    //   },
-    // },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.4,
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
     hover: {
       y: -5,
       transition: {

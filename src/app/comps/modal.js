@@ -4,29 +4,31 @@ import { Dialog, Transition } from '@headlessui/react'
 import {BsBoxSeam,BsDownload} from 'react-icons/bs'
 import { API_URL ,CURRENCY} from "../../app/local";
 import { Theme } from '../../app/local';
+import { useI18n } from '../lib/i18n';
 export default function Modal(props) {
+  const { t, direction } = useI18n();
   const [open, setOpen] = useState(true)
 
   const statushand = (stat)=>{
     switch(stat){
       case 1:
-        return <div style={{backgroundColor:"grey",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >طلب مبدئي</div>
+        return <div style={{backgroundColor:"grey",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >{t('statusUnconfirmed')}</div>
         break;
 
         case 2:
-          return <div style={{backgroundColor:"orange",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >قيد الإنتظار</div>
+          return <div style={{backgroundColor:"orange",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >{t('statusNotDelivered')}</div>
           break;
 
           case 3:
-            return <div style={{backgroundColor:"green",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >موكد</div>
+            return <div style={{backgroundColor:"green",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >{t('statusDelivered')}</div>
             break;
 
             case 8:
-              return <div style={{backgroundColor:"black",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >ملغي</div>
+              return <div style={{backgroundColor:"black",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >{t('statusCancelled')}</div>
               break;
 
             case 9:
-              return <div style={{backgroundColor:"red",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >محذوف</div>
+              return <div style={{backgroundColor:"red",color:"white",fontWeight:"bold",padding:5,borderRadius:0,textAlign:'center'}} >{t('statusCancelled')}</div>
               break;
     }
 

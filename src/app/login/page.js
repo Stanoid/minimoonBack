@@ -13,7 +13,9 @@ import { AuthCon } from '../contexts/AuthCon'
 import { CartCon } from '../contexts/cartContext'
 import Logowhite from "../../../public/logoblack.svg"
 import { Eye, EyeOff } from "lucide-react" // Changed EyeClosed to EyeOff for Lucide
+import { useI18n } from '../lib/i18n'
 export default function Login() {
+  const { t, direction } = useI18n();
   const [email, setemail] = useState("")
   const [pass, setpass] = useState("")
   const [lod, setLod] = useState(false)
@@ -32,10 +34,10 @@ export default function Login() {
       switch (udata.data) {
         case 400:
 
-        toast.error("كلمة المرور أو البريد الإلكتروني غير صحيحة", { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
+        toast.error(t('invalidCredentials'), { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
           break
         case 429:
-          toast.error("عدد طلبات كبير, الرجاء المحاولة لاحقآ", { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
+          toast.error(t('tooManyRequests'), { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
           break
       }
     }
@@ -82,21 +84,21 @@ export default function Login() {
         <Logowhite width={96} className="mb-4" />
 
         {/* <h2 className="text-xl text-center text-gray-700 mb-1">تسجيل دخول لحسابك</h2> */}
-        <h3 dir='rtl' className="text-center text-base text-gray-900 ">أهلاً بك... </h3>
-        <p className='text-center text-base text-gray-500 mb-4'>الرجاء تسجيل الدخول للمتابعة</p>
+        <h3 dir={direction} className={`text-center text-base text-gray-900 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('welcomeBack')}</h3>
+        <p className={`text-center text-base text-gray-500 mb-4 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('pleaseLogin')}</p>
         <div className="w-full flex flex-col gap-2 relative">
-  <InputEl outputfunc={handleEmail} label={"البريد الإلكتروني"} />
+  <InputEl outputfunc={handleEmail} label={t('email')} />
 
   <div className="w-full relative">
   <InputEl
     outputfunc={(val) => setpass(val)}
     ispass
-    label={"كلمة المرور"}
+    label={t('password')}
     type={showpass ? "text" : "password"}
   />
 
   <motion.div
-    className="absolute top-1/2 left-3 -translate-y-1/2 flex items-center cursor-pointer text-gray-400"
+    className={`absolute top-1/2 ${direction === 'rtl' ? 'right-3' : 'left-3'} -translate-y-1/2 flex items-center cursor-pointer text-gray-400`}
     onClick={() => setShowpass(!showpass)}
     initial={{ rotate: 0, opacity: 0 }}
     animate={{ rotate: showpass ? 20 : 0, opacity: 1 }}
@@ -110,14 +112,14 @@ export default function Login() {
 
 
         <motion.div className="w-full mt-4 text-base" whileTap={{ scale: 1.03 }}>
-          <LoadingBtn act={handleLogin} text={"تسجيل دخول"} lod={lod} fullWidth />
+          <LoadingBtn act={handleLogin} text={t('login')} lod={lod} fullWidth />
         </motion.div>
 
         <div
-          className="w-full text-center mt-3 text-gray-600 text-base cursor-pointer hover:text-gray-800"
+          className={`w-full text-center mt-3 text-gray-600 text-base cursor-pointer hover:text-gray-800 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
           onClick={() => router.push("/register")}
         >
-      ليس لديك حساب؟  <span className='text-moon-200 hover:underline'>تسجيل حساب جديد</span>
+      {t('noAccount')}  <span className='text-moon-200 hover:underline'>{t('registerNewAccount')}</span>
         </div>
 
         <div className="w-full relative my-4">
@@ -125,8 +127,8 @@ export default function Login() {
                 <div className="w-full border-t border-gray-300"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-                <span className="px-2 text-base bg-white text-gray-500">
-                او التسجيل بواسطة                </span>
+                <span className={`px-2 text-base bg-white text-gray-500 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+                {t('orRegisterWith')}                </span>
             </div>
         </div>
 

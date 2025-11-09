@@ -1,66 +1,72 @@
+'use client';
 import React from 'react';
 import Logowhite from "../../../public/logoblack.svg";
+import { useI18n } from '../lib/i18n';
+import { useRouter } from 'next/navigation';
 
 const Footer = () => {
+  const { t, direction } = useI18n();
+  const router = useRouter();
+
   return (
-    <footer dir='rtl' className="w-full bg-white border-t border-gray-200 lg:max-h-[219px] pt-16 px-8 ">
+    <footer dir={direction} className={`w-full bg-white border-t border-gray-200 lg:max-h-[219px] pt-16 px-8`}>
       <div className="max-w-7xl mx-auto"> 
-        <div dir="rtl" className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-start text-right" >
+        <div dir={direction} className={`grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-start ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
 
           {/* Shipping Section */}
-          <div className="flex flex-col items-start md:items-start text-right md:text-right">
+          <div className={`flex flex-col items-start md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'}`}>
             <div className="flex items-center gap-2 mb-4">
               {/* Truck Icon SVG */}
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 tetx-gray-500">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-</svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+              </svg>
 
-              <h3 className="text-sm font-semibold text-gray-700">تتبع الطلب والشحن</h3>
+              <h3 className="text-sm font-semibold text-gray-700">{t('trackOrderShipping')}</h3>
             </div>
             <p className="text-gray-500 text-sm font-medium leading-relaxed">
-              نتيح لك معرفة موعد وصول مشترياتك عبر الإنترنت بجودة في التسليم
+              {t('trackOrderShippingDesc')}
             </p>
           </div>
 
-          <div className="flex flex-col items-start md:items-start text-right md:text-right">
+          <div className={`flex flex-col items-start md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'}`}>
             <div className="flex items-center gap-2 mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
-</svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+              </svg>
 
-              <h3 className="text-sm font-semibold text-gray-700">جميع وسائل الدفع الآمنة</h3>
+              <h3 className="text-sm font-semibold text-gray-700">{t('allSecurePaymentMethods')}</h3>
             </div>
             <p className="text-gray-500 text-sm font-medium leading-relaxed">
-              يمكنك الشراء باستخدام ايزا وطرق مختلفة للدفع منها الدفع عند الاستلام والإلكتروني وغيرها
+              {t('allSecurePaymentMethodsDesc')}
             </p>
           </div>
 
 
-          <div className="flex flex-col items-start md:items-start text-right md:text-right">
+          <div className={`flex flex-col items-start md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'}`}>
             <div className="flex items-center mb-4">
 
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-</svg>
-              <h3 className="text-sm font-semibold text-gray-500">اتصل بنا</h3>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+            </svg>
+              <h3 className={`text-sm font-semibold text-gray-500 ${direction === 'rtl' ? 'mr-2' : 'ml-2'}`}>{t('contactUs')}</h3>
             </div>
             <div className="space-y-3">
-              <div className="flex items-center justify-start gap-1 md:justify-start">
+              <div className={`flex items-center ${direction === 'rtl' ? 'justify-start' : 'justify-start'} gap-1 md:justify-start`}>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-</svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+              </svg>
 
                 <span className="text-gray-500 ">+1234567890</span>
 
               </div>
-              <div className="flex items-center justify-center gap-1 md:justify-start">
+              <div className={`flex items-center ${direction === 'rtl' ? 'justify-center' : 'justify-center'} gap-1 md:justify-start`}>
               
               
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-</svg>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
 
-                <span className="text-gray-500 ml-2">Support@minimoon.com</span>
+                <span className={`text-gray-500 ${direction === 'rtl' ? 'mr-2' : 'ml-2'}`}>Support@minimoon.com</span>
               
               </div>
             </div>
@@ -69,45 +75,46 @@ const Footer = () => {
 
         <div className="border-t border-gray-200 my-12"></div>
 
-        <div className="grid sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 gap-8 w-full  text-right" dir="rtl">
+        <div className={`grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 lg:grid-cols-3 gap-8 w-full ${direction === 'rtl' ? 'text-right' : 'text-left'}`} dir={direction}>
 
-          <div className="flex flex-col items-start md:items-start text-right md:text-right order-1 md:order-1">
-            <h4 className="font-semibold text-gray-500 text-sm mb-4">الطلبات والشحن</h4>
+          <div className={`flex flex-col items-start md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'} order-1 md:order-1`}>
+            <h4 className="font-semibold text-gray-500 text-sm mb-4">{t('ordersAndShipping')}</h4>
             <ul className="space-y-2 text-gray-600 text-sm">
-              <li><a href="#" className="hover:text-gray-800">حسابي</a></li>
-              <li><a href="#" className="hover:text-gray-800">تتبع الطلب</a></li>
-              <li><a href="#" className="hover:text-gray-800">سياسة الشحن و الإرجاع</a></li>
+              <li><a href="#" className="hover:text-gray-800">{t('myAccount')}</a></li>
+              <li><a href="#" className="hover:text-gray-800">{t('trackOrder')}</a></li>
+              <li><a href="#" className="hover:text-gray-800">{t('shippingReturnPolicy')}</a></li>
             </ul>
           </div>
 
-          <div className="flex flex-col items-start md:items-start text-right md:text-right order-2 md:order-2">
-            <h4 className="font-semibold text-sm text-gray-700 mb-4">عن الشركة</h4>
+          <div className={`flex flex-col items-start md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'} order-2 md:order-2`}>
+            <h4 className="font-semibold text-sm text-gray-700 mb-4">{t('aboutCompany')}</h4>
             <ul className="space-y-2 text-gray-500 text-sm">
-              <li><a href="#" className="hover:text-gray-800">الوظائف</a></li>
-              <li><a href="#" className="hover:text-gray-800">من نحن</a></li>
-              <li><a href="#" className="hover:text-gray-800">متاجرنا</a></li>
+              <li><a href="#" className="hover:text-gray-800">{t('jobs')}</a></li>
+              <li><a href="/about" className="hover:text-gray-800">{t('aboutUs')}</a></li>
+              <li><a href="#" className="hover:text-gray-800">{t('ourStores')}</a></li>
             </ul>
           </div>
 
-          <div className="flex flex-col lg:col-span-1 col-span-2 items-center md:items-start text-right md:text-right order-3 md:order-3">
+          <div className={`flex flex-col lg:col-span-1 col-span-2 items-center md:items-start ${direction === 'rtl' ? 'text-right md:text-right' : 'text-left md:text-left'} order-3 md:order-3`}>
             <h3 className="text-sm font-semibold text-gray-700 mb-4">
-              احصل على أحدث العروض على بريدك
+              {t('getLatestOffers')}
             </h3>
-            <div className="w-full max-w-md flex flex-col gap-2 items-center md:items-end">
+            <div className={`w-full max-w-md flex flex-col gap-2 items-center ${direction === 'rtl' ? 'md:items-end' : 'md:items-start'}`}>
               <input
                 type="email"
-                placeholder="قم بإدخال البريد الإلكتروني"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-red-400"
+                placeholder={t('enterEmail')}
+                dir={direction}
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${direction === 'rtl' ? 'text-right' : 'text-left'} focus:outline-none focus:ring-2 focus:ring-red-400`}
               />
               <button className="w-full px-5 py-2.5 bg-moon-200 text-white text-sm rounded-lg border transition-colors">
-                اشترك الآن
+                {t('subscribeNow')}
               </button>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-center  mt-8"> 
-          <div className="flex space-x-4 space-x-reverse"> 
+        <div className={`flex justify-center mt-8`}> 
+          <div className={`flex ${direction === 'rtl' ? 'space-x-4 space-x-reverse' : 'space-x-4'}`}> 
             <a href="#" className="text-gray-400 hover:text-gray-600">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.256 5.676c-.66.293-1.37.49-2.108.577.76-.456 1.34-1.18 1.615-2.04-.71.424-1.5.73-2.336.898-.67-.714-1.62-1.16-2.67-1.16-2.02 0-3.66 1.64-3.66 3.66 0 .287.032.56.096.825-3.04-.153-5.743-1.6-7.55-3.837-.315.54-.495 1.17-.495 1.84 0 1.27.645 2.39 1.628 3.058-.598-.018-1.16-.184-1.65-.453v.045c0 1.77 1.258 3.247 2.923 3.582-.305.083-.627.126-.96.126-.235 0-.46-.023-.68-.067.465 1.45 1.815 2.505 3.425 2.535-1.24.97-2.79 1.55-4.47 1.55-.29 0-.58-.017-.86-.05 1.61 1.04 3.52 1.65 5.56 1.65 6.67 0 10.31-5.52 10.31-10.31 0-.158-.003-.315-.01-.47.715-.51 1.335-1.14 1.83-1.87z" />
@@ -132,20 +139,18 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-8 py-3 flex flex-col-reverse md:flex-row justify-center items-center text-sm text-gray-500 text-center  md:text-right">
+        <div className={`border-t border-gray-200 mt-8 py-3 flex flex-col-reverse md:flex-row justify-center items-center text-sm text-gray-500 text-center ${direction === 'rtl' ? 'md:text-right' : 'md:text-left'}`}>
           <div className="mt-4 md:mt-0 order-1 md:order-3">
-            <span>جميع الحقوق محفوظة © مني مون 2024</span>
+            <span>{t('allRightsReserved')}</span>
           </div>
-          {/* <div className="flex space-x-6 space-x-reverse order-2 md:order-2"> 
-            <a href="#" className="hover:text-gray-700">ملفات التعريف</a>
-            <a href="#" className="hover:text-gray-700">الخصوصية والأمان</a>
-          </div> */}
-          <div className="flex items-center mb-4 md:mb-0 order-3 md:order-1">
-            <span className="font-semibold">      <Logowhite
-  style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
-  onClick={() => router.push("/")}
-  className=" lg:ml-3 hidden lg:block"
-/></span>
+          <div className={`flex items-center mb-4 md:mb-0 order-3 md:order-1 ${direction === 'rtl' ? 'lg:mr-3' : 'lg:ml-3'}`}>
+            <span className="font-semibold">      
+              <Logowhite
+                style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
+                onClick={() => router.push("/")}
+                className="hidden lg:block"
+              />
+            </span>
           </div>
         </div>
       </div>

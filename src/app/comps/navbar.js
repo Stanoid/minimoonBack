@@ -135,7 +135,7 @@ export default function NavbarC(props) {
     } catch (err) {
       console.error("Error in getsubcatogries function:", err);
       setError('Failed to fetch subcategories');
-      setSubCat([]) ;
+      setSubCat([]);
     }
   };
 
@@ -308,7 +308,7 @@ export default function NavbarC(props) {
             <span className="text-sm">{t('bestPrices')}</span>
           </div>
           <div className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} cursor-pointer hover:text-gray-900`}>
-            <span className="font-medium text-gray-300 mx-2"> | </span>
+            <span className="font-medium mx-2"> | </span>
             <span className="text-sm">{t('fastestDelivery')}</span>
           </div>
         </div>
@@ -339,7 +339,7 @@ export default function NavbarC(props) {
             <button
               className={`absolute top-[1.5px] bottom-[1.5px]
                          bg-moon-200 text-sm text-white font-medium
-                         px-2 h-[36px]
+                         w-[46px] h-[36px]
                          flex items-center justify-center
                          z-10
                          ${direction === 'rtl' ? 'left-[1.5px] rounded-l-[7px]' : 'right-[1.5px] rounded-r-[7px]'}`}

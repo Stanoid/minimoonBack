@@ -30,6 +30,7 @@
     import {capitalize} from "./utils";
     import { color } from "framer-motion";
     import { FaEdit } from "react-icons/fa";
+    import { useI18n } from "../../lib/i18n";
 
 
     const statusColorMap = {
@@ -44,6 +45,7 @@
       "code","price","images","qty","colorname","sizeo","imgsingle","topsec"];
 
     export default function App(props) {
+      const { t, direction } = useI18n();
       const [filterValue, setFilterValue] = React.useState("");
       const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
       const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -175,21 +177,21 @@
         let stob = {};
           switch (cellValue) {
             case "initiated":
-          stob.lable = "غير مؤكد ";
+          stob.lable = t('statusUnconfirmed');
           stob.color = "text-gray-700 bg-gray-200 min-w ";
           stob.dot = "bg-gray-700";
           stob.istog=false; 
             break;
 
             case "processed":
-              stob.lable = "غير موصل ";
+              stob.lable = t('statusNotDelivered');
               stob.color = "text-amber-700 bg-amber-200 min-w ";
             stob.dot = "bg-amber-700";
             stob.istog=false; 
               break;
 
             case "delivered":
-              stob.lable = "تم التوصيل";
+              stob.lable = t('statusDelivered');
               stob.color = "text-green-600 bg-green-300 min-w ";
               stob.dot = "bg-green-600";
               stob.istog=false; 
@@ -199,7 +201,7 @@
 
 
               case true:
-                stob.lable = "متاح";
+                stob.lable = t('statusAvailable');
                 stob.color = "text-green-600 bg-green-300 min-w ";
                 stob.dot = "bg-green-600";
                 
@@ -209,7 +211,7 @@
 
 
                 case false:
-                  stob.lable = " غير متاح ";
+                  stob.lable = t('statusUnavailable');
                   stob.color = "text-amber-700 bg-amber-200 min-w ";
                 stob.dot = "bg-amber-700";
                   
@@ -1024,7 +1026,7 @@
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={" لا توجد بيانات "} items={sortedItems}>
+          <TableBody emptyContent={t('noData')} items={sortedItems}>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
