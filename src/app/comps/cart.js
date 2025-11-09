@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 
 import { API_URL, Theme, CURRENCY } from '../local'
-
+import { useI18n } from '../lib/i18n';
 import { FaArrowAltCircleRight } from 'react-icons/fa'
 
 const Cart = forwardRef((props, ref) => {
@@ -23,6 +23,7 @@ const Cart = forwardRef((props, ref) => {
   const [lod, setLod] = useState(0);
   const { cartData, addToCart, removeFromCart, CartTotal } = useContext(CartCon);
   const router = useRouter();
+  const { t, direction } = useI18n();
 
 
   const [subtotal, setSubtotal] = useState(0);
@@ -98,21 +99,21 @@ const Cart = forwardRef((props, ref) => {
             <Dialog.Overlay className="absolute inset-0 bg-black bg-opacity-10 lg:bg-opacity-50 transition-opacity" />
           </Transition.Child>
 
-          <div className="fixed inset-x-0 bottom-0 lg:inset-y-0 lg:left-0  w-full max-w-full lg:max-w-md  flex z-50">
+          <div className={`fixed inset-x-0 bottom-0 lg:inset-y-0 ${direction === 'rtl' ? 'lg:left-0' : 'lg:right-0'} w-full max-w-full lg:max-w-md flex z-50`}>
 
             <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-300"
-            enterFrom="-translate-x-full"
+            enterFrom={direction === 'rtl' ? "translate-x-full" : "-translate-x-full"}
             enterTo="translate-x-0"
             leave="transform transition ease-in-out duration-300"
             leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
+            leaveTo={direction === 'rtl' ? "translate-x-full" : "-translate-x-full"}
             >
               <div className="relative w-full h-full ">
                 <ToastContainer limit={3} />
 
-                <div className=" flex flex-col py-6  lg:max-w-[512px]  w-full rounded-t-lg rounded-r-none lg:rounded-t-none lg:rounded-r-lg bg-white shadow-lg overflow-y-hidden">
+                <div className={`flex flex-col py-6 lg:max-w-[512px] w-full rounded-t-lg ${direction === 'rtl' ? 'rounded-r-none lg:rounded-t-none lg:rounded-r-lg' : 'rounded-l-none lg:rounded-t-none lg:rounded-l-lg'} bg-white shadow-lg overflow-y-hidden`} dir={direction}>
                   <div className="px-4 sm:px
                   -6 flex items-center justify-between">
                     <div
@@ -131,17 +132,17 @@ const Cart = forwardRef((props, ref) => {
                       style={{
                         display: "flex",
                         width: "100%",
-                        justifyContent: "end",
+                        justifyContent: direction === 'rtl' ? "end" : "start",
                         alignItems: "center",
                         fontWeight: "bold",
                         paddingBottom: 20,
                         fontSize: 18,
                       }}
                     >
-                      <div>السلة</div>
+                      <div>{t('cart')}</div>
                       <div
                         style={{
-                          marginRight: 10,
+                          [direction === 'rtl' ? 'marginRight' : 'marginLeft']: 10,
                         }}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -209,9 +210,9 @@ const Cart = forwardRef((props, ref) => {
 
                           </div>
                           <div style={{ fontWeight: "bold", marginTop: 20 }}>
-                            سلة فارغة
+                            {t('emptyCart')}
                           </div>
-                          <div>تصفح المنتجات و أضفها للمتابعة</div>
+                          <div>{t('browseProducts')}</div>
                         </div>
                       )}
                     </div>
@@ -219,28 +220,24 @@ const Cart = forwardRef((props, ref) => {
                     {cartg.length > 0 && (
                       <div className="px-4 pt-4 border-t border-gray-200">
                         {/* الإجمالي الاساسي (Base Total) */}
-                        <div className="flex justify-between items-center text-gray-700 mb-2" dir="rtl">
-                          <span className="text-sm">الإجمالي الاساسي</span>
+                        <div className={`flex justify-between items-center text-gray-700 mb-2`} dir={direction}>
+                          <span className="text-sm">{t('baseTotal')}</span>
                           <span className="text-base font-bold">{subtotal.toFixed(2)} {CURRENCY}</span>
                         </div>
-                        <div className="flex justify-between items-center mb-2" dir="rtl">
-                        <span className="text-sm text-gray-700">تم توفير</span>
+                        <div className={`flex justify-between items-center mb-2`} dir={direction}>
+                        <span className="text-sm text-gray-700">{t('saved')}</span>
                         <span className="text-base font-bold text-green-600">
-                          {/* {(old_price - price).toFixed(2)} {CURRENCY} */}
+                          {savings.toFixed(2)} {CURRENCY}
                         </span>
                       </div>
 
+                        <div className={`flex justify-between items-center mb-2`} dir={direction}>
+                          <span className="text-sm text-gray-700">{t('shipping')}</span>
+                          <span className="text-base font-bold">{shippingCost.toFixed(2)} {CURRENCY}</span>
+                        </div>
 
-                      <div className="flex justify-between items-center mb-2" dir="rtl">
-  <span className="text-sm text-gray-700">تم توفير</span>
-  <span className="text-base font-bold text-green-600">
-    {savings.toFixed(2)} {CURRENCY}
-  </span>
-</div>
-
-
-                        <div className="flex justify-between items-center text-lg font-bold text-gray-900 mb-6" dir="rtl">
-                          <span>الإجمالي</span>
+                        <div className={`flex justify-between items-center text-lg font-bold text-gray-900 mb-6`} dir={direction}>
+                          <span>{t('total')}</span>
                           <span>{finalTotal.toFixed(2)} {CURRENCY}</span>
                         </div>
 
@@ -250,7 +247,7 @@ const Cart = forwardRef((props, ref) => {
     <div className="flex justify-center">
       <LoadingBtn
         act={handleOrder}
-        text={"اتمام الشراء"}
+        text={t('proceedToCheckout')}
         lod={lod}
         className="w-full"
       />
@@ -263,7 +260,7 @@ const Cart = forwardRef((props, ref) => {
           router.push("/login");
           props.openHandler(false);
         }}
-        text={"سجل الدخول للمتابعة"}
+        text={t('login')}
         color={Theme.secondaryDark}
         lod={lod}
         className="w-2/5  text-base rounded-md"
@@ -272,9 +269,9 @@ const Cart = forwardRef((props, ref) => {
         onClick={guestCheckout}
         style={{ backgroundColor: Theme.primary }}
         className="lg:w-3/5 w-full bg-moon-200 text-white py-3 px-4 rounded-md text-sm font-meduim"
-        dir="rtl"
+        dir={direction}
       >
-        متابعة كزائر
+        {t('guestCheckout')}
       </button>
     </div>
   )}

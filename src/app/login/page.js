@@ -1,345 +1,154 @@
 'use client'
-import React from 'react'
-import { useState,useEffect,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { motion } from 'framer-motion'
-import {  toast,ToastContainer } from 'react-toastify'
-import { API_URL } from '../local'
-import InputEl from '../comps/inputel'
-import { useSelector,useDispatch } from 'react-redux'
-import {login } from "../lib/actions/counterAction"
-import { useRouter } from 'next/navigation';
-import { FaArrowAltCircleLeft,FaArrowCircleLeft,FaArrowCircleRight, FaCheckCircle,FaUserPlus } from 'react-icons/fa'
+import { toast, ToastContainer } from 'react-toastify'
+import { useSelector, useDispatch } from 'react-redux'
+import { login } from "../lib/actions/counterAction"
+import { useRouter } from 'next/navigation'
+// Keeping Fa icons for brand recognition, but styling them to look more "outlined" or neutral.
+import { FaLock, FaUserPlus, FaFacebook, FaGoogle, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import LoadingBtn from '../comps/loadingbtn'
-import { FaFacebook, FaGoogle, FaInstagram, FaLock, FaX, FaXTwitter } from 'react-icons/fa6'
-import { AuthCon } from '../contexts/AuthCon';
+import InputEl from '../comps/inputel'
+import { AuthCon } from '../contexts/AuthCon'
 import { CartCon } from '../contexts/cartContext'
-import { Theme } from '../local'
-import { FaCircleRight } from 'react-icons/fa6'
-export default function Register() {
+import Logowhite from "../../../public/logoblack.svg"
+import { Eye, EyeOff } from "lucide-react" // Changed EyeClosed to EyeOff for Lucide
+export default function Login() {
+  const [email, setemail] = useState("")
+  const [pass, setpass] = useState("")
+  const [lod, setLod] = useState(false)
+  // Renamed for clarity with Lucide icons (EyeOff is common)
+  const [showpass, setShowpass] = useState(false)
+  const { loginUser } = useContext(AuthCon)
+  const udata = useSelector((state) => state.root.auth.data && state.root.auth.data)
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const { useNotifi } = useContext(CartCon)
 
-  const [name, setname] = useState("");
-  
-  const [gender, setGender] = useState("M");
-  const [age, setAge] = useState("");
-  const [lod, setLod] = useState(false);
-  const [states, setstaes] = useState("");
-  const [cities, setcities] = useState("");
-  const [selected, setSelected] = useState([]);
-  const [cats, setCats] = useState();
-  const [state,setstate]=useState();
-  const [city,setcity]=useState();
-  const [address,setaddress]=useState();
-  const [address2,setaddress2]=useState();
-  const [phone, setPhone] = useState("");
-  const [type, setType] = useState(0);
-  const [email, setemail] = useState("");
-  const [pass, setpass] = useState("");
-  const [cpass, setcpass] = useState("");
-  const {loginUser}  = useContext(AuthCon);
-  const udata = useSelector((state) => state.root.auth.data&&state.root.auth.data)
- const ls = require("local-storage");
-const router = useRouter();
-const sts = useSelector((state) => state)
-const dispatch = useDispatch()
-const {useNotifi } =
-useContext(CartCon);
+  const handleEmail = (email) => setemail(email.replace(/ /g, ''))
 
+  const loginRouter = () => {
+    if (udata && udata.error) {
+      switch (udata.data) {
+        case 400:
 
-
-useEffect(()=>{
-
-
- },[])
-
-
-
- const loginrouter = ()=>{
-  
-  console.log(udata)
-  if(udata&&udata.error){
-//   alert(udata.data);
-//   setLod(false)
-
-
- switch(udata&&udata.data){
-   case 400 :
-     toast.error("كلمة المرور أو البريد الإلكتروني غير صحيحة", {
-       position: "top-right",
-       autoClose: 4000,
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: true,
-       draggable: true,
-       progress: undefined,
-       theme: "light",
-       
-       });
-   break;
-
-   case 429 :
-   toast.error("عدد طلبات كبير, الرجاء المحاولة لاحقآ", {
-     position: "top-right",
-     autoClose: 4000,
-     hideProgressBar: true,
-     closeOnClick: true,
-     pauseOnHover: true,
-     draggable: true,
-     progress: undefined,
-     theme: "light",
-     
-     });
- break;
- }
-   
-
-
-
-  }else{
-   
- 
-
-
-  //  switch(udata&&udata.data.user.type){
-  //      case 1:
-         
-  //      router.replace("/admin");
-  //      break;
-     
-     
-  //      case 2:
-  //      router.replace("/agent");
-  //      break;
-     
-  //      case 3:
-  //      router.replace("/vendor");
-  //      break;
-     
-     
-  //      case 5:
-  //        router.replace("/delivery");
-  //        break;
-     
-     
-  //      case 4:
-  //        router.replace("/");
-  //      break;
-  //    }
-
-
-
-  }
-
-  setLod(false)
-
- }
-
-
-
-
- const handlelogin=()=>{
-setLod(true);
-  try {
-
-
-    dispatch(login(
-      {
-        "identifier": email,
-        "password": pass,
+        toast.error("كلمة المرور أو البريد الإلكتروني غير صحيحة", { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
+          break
+        case 429:
+          toast.error("عدد طلبات كبير, الرجاء المحاولة لاحقآ", { position: "top-right", autoClose: 4000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, theme: "light" })
+          break
       }
-    )).then(()=>{
-setLod(true);
-setTimeout(() => {
-  loginrouter();
-}, 10);
-
-    })
-    
-  } catch (error) {
-    console.log("error",error)
+    }
     setLod(false)
   }
 
-
-
-
-  
- 
- }
-
-
-
-
-  const handleemail =(email)=>{
-    const newemail= email.replace(/ /g,'');
-    setemail(newemail);
+  const handleLogin = () => {
+    setLod(true)
+    dispatch(login({ "identifier": email, "password": pass })).then(() => {
+      setTimeout(loginRouter, 10)
+    }).catch(() => setLod(false))
   }
 
+  return (
+    <div className="w-full min-h-screen flex justify-center items-center md:py-20 py-4 ">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        limit={3}
+      />
 
+      <div
+        style={{
+          width: "512px",
+          padding: "24px",
+          gap: "24px",
+          borderRadius: "8px",
+          backgroundColor: "white",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+        className="shadow-md shadow-gray-300 mx-4"
+      >
+        <Logowhite width={96} className="mb-4" />
 
-  const handlestate=(value)=>{
-   // 
-    setstate(value)
-  const requestOptions = {
-    method: 'GET',
-    headers: {
-        "Content-Type": "application/json",
-      
-    },
-  
-};
-fetch(`${API_URL}/states/${value}?populate=cities`, requestOptions)
-    .then(response => response.json())
-    .then(data =>{
-     
-  //  
-   setcities(data.data.attributes.cities.data);
-       
-    });
+        {/* <h2 className="text-xl text-center text-gray-700 mb-1">تسجيل دخول لحسابك</h2> */}
+        <h3 dir='rtl' className="text-center text-base text-gray-900 ">أهلاً بك... </h3>
+        <p className='text-center text-base text-gray-500 mb-4'>الرجاء تسجيل الدخول للمتابعة</p>
+        <div className="w-full flex flex-col gap-2 relative">
+  <InputEl outputfunc={handleEmail} label={"البريد الإلكتروني"} />
 
+  <div className="w-full relative">
+  <InputEl
+    outputfunc={(val) => setpass(val)}
+    ispass
+    label={"كلمة المرور"}
+    type={showpass ? "text" : "password"}
+  />
 
-    
-
-  }
-
-    return (
-        <div style={{backgroundSize:50}} className="w-full sm:w-full mt-16 h-full flex min-h-screen
-          bg-[url('../../public/amblemblack.svg')] bg-white" >  
-     
-           <ToastContainer 
-           position="top-right"
-           autoClose={3000}
-           hideProgressBar={true}
-           newestOnTop={false}
-           closeOnClick
-           rtl={false}
-           pauseOnFocusLoss
-           draggable
-           pauseOnHover
-           theme="light"
-           limit={3}
-           />
-
-
-           <div  className="  from-moon-200 to-moon-200 hidden sm:hidden lg:flex  md:w-1/4 lg:w-1/2 xl:w-1/2  " ></div>
-  
-            <div className="  w-full md:w-3/4 lg:w-1/2 xl:w-1/2 p-3 ">
-    <div  style={{backgroundColor:"rgba(255,255,255,1)"}} className='w-full  flex align-middle  rounded-lg transition-transform  justify-center  text-right p-3 md:p-4 lg:p-8 shadow-xl  flex-col items-center ' >
-        
-
-    {/* Old signup stepper */}
-<div  className="  w-full md:w-3/4 lg:w-3/4  px-3 py-3  transition-all" style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-<h1 className="text-center text-2xl  text-moon-300">تسجيل دخول</h1>
-
-</div>
-
-
-    <div  style={{display:type==0?"block":"none",zIndex:1}} className="w-full transition-all ">
-
-<div>
-
-<div className='w-full  flex align-middle justify-between'>
-<div onClick={()=>{router.push("/register")} } className='inline-flex text-moon-300/60 flex-grow items-center justify-end' 
-style={{fontSize:15,textDecoration:"underline",cursor:"pointer",textAlign:"left"}}>
-
-<div className='flex align-middle justify-center '> ليس لديك حساب؟ أنشئ حساب</div>
-<div style={{marginLeft:5}}> <FaUserPlus/> </div>
+  <motion.div
+    className="absolute top-1/2 left-3 -translate-y-1/2 flex items-center cursor-pointer text-gray-400"
+    onClick={() => setShowpass(!showpass)}
+    initial={{ rotate: 0, opacity: 0 }}
+    animate={{ rotate: showpass ? 20 : 0, opacity: 1 }}
+    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+  >
+    {showpass ? <Eye size={18} /> : <EyeOff size={18} />}
+  </motion.div>
 </div>
 
 </div>
 
 
-</div>
-    <div style={{
-display:"grid",
-margin:"16px 0px",
-gap:10,
-gridTemplateAreas:`
+        <motion.div className="w-full mt-4 text-base" whileTap={{ scale: 1.03 }}>
+          <LoadingBtn act={handleLogin} text={"تسجيل دخول"} lod={lod} fullWidth />
+        </motion.div>
 
-'email'
-'pass'
-'soc'
-`
-
-
-   }} >
-
-
-   
-
-    <div style={{gridArea:"email"}}>
-      <InputEl outputfunc={(val)=>{handleemail(val)}} label={"البريد الإلكتروني"}/>
-    </div>
-
-  
-    <div style={{gridArea:"pass"}}>
-      <InputEl outputfunc={(val)=>{setpass(val)}} ispass label={"كلمة المرور"}/>
-    </div>
-
-    
-
-  
-  
-
-   </div>
-
-
-  <div className='flex flex-col sm:flex-col lg:flex-row ' >
-  <motion.div className='flex-grow p-0 sm:px-0 lg:px-3 ' whileTap={{ scale: 1.03 }}>
-      <LoadingBtn act={()=>{handlelogin()} } icon={<FaLock  />} text={"تسجيل دخول"} lod={lod} />
-      </motion.div>
-
-{/* 
-      <div className='space-x-2'>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(startClock())}
+        <div
+          className="w-full text-center mt-3 text-gray-600 text-base cursor-pointer hover:text-gray-800"
+          onClick={() => router.push("/register")}
         >
-          Increment
-        </button>
-
-
-        <button
-          aria-label="Decrement value"
-          onClick={() => console.log(sts)}
-        >
-          Decrement
-        </button>
-      </div> */}
-
-
-
-      <motion.div className='flex-grow p-0 sm:px-0 lg:px-3 ' whileTap={{ scale: 1.03 }}>
-      <LoadingBtn color={"lightgrey"} act={()=>{router.push("/register")} } textColor={"grey"} icon={<FaUserPlus  />} text={"تسجيل حساب جديد"} />
-      </motion.div>
-
-
-  </div>
-
-  <div className=' flex justify-center items-center'>
-
-  <div className='my-3' style={{gridArea:"soc"}}>
-     <div className='text-center my-1 '>التسجيل بواسطة</div> 
-   <div className='flex space-x-3 text-2xl flex-row items-center justify-center' >
-   <FaFacebook className='text-[#3E5C9A]' />
-   <FaInstagram className='text-[#C84278]' />  
-   <FaXTwitter/>
-   <FaGoogle className='text-[#DF4B38]' />
-   </div>
-  
-    </div>
-
-  </div>
-   
-   
-    
-    </div>
-
-
-   
-
-    </div>
-    </div>
-            
+      ليس لديك حساب؟  <span className='text-moon-200 hover:underline'>تسجيل حساب جديد</span>
         </div>
-    )
+
+        <div className="w-full relative my-4">
+            <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+                <span className="px-2 text-base bg-white text-gray-500">
+                او التسجيل بواسطة                </span>
+            </div>
+        </div>
+
+        <div className="w-full">
+          {/* <p className="text-center mb-4 text-gray-600">التسجيل بواسطة</p> */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 justify-items-center">
+          <div className="p-2 border border-gray-300 rounded-md w-full cursor-pointer flex items-center justify-center gap-2 hover:bg-gray-100 transition duration-150 ease-in-out">
+                <FaGoogle className="text-gray-600 text-xl" /> <span className="text-gray-600 text-sm">Google</span>
+            </div>
+            <div className="p-2 border border-gray-300 rounded-md cursor-pointer w-full flex items-center justify-center gap-2 hover:bg-gray-100 transition duration-150 ease-in-out">
+                <FaFacebook className="text-gray-600 text-xl" /> <span className="text-gray-600 text-sm">Facebook</span>
+            </div>
+
+            <div className="p-2 border border-gray-300 rounded-md w-full cursor-pointer flex items-center justify-center gap-2 hover:bg-gray-100 transition duration-150 ease-in-out">
+                <FaInstagram className="text-gray-600 text-xl" /> <span className="text-gray-600 text-sm">Instagram</span>
+            </div>
+            <div className="p-2 border border-gray-300 rounded-md w-full cursor-pointer flex items-center justify-center gap-2 hover:bg-gray-100 transition duration-150 ease-in-out">
+                <FaXTwitter className="text-gray-600 text-xl" /> <span className="text-gray-600 text-sm">X</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }

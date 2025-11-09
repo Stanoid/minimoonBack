@@ -28,7 +28,7 @@ import Cookies from "universal-cookie";
 import Logowhite from "../../public/logored.svg";
 import { useRouter, usePathname } from "next/navigation";
 import { BsX } from "react-icons/bs";
-
+import { I18nProvider } from "./lib/i18n";
 import { useSelector } from "react-redux";
 const ArFont = localFont({ src: './styles/fonts/alfont_com_SomarGX.ttf' })
 const EnFont = localFont({ src: './styles/fonts/gothambook-webfont.woff2' })
@@ -218,7 +218,7 @@ if(el.target.value.length<3){
         <NextUIProvider>
           <Provider store={store} >
           <PersistGate loading={null} persistor={persistor}>
-
+          <I18nProvider defaultLocale="ar">
         <CartContext>
           <AuthenContext>
             <section className="w-full" >
@@ -430,7 +430,7 @@ if(el.target.value.length<3){
             </section>
 
 
-            <section className={`${bgColorClass} el-messiri-text`}>
+            <section className={`${bgColorClass} el-messiri-text`} dir="auto">
   <div
     className="
       lg:max-w-[1280px]
@@ -462,6 +462,7 @@ if(el.target.value.length<3){
 
           </AuthenContext>
         </CartContext>
+        </I18nProvider>
   </PersistGate>
         </Provider>
         </NextUIProvider>

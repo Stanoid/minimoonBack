@@ -18,26 +18,21 @@ import Wrld from "../../../public/wrld.svg"
 
 import Image from 'next/image';
 import { IMG_URL } from '../local';
-function AccounteEl() {
+import { useI18n } from '../lib/i18n';
 
- 
+function AccounteEl() {
+  const { direction, locale, t } = useI18n();
   
   return (
   
-<div lang='ar' dir='rtl' className='mt-16 w-full'>
+<div lang={locale} dir={direction} className='mt-16 w-full'>
 
-<section style={{backgroundSize:50}} className="flex w-full justify-center bg-[url('../../public/amblemblack.svg')]  items-center flex-col-reverse lg:flex-row">
+<section style={{backgroundSize:50}} className={`flex w-full justify-center bg-[url('../../public/amblemblack.svg')] items-center ${direction === 'rtl' ? 'flex-col-reverse lg:flex-row' : 'flex-col lg:flex-row-reverse'}`}>
 
 <div className=' p-4' >
-  <div className='font-bold text-2xl'>حول الشركة</div>
-  <p className='text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px]'>
-  نحن ماركة ملابس دولية للنساء والأطفال. نملك
-أنشأت سمعتنا للحصول على جودة عالية وتصاميم مبتكرة على مدار سنوات.
-يثق بنا عملائنا بالجودة التي نقدمها من حيث النسيج،
-خياطة وكذلك النضارة التي نقدمها في تصميمنا. لدينا سعيد
-العملاء في أكثر من 10 دول.
-على مدار سنوات، كنا نسعى جاهدين لتحسين الجودة بشكل مستمر و
-تسليم المنتجات التي تلبي احتياجات نمط حياة عملائنا.
+  <div className={`font-bold text-2xl ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('aboutCompany')}</div>
+  <p className={`text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px] ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+  {t('aboutCompanyText')}
   </p>
 </div>
 <div className='flex justify-center items-center p-4'>
@@ -46,21 +41,16 @@ function AccounteEl() {
 </section>
 
 
-<section style={{backgroundSize:50}} className="flex w-full justify-center   items-center flex-col-reverse lg:flex-row">
+<section style={{backgroundSize:50}} className={`flex w-full justify-center items-center ${direction === 'rtl' ? 'flex-col-reverse lg:flex-row' : 'flex-col lg:flex-row-reverse'}`}>
 
 <div className=' p-4' >
-  <div className='font-bold text-2xl'> تاريخنا</div>
-  <p className='text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px]'>
+  <div className={`font-bold text-2xl ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('ourHistory')}</div>
+  <p className={`text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px] ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
  <span className='font-semibold' >
-  أكثر من 10 دول على مر السنين مع أكثر من 40 عامًا من الخبرة في مجال الملابس .
+  {t('ourHistoryBold')}
  
  </span> <br/>
- نحن في تجارة الملابس لمدة 40 عامًا. إنه حبنا للملابس
-ساعدتنا على الاستمرار والنمو في هذا العمل. كانت علامتنا التجارية minimoon
-تأسست منذ 14 عاما. تم دفع العلامة التجارية بشغف مع
-الالتزام بالجودة والأناقة. لقد استجبنا للمستهلك
-الطلب وتغيير نمط الحياة. نستمع لعملائنا عن كثب و
-السعي باستمرار لتلبية احتياجات نمط حياتهم المتغيرة
+ {t('ourHistoryText')}
   </p>
 </div>
 <div className='flex justify-center items-center p-4'>
@@ -68,10 +58,10 @@ function AccounteEl() {
 </div>
 </section>
 
-<section style={{backgroundSize:50}} className="flex py-8 w-full justify-center bg-[url('../../public/amblemblack.svg')]  items-center flex-col-reverse lg:flex-row">
+<section style={{backgroundSize:50}} className={`flex py-8 w-full justify-center bg-[url('../../public/amblemblack.svg')] items-center ${direction === 'rtl' ? 'flex-col-reverse lg:flex-row' : 'flex-col lg:flex-row-reverse'}`}>
 
 <div className=' p-2 w-full' >
-  <div className='font-bold px-0 sm:px-0 lg:px-20 text-2xl '> منتجاتنا</div>
+  <div className={`font-bold px-0 sm:px-0 lg:px-20 text-2xl ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('ourProducts')}</div>
 
 <div className='flex items-center justify-center'>
 
@@ -223,13 +213,12 @@ gridTemplateAreas:`
 
 </section>
 
-<section style={{backgroundSize:50}} className="flex w-full justify-center
- bg-[url('../../public/amblemblack.svg')]  items-center flex-col-reverse ">
+<section style={{backgroundSize:50}} className={`flex w-full justify-center bg-[url('../../public/amblemblack.svg')] items-center ${direction === 'rtl' ? 'flex-col-reverse' : 'flex-col'}`}>
 
 
 <div className='flex justify-center flex-col items-center p-4'>
-<div className='font-bold text-2xl text-center'>تصاميمنا للأطفال مستوحاة من</div>
-<div className='flex flex-wrap-reverse justify-center my-3' >
+<div className='font-bold text-2xl text-center'>{t('childrenDesigns')}</div>
+<div className={`flex ${direction === 'rtl' ? 'flex-wrap-reverse' : 'flex-wrap'} justify-center my-3`}>
 
 
 
@@ -238,14 +227,14 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Cur  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>   حب الاستطلاع </div>
+  <div className='text-center text-lg font-semibold'>{t('curiosity')}</div>
   </div>
 
 <div className='p-1'>
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Fun  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>   المزاح </div>
+  <div className='text-center text-lg font-semibold'>{t('fun')}</div>
   </div>
 
 
@@ -253,7 +242,7 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Ino  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>  البراءة </div>
+  <div className='text-center text-lg font-semibold'>{t('innocence')}</div>
   </div>
 
 
@@ -261,7 +250,7 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Cre  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'> الإبداع </div>
+  <div className='text-center text-lg font-semibold'>{t('creativity')}</div>
   </div>
 
 
@@ -274,7 +263,7 @@ gridTemplateAreas:`
 
 
 <div className='flex justify-center flex-col items-center p-4'>
-<div className='font-bold text-2xl text-center'> تصاميمنا للنساء مستوحاة من</div>
+<div className='font-bold text-2xl text-center'>{t('womenDesigns')}</div>
 <div className='flex flex-wrap justify-center my-3' >
 
 
@@ -282,21 +271,21 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Pas  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>   الشغف </div>
+  <div className='text-center text-lg font-semibold'>{t('passion')}</div>
   </div>
 
 <div className='p-1'>
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Car  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>   الاهتمام </div>
+  <div className='text-center text-lg font-semibold'>{t('care')}</div>
   </div>
 
 <div className='p-1'>
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Sel  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'>  التأكيد الذاتي </div>
+  <div className='text-center text-lg font-semibold'>{t('selfAffirmation')}</div>
   </div>
 
 
@@ -304,7 +293,7 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Sft  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'> الرقة والحنان </div>
+  <div className='text-center text-lg font-semibold'>{t('tenderness')}</div>
   </div>
 
 
@@ -312,7 +301,7 @@ gridTemplateAreas:`
   <div className='bg-moon-100 py-2 px-4 rounded-md'>
     <Ind  width={80} />
   </div>
-  <div className='text-center text-lg font-semibold'> الفردية </div>
+  <div className='text-center text-lg font-semibold'>{t('individuality')}</div>
   </div>
 
 
@@ -322,10 +311,9 @@ gridTemplateAreas:`
 </div>
 </div>
 <div className=' p-4' >
-  <div className='font-bold text-2xl'> تصاميمنا</div>
-  <p className='text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px]'>
-  الأزياء بالنسبة لنا هي تمثيل التجربة الجماعية التي يمر الناس عبر الثقافات واختاروا التعبير عن البهجة والفوضى في نمط وألوان معينة. نستمر في اتجاهات وثيقة على الاتجاهات التي تلهم بطريقة جديدة، لأن هناك تكمن روح التصاميم. نحن مدفوعة باستمرار إلى نجاح باهر عملائنا.
-  نحن مستوحى من الحياة والاتجاهات والثقافة. نرى الجمال في كل مكان. نعتقد أن عيون الإنسان مصممة للالتقاط والجمال المعجبين. نعلم أيضا أن عملائنا بحاجة إلى التعبير عن أسلوب حياتهم وموقفهم وقيمهم من خلال الملابس. لذلك، يسعى مصممونا باستمرار إلى الإلهام للتوصل إلى تصاميم جميلة ومميزة التي سترشد عملائنا. نقول بفخر أننا نقدم أكثر من 365 موضوع تصميم كل عام
+  <div className={`font-bold text-2xl ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('ourDesigns')}</div>
+  <p className={`text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px] ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+  {t('designsText')}
    </p>
 </div>
 
@@ -334,14 +322,13 @@ gridTemplateAreas:`
 
 
 <section style={{backgroundSize:50}} className="flex w-full justify-center   items-center flex-col">
-<div className='font-bold text-2xl'>  الأسواق التي نخدمها</div>
+<div className={`font-bold text-2xl ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>{t('marketsWeServe')}</div>
 <div className=' p-4' >
 <div>
   <Wrld width={"100%"} />
 </div>
-  <p className='text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px]'>
-  على الرغم من أننا بدأنا بأسواق صغيرة ولكن على مدار سنوات، فقد ساعدنا جودة عملائنا في توسيع نطاق أعمالنا إلى العديد من البلدان. نحن نبيع
-  منتجاتنا في معظم البلدان في الشرق الأوسط وشمال إفريقيا. لدينا العديد من العملاء الراضين التي طورنا عليها على مدار سنوات. نحن نوسع أوروبا ودول أخرى. كما نحب أن نسمع منك
+  <p className={`text-justify max-w-full text-xl sm:max-w-full lg:max-w-[500px] ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+  {t('marketsText')}
   </p>
 </div>
 

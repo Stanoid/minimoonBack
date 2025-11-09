@@ -13,8 +13,7 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import LikeEl from "./likel"
 import { API_URL, Theme,IMG_URL } from '../local'
-
-
+import { useI18n } from '../lib/i18n';
 import { forwardRef, useRef  } from "react"
 
 
@@ -22,11 +21,8 @@ import { forwardRef, useRef  } from "react"
 
 
 const Cart = forwardRef((props, ref) => {
-
-
-  
-
-const {favData,removeFromFav,useNotifi}  = useContext(CartCon);
+  const { t, direction } = useI18n();
+  const {favData,removeFromFav,useNotifi}  = useContext(CartCon);
 
   const [open, setOpen] = useState(true)
   const [refr, setRefr] = useState(true)
@@ -125,7 +121,7 @@ const removeFav = (id)=>{
       .then((data) => {
        // console.log(data);
        setRefr(!refr);
-        useNotifi("success", "تمت إزالة المنتج من المفضلة");
+        useNotifi("success", t('removeFromFavorites'));
 
       })
       .then(() => {

@@ -13,7 +13,7 @@ function LoadingBtn(props) {
         justifyContent: "center",
         backgroundColor: props.color ? props.color : Theme.primary,
       }}
-      className="mt-4 w-full  text-white py-3 px-5 shadow-lg  rounded-md  tracking-wide"
+      className="mt-4 w-full  text-white py-3 px-5   rounded-md text-base  tracking-wide"
     >
       <div
         style={{

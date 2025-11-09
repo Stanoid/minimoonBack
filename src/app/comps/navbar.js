@@ -11,50 +11,140 @@ import Image from "next/image";
 import { API_URL } from "../local";
 import Logowhite from "../../../public/logoblack.svg";
 import { get } from "http";
+import { useI18n } from "../lib/i18n";
 
 export default function NavbarC(props) {
   const router = useRouter();
-  const userData = useSelector((state) => state.root.auth.data && state.root.auth.data);
-  const cartData = useSelector((state) => state.root.cart.data);
+  const { t, locale, setLocale, direction } = useI18n();
+
+  // Null guards for Redux selectors
+  const authState = useSelector((state) => state?.root?.auth);
+  const userData = authState?.data && !authState.data.error ? authState.data : null;
+
+  const cartState = useSelector((state) => state?.root?.cart);
+  const cartData = Array.isArray(cartState?.data) ? cartState.data : [];
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [subCat, setSubCat] = useState([]);
+  const [error, setError] = useState(null);
 
-  // console.log(`${API_URL}subcatagories?func=getAllSubCat`, "Full fetch URL");
+  // Null-safe total price calculation
+  const totalPrice = React.useMemo(() => {
+    try {
+      if (!Array.isArray(cartData) || cartData.length === 0) {
+        return 0;
+      }
 
-  const totalPrice = cartData?.reduce((sum, item) => {
-    const selectedVariant = item.data?.attributes?.varients?.data?.find(v => v.id === item.selvar);
-    const price = selectedVariant?.attributes?.price || 0;
-    return sum + price * item.qty;
-  }, 0) || 0;
+      return cartData.reduce((sum, item) => {
+        try {
+          if (!item || typeof item !== 'object') {
+            console.warn('Invalid cart item:', item);
+            return sum;
+          }
 
-  const totalItems = cartData?.reduce((sum, item) => sum + item.qty, 0) || 0;
+          const selectedVariant = item?.data?.attributes?.varients?.data?.find(
+            v => v && v.id === item?.selvar
+          );
 
-console.log("cart data in wkhel",totalItems,totalPrice);
-  console.log(cartData,"cart data in navbar");
-  // console.log(JSON.stringify(cartData, null, 2));
+          const price = selectedVariant?.attributes?.price || 0;
+          const qty = item?.qty || 0;
+
+          if (typeof price !== 'number' || typeof qty !== 'number') {
+            console.warn('Invalid price or quantity:', { price, qty, item });
+            return sum;
+          }
+
+          return sum + (price * qty);
+        } catch (err) {
+          console.error('Error calculating item price:', err, item);
+          return sum;
+        }
+      }, 0);
+    } catch (err) {
+      console.error('Error calculating total price:', err);
+      return 0;
+    }
+  }, [cartData]);
+
+  // Null-safe total items calculation
+  const totalItems = React.useMemo(() => {
+    try {
+      if (!Array.isArray(cartData) || cartData.length === 0) {
+        return 0;
+      }
+
+      return cartData.reduce((sum, item) => {
+        const qty = item?.qty || 0;
+        return sum + (typeof qty === 'number' ? qty : 0);
+      }, 0);
+    } catch (err) {
+      console.error('Error calculating total items:', err);
+      return 0;
+    }
+  }, [cartData]);
+
+  console.log("cart data in navbar", totalItems, totalPrice);
+  console.log(cartData, "cart data in navbar");
 
 
 
   const getsubcatogries = () => {
-    fetch(`${API_URL}subcatagories?func=getAllSubcat`)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data, "subc  atogriessssssssssssssssssssssssssssssssssssss data");
+    try {
+      if (!API_URL) {
+        console.error('API_URL is not defined');
+        setError('API URL is missing');
+        return;
+      }
 
-        if (Array.isArray(data)) {
-          setSubCat(data);
-        } else {
+      fetch(`${API_URL}subcatagories?func=getAllSubcat`)
+        .then((res) => {
+          if (!res) {
+            throw new Error('No response from server');
+          }
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          try {
+            if (!data) {
+              console.warn('No data received from subcategories API');
+              setSubCat([]);
+              return;
+            }
+
+            if (Array.isArray(data)) {
+              setSubCat(data);
+              setError(null);
+            } else {
+              console.warn('Subcategories data is not an array:', data);
+              setSubCat([]);
+            }
+          } catch (err) {
+            console.error('Error processing subcategories data:', err);
+            setSubCat([]);
+            setError('Failed to process subcategories');
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching subcategories:", err);
+          setError('Failed to fetch subcategories');
           setSubCat([]);
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching subcategories:", err);
-      });
+        });
+    } catch (err) {
+      console.error("Error in getsubcatogries function:", err);
+      setError('Failed to fetch subcategories');
+      setSubCat([]) ;
+    }
   };
 
   useEffect(() => {
-    getsubcatogries();
+    try {
+      getsubcatogries();
+    } catch (err) {
+      console.error("Error in useEffect for getsubcatogries:", err);
+    }
   }, []);
   // const getSubCat = (cat) => {
   //   fetch(`/api/categories?cat=${cat}`)
@@ -71,31 +161,53 @@ console.log("cart data in wkhel",totalItems,totalPrice);
 
 
   const handleSearch = () => {
-    props.setSearchTog(!props.searchTog);
-  };
-
-  const handleAccount = (type) => {
-    switch (type) {
-      case 1:
-        router.push("/admin");
-        break;
-      case 4:
-        router.push("/user");
-        break;
-      case 5:
-        router.push("/delivery");
-        break;
-      default:
-        router.push("/");
-        break;
+    try {
+      if (props && typeof props.setSearchTog === 'function') {
+        props.setSearchTog(!props.searchTog);
+      } else {
+        console.warn('setSearchTog function not available');
+      }
+    } catch (err) {
+      console.error('Error in handleSearch:', err);
     }
   };
 
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["English"]));
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
-  );
+  const handleAccount = (type) => {
+    try {
+      if (!type || typeof type !== 'number') {
+        console.warn('Invalid account type:', type);
+        router.push("/");
+        return;
+      }
+
+      switch (type) {
+        case 1:
+          router.push("/admin");
+          break;
+        case 4:
+          router.push("/user");
+          break;
+        case 5:
+          router.push("/delivery");
+          break;
+        default:
+          router.push("/");
+          break;
+      }
+    } catch (err) {
+      console.error('Error in handleAccount:', err);
+      router.push("/");
+    }
+  };
+
+  // Language options
+  const languages = [
+    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'en', name: 'English', flag: '🇬🇧' }
+  ];
+
+  const currentLanguage = languages.find(lang => lang.code === locale) || languages[0];
 
   return (
     <>
@@ -132,17 +244,16 @@ console.log("cart data in wkhel",totalItems,totalPrice);
 
 
 
-      <div className="container   lg:flex hidden mx-auto px-4 py-2  justify-between items-center text-gray-500 text-sm border-b border-gray-200 rtl">
-        <div className="flex items-center gap-2 space-x-4 space-x-reverse">
-          <a href="#" className="flex items-center space-x-1 space-x-reverse hover:text-gray-900">
-            <span>اتصل بنا </span>
-
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <div className={`container lg:flex hidden mx-auto px-4 py-2 justify-between items-center text-gray-500 text-sm border-b border-gray-200 ${direction === 'rtl' ? 'rtl' : 'ltr'}`}>
+        <div className={`flex items-center gap-2 ${direction === 'rtl' ? 'space-x-4 space-x-reverse' : 'space-x-4'}`}>
+          <a href="/contactus" className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} hover:text-gray-900`}>
+            <span>{t('contactUs')}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </a>
-          <a href="#" className="flex items-center gap-2 hover:text-gray-900">
-            <span>من نحن</span>
+          <a href="/about" className="flex items-center gap-2 hover:text-gray-900">
+            <span>{t('aboutUs')}</span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -153,77 +264,121 @@ console.log("cart data in wkhel",totalItems,totalPrice);
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900"><FaTwitter className="w-4 h-4" /></a>
           </div>
         </div>
-        <div className="flex items-center space-x-4 space-x-reverse">
+        <div className={`flex items-center ${direction === 'rtl' ? 'space-x-4 space-x-reverse' : 'space-x-4'}`}>
+          {/* Language Selector */}
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                variant="light"
+                size="sm"
+                className="text-gray-600 hover:text-gray-900 min-w-fit"
+              >
+                <span className="text-base mr-1">{currentLanguage.flag}</span>
+                <span className="text-sm hidden sm:inline">{currentLanguage.name}</span>
+                <MdOutlineKeyboardArrowDown className="h-4 w-4" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Language selection"
+              selectedKeys={[locale]}
+              selectionMode="single"
+              onSelectionChange={(keys) => {
+                try {
+                  const selectedKey = Array.from(keys)[0];
+                  if (selectedKey && typeof selectedKey === 'string') {
+                    setLocale(selectedKey);
+                  }
+                } catch (err) {
+                  console.error('Error changing language:', err);
+                }
+              }}
+            >
+              {languages.map((lang) => (
+                <DropdownItem key={lang.code} textValue={lang.name}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{lang.flag}</span>
+                    <span>{lang.name}</span>
+                  </div>
+                </DropdownItem>
+              ))}
+            </DropdownMenu>
+          </Dropdown>
 
-          <div className="flex items-center space-x-1 space-x-reverse cursor-pointer hover:text-gray-900">
-             {/* Using generic SVG for exact match of image's pricing icon */}
-             {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.727A8 8 0 0118 8a8 8 0 00-8-8c-4.418 0-8 3.582-8 8s3.582 8 8 8c.707 0 1.397-.091 2.062-.257M10 20v-3m0 0l-2.5-2.5M10 17l2.5-2.5M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg> */}
-            <span className="text-sm">افضل الاسعار</span> {/* Explicitly small text */}
-            {/* <MdOutlineKeyboardArrowDown className="h-3 w-3" /> */}
+          <div className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} cursor-pointer hover:text-gray-900`}>
+            <span className="text-sm">{t('bestPrices')}</span>
           </div>
-
-
-          <div className="flex items-center space-x-1 space-x-reverse cursor-pointer hover:text-gray-900">
-          <span className=" font-medium mx-2"> | </span>
-            <span className="text-sm">اسرع توصيل</span> {/* Explicitly small text */}
-            {/* <MdOutlineKeyboardArrowDown className="h-3 w-3" /> */}
+          <div className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} cursor-pointer hover:text-gray-900`}>
+            <span className="font-medium text-gray-300 mx-2"> | </span>
+            <span className="text-sm">{t('fastestDelivery')}</span>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center rtl">
+      <div className={`container mx-auto px-4 py-4 flex justify-between items-center ${direction === 'rtl' ? 'rtl' : 'ltr'}`}>
 
         {/* Hamburger Menu Icon (visible on small screens) */}
 
 
-        <div className="lg:flex  items-center order-1 lg:order-3 flex-grow justify-end lg:justify-start">
+        <div className={`lg:flex items-center order-1 lg:order-3 flex-grow ${direction === 'rtl' ? 'justify-end lg:justify-start' : 'justify-start lg:justify-end'}`}>
           <form
-            dir="rtl"
-            className="relative lg:flex  items-center flex-grow
+            dir={direction}
+            className={`relative lg:flex items-center flex-grow
                        max-w-md lg:max-w-none lg:w-[776px] h-[46px]
                        rounded-[8px] border border-gray-300 bg-gray-100
                        focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-500
-                       overflow-hidden mr-4 lg:mr-0"
+                       overflow-hidden ${direction === 'rtl' ? 'mr-4 lg:mr-0' : 'ml-4 lg:ml-0'}`}
           >
             <input
               type="text"
               onClick={handleSearch}
-              placeholder="واش راكي تدوّري عليه؟"
-              className="flex-grow h-full py-2
-                         pr-4 pl-[80px] /* Adjusted padding for placeholder */
-                         bg-transparent outline-none
-                         text-right text-sm"
+              placeholder={t('searchPlaceholder')}
+              className={`flex-grow h-full py-2
+                         bg-transparent outline-none text-sm
+                         ${direction === 'rtl' ? 'pr-4 pl-[80px] text-right' : 'pl-4 pr-[80px] text-left'}`}
             />
             <button
-              className="absolute top-[1.5px] bottom-[1.5px] left-[1.5px]
+              className={`absolute top-[1.5px] bottom-[1.5px]
                          bg-moon-200 text-sm text-white font-medium
-                         w-[46px] h-[36px] /* Kept original width for the button */
+                         px-2 h-[36px]
                          flex items-center justify-center
-                         rounded-l-[7px]
-                         z-10"
+                         z-10
+                         ${direction === 'rtl' ? 'left-[1.5px] rounded-l-[7px]' : 'right-[1.5px] rounded-r-[7px]'}`}
               type="submit"
-              aria-label="بحث"
+              aria-label={t('search')}
             >
-              بحث
+              {t('search')}
             </button>
-
           </form>
-          <Logowhite
-  style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
-  onClick={() => router.push("/")}
-  className=" lg:ml-3 hidden lg:block"
-/>
+          {Logowhite && (
+            <Logowhite
+              style={{ cursor: "pointer", width: "64px", height: "26.694103240966797px" }}
+              onClick={() => {
+                try {
+                  router.push("/");
+                } catch (err) {
+                  console.error('Error navigating to home:', err);
+                }
+              }}
+              className={`hidden lg:block ${direction === 'rtl' ? 'lg:ml-3' : 'lg:mr-3'}`}
+            />
+          )}
         </div>
 
-        <div className="lg:flex hidden mx-2 items-center space-x-6 space-x-reverse order-2 lg:order-1 flex-row-reverse">
+        <div className={`lg:flex hidden mx-2 items-center ${direction === 'rtl' ? 'space-x-6 space-x-reverse flex-row-reverse' : 'space-x-6'} order-2 lg:order-1`}>
 
 {/* 1. Favorites */}
 {userData && !userData.error && (
-  <motion.div onClick={() => props.openFav(true)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative">
-    <span className="text-sm ml-2 hidden sm:block">المفضلة</span>
-    <Button  isIconOnly className="text-xl" size="md" aria-label="Favorites">
+  <motion.div onClick={() => {
+    try {
+      if (props && typeof props.openFav === 'function') {
+        props.openFav(true);
+      }
+    } catch (err) {
+      console.error('Error opening favorites:', err);
+    }
+  }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`}>{t('favorites')}</span>
+    <Button isIconOnly className="text-xl" size="md" aria-label="Favorites">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
       </svg>
@@ -231,10 +386,17 @@ console.log("cart data in wkhel",totalItems,totalPrice);
   </motion.div>
 )}
 
-<motion.div  onClick={() => props.openCart(true)} className="flex w-full items-center text-gray-700 hover:text-gray-900 cursor-pointer">
-  <span className=" text-sm w-full hidden sm:block">
-    {/* {cartData?.totalPrice || 0} $ {cartData?.totalItems || 0} منتجات */}
-    {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} منتجات
+<motion.div onClick={() => {
+  try {
+    if (props && typeof props.openCart === 'function') {
+      props.openCart(true);
+    }
+  } catch (err) {
+    console.error('Error opening cart:', err);
+  }
+}} className={`flex w-full items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+  <span className={`text-sm w-full hidden sm:block ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+    {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} {t('products')}
     {/* <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg> */}
@@ -247,9 +409,20 @@ console.log("cart data in wkhel",totalItems,totalPrice);
 </motion.div>
 
 {userData && !userData.error ? (
-  <motion.div onClick={() => handleAccount(userData.data.user.type)} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1 space-x-reverse">
-    <span className="text-sm hidden sm:block">حسابي</span>
-    <Button  isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
+  <motion.div onClick={() => {
+    try {
+      if (userData?.data?.user?.type) {
+        handleAccount(userData.data.user.type);
+      } else {
+        console.warn('User type not available');
+        router.push("/");
+      }
+    } catch (err) {
+      console.error('Error handling account click:', err);
+    }
+   }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'space-x-1 space-x-reverse flex-row-reverse' : 'space-x-1'}`}>
+    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`}>{t('myAccount')}</span>
+    <Button isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
       </svg>
@@ -257,8 +430,14 @@ console.log("cart data in wkhel",totalItems,totalPrice);
   </motion.div>
 ) : (
   <motion.div>
-    <Button onClick={() => router.push("/login")} className="bg-gradient-to-tr from-moonsec-100/40 to-moonsec-100 text-xs font-medium text-white px-3 py-1 rounded-md" size="sm" aria-label="Login">
-      تسجيل دخول
+    <Button onClick={() => {
+      try {
+        router.push("/login");
+      } catch (err) {
+        console.error('Error navigating to login:', err);
+      }
+    }} className="bg-gradient-to-tr from-moonsec-100/40 to-moonsec-100 text-xs font-medium text-white px-3 py-1 rounded-md" size="sm" aria-label="Login">
+      {t('login')}
     </Button>
   </motion.div>
 )}
@@ -310,23 +489,35 @@ console.log("cart data in wkhel",totalItems,totalPrice);
   `}</style>
 </div> */}
 
-    <div dir="rtl" className="lg:hidden  w-full fixed top-0 left-0 z-50">
-        <div className="bg-white  w-full flex items-center justify-between px-4 py-3">
-          <Logowhite onClick={() => router.push("/")} className="w-16 cursor-pointer" />
+    <div dir={direction} className="lg:hidden w-full fixed top-0 left-0 z-50">
+        <div className="bg-white w-full flex items-center justify-between px-4 py-3">
+          {Logowhite && (
+            <Logowhite onClick={() => {
+              try {
+                router.push("/");
+              } catch (err) {
+                console.error('Error navigating to home:', err);
+              }
+            }} className="w-16 cursor-pointer" />
+          )}
 
 
-{/* <></> */}
-{/* mobile */}
-           <motion.div onClick={() => { props.openCart(true); }}
-  className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer"
->
-  <Button isIconOnly className="mr-5" size="md" aria-label="Cart">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-      </svg>
-    </Button>
-    <span className="ml-2 text-sm flex items-center sm:block">
-    {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} منتجات
+          <motion.div onClick={() => {
+            try {
+              if (props && typeof props.openCart === 'function') {
+                props.openCart(true);
+              }
+            } catch (err) {
+              console.error('Error opening cart:', err);
+            }
+          }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+            <Button isIconOnly className={direction === 'rtl' ? 'ml-5' : 'mr-5'} size="md" aria-label="Cart">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+            </Button>
+            <span className={`text-sm flex items-center sm:block ${direction === 'rtl' ? 'mr-2 text-right' : 'ml-2 text-left'}`}>
+              {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} {t('products')}
     <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>
@@ -347,10 +538,10 @@ console.log("cart data in wkhel",totalItems,totalPrice);
 
 
         <motion.div
-initial={{ x: "100%" }}
-animate={{ x: isMenuOpen ? "0%" : "100%" }}
+          initial={{ x: direction === 'rtl' ? "100%" : "-100%" }}
+          animate={{ x: isMenuOpen ? "0%" : (direction === 'rtl' ? "100%" : "-100%") }}
           transition={{ duration: 0.3 }}
-          className="fixed  right-0 h-screen  backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4"
+          className={`fixed ${direction === 'rtl' ? 'right-0' : 'left-0'} h-screen backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4`}
         >
           <div className="flex justify-between items-center mb-6">
             <Button
@@ -377,19 +568,63 @@ animate={{ x: isMenuOpen ? "0%" : "100%" }}
           </div>
 
           <div className="space-y-4">
-            {/* <Button
-              onClick={() => props.openCart(true)}
-              fullWidth
-              className="bg-moon-200 text-white"
-            >Subcatmenu
-              السلة ({cartData})
-            </Button> */}
-<div className="w-full flex divide-x ">
+            {/* Language Selector for Mobile */}
+            <div className="w-full mb-4">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    variant="bordered"
+                    fullWidth
+                    className="justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{currentLanguage.flag}</span>
+                      <span>{currentLanguage.name}</span>
+                    </div>
+                    <MdOutlineKeyboardArrowDown className="h-4 w-4" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Language selection"
+                  selectedKeys={[locale]}
+                  selectionMode="single"
+                  onSelectionChange={(keys) => {
+                    try {
+                      const selectedKey = Array.from(keys)[0];
+                      if (selectedKey && typeof selectedKey === 'string') {
+                        setLocale(selectedKey);
+                      }
+                    } catch (err) {
+                      console.error('Error changing language:', err);
+                    }
+                  }}
+                >
+                  {languages.map((lang) => (
+                    <DropdownItem key={lang.code} textValue={lang.name}>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </div>
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+
+<div className="w-full flex divide-x">
   <Button
-    onClick={() => props.openFav(true)}
+    onClick={() => {
+      try {
+        if (props && typeof props.openFav === 'function') {
+          props.openFav(true);
+        }
+      } catch (err) {
+        console.error('Error opening favorites:', err);
+      }
+    }}
     className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
   >
-    المفضلة
+    {t('favorites')}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -408,10 +643,21 @@ animate={{ x: isMenuOpen ? "0%" : "100%" }}
 
   {userData && !userData.error ? (
     <Button
-      onClick={() => handleAccount(userData.data.user.type)}
+      onClick={() => {
+        try {
+          if (userData?.data?.user?.type) {
+            handleAccount(userData.data.user.type);
+          } else {
+            console.warn('User type not available');
+            router.push("/");
+          }
+        } catch (err) {
+          console.error('Error handling account click:', err);
+        }
+      }}
       className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
     >
-      حسابي
+      {t('myAccount')}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -429,10 +675,16 @@ animate={{ x: isMenuOpen ? "0%" : "100%" }}
     </Button>
   ) : (
     <Button
-      onClick={() => router.push("/login")}
+      onClick={() => {
+        try {
+          router.push("/login");
+        } catch (err) {
+          console.error('Error navigating to login:', err);
+        }
+      }}
       className="flex-1 text-gray-900 rounded-none flex items-center justify-center gap-2"
     >
-      تسجيل دخول
+      {t('login')}
     </Button>
   )}
 </div>
