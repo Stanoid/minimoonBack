@@ -339,7 +339,7 @@ export default function NavbarC(props) {
             <button
               className={`absolute top-[1.5px] bottom-[1.5px]
                          bg-moon-200 text-sm text-white font-medium
-                         w-[46px] h-[36px]
+                         w-fit px-2 h-[36px]
                          flex items-center justify-center
                          z-10
                          ${direction === 'rtl' ? 'left-[1.5px] rounded-l-[7px]' : 'right-[1.5px] rounded-r-[7px]'}`}
