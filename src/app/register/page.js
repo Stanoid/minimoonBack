@@ -11,10 +11,10 @@ import { FaFacebook, FaInstagram, FaXTwitter, FaGoogle, FaCircleRight } from 're
 import LoadingBtn from '../comps/loadingbtn'
 import Logowhite from "../../../public/logoblack.svg"
 import { Theme } from '../local'
-import { useI18n } from '../context/i18n' // ✅ import the translation hook
+import { useI18n } from '../lib/i18n'
 
 export default function Register() {
-  const { t, locale, setLocale } = useI18n() 
+  const { t, direction } = useI18n()
 
   const [name, setname] = useState("");
   const [gender, setGender] = useState("M");
@@ -116,10 +116,10 @@ export default function Register() {
           <div style={{ display: type === 0 ? "block" : "none" }} className="w-full transition-all">
             <div className='w-full flex align-middle justify-between'>
               <div className='flex-grow '>
-                <h3 dir='rtl' className="text-center text-base text-gray-900 ">
+                <h3 dir={direction} className={`text-center text-base text-gray-900 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
                   {t("welcome")}
                 </h3>
-                <p className='text-center text-base text-gray-500 mb-4'>
+                <p className={`text-center text-base text-gray-500 mb-4 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
                   {t("pleaseLoginToContinue")}
                 </p>
               </div>
