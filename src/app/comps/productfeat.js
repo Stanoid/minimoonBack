@@ -5,12 +5,14 @@ import { API_URL } from '../local';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { useI18n } from '../lib/i18n';
 import { useRef } from 'react';
+import { ProductCardSkeleton } from '../../components/skeletons';
 
 function ProductFeat() {
   const { t, direction } = useI18n();
   const [subcats, setSubcats] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [loading, setLoading] = useState(true);
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
@@ -30,6 +32,7 @@ function ProductFeat() {
 
   const fetchTopSubcats = async () => {
     try {
+      setLoading(true);
       const res = await fetch(`${API_URL}subcatagories?func=getTopSecSubcats`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -37,8 +40,10 @@ function ProductFeat() {
       const data = await res.json();
       console.log("Top subcategories:", data);
       setSubcats(data);
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching top subcategories:", err);
+      setLoading(false);
     }
   };
 
@@ -336,25 +341,31 @@ function ProductFeat() {
       </motion.div>
 
       {/* Grid with stagger animation */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-fr"
-      >
-        {visibleSubcats.map((subcat, idx) =>
-          subcat ? (
-            <CategoryCard
-              key={subcat.id + '-' + idx + '-' + startIndex}
-              img={getImageUrl(subcat.img)}
-              name={subcat.name_ar || subcat.name || 'Category'}
-              link={`/categories?cid=${subcat.id}`}
-              isLarge={idx === 0}
-              index={idx}
-            />
-          ) : null
-        )}
-      </motion.div>
+      {loading ? (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-fr">
+          <ProductCardSkeleton count={5} />
+        </div>
+      ) : (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 auto-rows-fr"
+        >
+          {visibleSubcats.map((subcat, idx) =>
+            subcat ? (
+              <CategoryCard
+                key={subcat.id + '-' + idx + '-' + startIndex}
+                img={getImageUrl(subcat.img)}
+                name={subcat.name_ar || subcat.name || 'Category'}
+                link={`/categories?cid=${subcat.id}`}
+                isLarge={idx === 0}
+                index={idx}
+              />
+            ) : null
+          )}
+        </motion.div>
+      )}
     </div>
   );
 }

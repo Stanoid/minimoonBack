@@ -40,7 +40,7 @@ export default function Home() {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setShowMobileFilter(false); 
+    setShowMobileFilter(false);
     fetch(
       `${API_URL}products?func=filterProducts&cid=${cid}&sizes=${newFilters.sizes}&colors=${newFilters.colors}&priceRange=${newFilters.priceRange}`
     )

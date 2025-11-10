@@ -16,8 +16,7 @@
   import { useState,useRef,useEffect,useContext,useMemo,useCallback } from "react";
   import FeatProduct from "./comps/featuredProducts";
   import { AuthCon } from "./contexts/AuthCon";
-  import Skeleton,{ SkeletonTheme } from 'react-loading-skeleton'
-  import 'react-loading-skeleton/dist/skeleton.css'
+  import { ProductCardSkeleton, HeroSkeleton } from '../components/skeletons'
   import FeaturedComp from "./comps/featured";
   import SwipeEl from "./comps/swipe"
   import AnimateOnViewEnter from "./comps/AnimateOnViewEnter"
@@ -46,18 +45,11 @@
     //const calculation = useMemo(() =>  getAllProducts(), []);
 
     useEffect(() => {
-
-  setLod(false)
   if (firstRenderRef.current) {
     firstRenderRef.current = false;
     setLod(true)
     getAllProducts();
-  } else {
-
   }
-
-    //  calculation;
-
         },[])
 
 
@@ -89,7 +81,6 @@
             fetch(`${API_URL}products?func=getAllProducts&page=${pagination}`, requestOptions)
               .then((response) => response.json())
               .then((data) => {
-
                 if(prds){
                   let newjoined= [...prds,...data]
                   setProducts(newjoined);
@@ -101,13 +92,14 @@
             setupcomingProducts(data.length);
             console.log("aaaaaa",upcomingProducts)
 
+            getSubcat();
             setLod(false);
             setlod(false)
-            getSubcat();
 
-
-              }).then(()=>{
-                setLod(false)
+              }).catch((error) => {
+                console.error("Error fetching products:", error);
+                setLod(false);
+                setlod(false);
               })
 
 
@@ -165,7 +157,7 @@
 
 
       <div className="el-messiri-text bg-gray-50 lg:px-0 px-4" style={{display:'flex',justifyContent:'center',alignItems:"center",flexDirection:'column', width:'100%'}}>
-  {lod?<LoadingOverlay/>:<></>}
+  {/* {lod?<LoadingOverlay/>:<></>} */}
   <Cart ref={childCompRef}   openHandler={handleOpenCart} open={openCart} />
   <div className="   to-moon-100/30 from-moon-100/30   " style={{width:"100%"}}>
   <Hero  />
@@ -273,16 +265,12 @@
 
 
 
-  </div>:<div  style={{ width: "100%", padding: "20px 10px" }}>
-
-  <SkeletonTheme baseColor="white" highlightColor={Theme.primary}>
-
-        <Skeleton count={3} />
-
-    </SkeletonTheme>
-
-
+  </div>:<div className="w-full px-1 sm:px-1 lg:px-6 m-0">
+  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 gap-4 lg:gap-8 justify-center">
+    <ProductCardSkeleton count={4} />
   </div>
+</div>
+
   }
 
 
@@ -304,7 +292,7 @@
   </div> */}
 
 
-  {subcats&&subcats.map(subcat=>(
+  {!lod && subcats && subcats.map(subcat=>(
 
   <div className="  py-6">
   <div className="lg:p-4 px-5  flex justify-between  ">

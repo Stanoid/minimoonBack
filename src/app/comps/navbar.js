@@ -200,9 +200,8 @@ export default function NavbarC(props) {
     }
   };
 
-  // Language options
   const languages = [
-    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
+    { code: 'ar', name: 'العربية', flag: '🇩🇿' },
     { code: 'fr', name: 'Français', flag: '🇫🇷' },
     { code: 'en', name: 'English', flag: '🇬🇧' }
   ];
@@ -377,7 +376,7 @@ export default function NavbarC(props) {
       console.error('Error opening favorites:', err);
     }
   }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`}>{t('favorites')}</span>
+    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-0'}`}>{t('favorites')}</span>
     <Button isIconOnly className="text-xl" size="md" aria-label="Favorites">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -414,14 +413,15 @@ export default function NavbarC(props) {
       if (userData?.data?.user?.type) {
         handleAccount(userData.data.user.type);
       } else {
-        console.warn('User type not available');
+        cons
+        ole.warn('User type not available');
         router.push("/");
       }
     } catch (err) {
       console.error('Error handling account click:', err);
     }
    }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'space-x-1 space-x-reverse flex-row-reverse' : 'space-x-1'}`}>
-    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`}>{t('myAccount')}</span>
+    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-0'}`}>{t('myAccount')}</span>
     <Button isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
