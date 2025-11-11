@@ -172,4 +172,8 @@ function AccounteEl({ direction = 'ltr', locale = 'en' }) {
     );
 }
 
-export default AccounteEl;
+function ContactUsPage() {
+    return <AccounteEl />;
+}
+
+export default ContactUsPage;
