@@ -27,7 +27,7 @@ const t = (key) => {
     return translations[key] || key;
 };
 
-function AccounteEl({ direction = 'rtl', locale = 'ar' }) {
+function AccounteEl({ direction = 'ltr', locale = 'en' }) {
     // State to manage form inputs
     const [formData, setFormData] = useState({
         name: '',
