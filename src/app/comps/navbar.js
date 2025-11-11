@@ -303,45 +303,44 @@ export default function NavbarC(props) {
             </DropdownMenu>
           </Dropdown>
 
-          <div className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} cursor-pointer hover:text-gray-900`}>
+          <div className="flex items-center space-x-1 cursor-pointer hover:text-gray-900">
             <span className="text-sm">{t('bestPrices')}</span>
           </div>
-          <div className={`flex items-center ${direction === 'rtl' ? 'space-x-1 space-x-reverse' : 'space-x-1'} cursor-pointer hover:text-gray-900`}>
+          <div className="flex items-center space-x-1 cursor-pointer hover:text-gray-900">
             <span className="font-medium mx-2"> | </span>
             <span className="text-sm">{t('fastestDelivery')}</span>
           </div>
         </div>
       </div>
 
-      <div className={`container mx-auto px-4 py-4 flex justify-between items-center ${direction === 'rtl' ? 'rtl' : 'ltr'}`}>
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center ltr">
 
         {/* Hamburger Menu Icon (visible on small screens) */}
 
 
-        <div className={`lg:flex items-center order-1 lg:order-3 flex-grow ${direction === 'rtl' ? 'justify-end lg:justify-start' : 'justify-start lg:justify-end'}`}>
+        <div className="lg:flex items-center order-1 lg:order-3 flex-grow justify-end lg:justify-start">
           <form
-            dir={direction}
-            className={`relative lg:flex items-center flex-grow
+            className="relative lg:flex items-center flex-grow
                        max-w-md lg:max-w-none lg:w-[776px] h-[46px]
                        rounded-[8px] border border-gray-300 bg-gray-100
                        focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-500
-                       overflow-hidden ${direction === 'rtl' ? 'mr-4 lg:mr-0' : 'ml-4 lg:ml-0'}`}
+                       overflow-hidden ml-4 lg:ml-0"
           >
             <input
               type="text"
               onClick={handleSearch}
               placeholder={t('searchPlaceholder')}
-              className={`flex-grow h-full py-2
+              className="flex-grow h-full py-2
                          bg-transparent outline-none text-sm
-                         ${direction === 'rtl' ? 'pr-4 pl-[80px] text-right' : 'pl-4 pr-[80px] text-left'}`}
+                         pl-4 pr-[80px] text-left"
             />
             <button
-              className={`absolute top-[1.5px] bottom-[1.5px]
+              className="absolute top-[1.5px] bottom-[1.5px]
                          bg-moon-200 text-sm text-white font-medium
                          w-fit px-2 h-[36px]
                          flex items-center justify-center
                          z-10
-                         ${direction === 'rtl' ? 'left-[1.5px] rounded-l-[7px]' : 'right-[1.5px] rounded-r-[7px]'}`}
+                         right-[1.5px] rounded-r-[7px]"
               type="submit"
               aria-label={t('search')}
             >
@@ -358,12 +357,12 @@ export default function NavbarC(props) {
                   console.error('Error navigating to home:', err);
                 }
               }}
-              className={`hidden lg:block ${direction === 'rtl' ? 'lg:ml-3' : 'lg:mr-3'}`}
+              className="hidden lg:block lg:mr-3"
             />
           )}
         </div>
 
-        <div className={`lg:flex hidden mx-2 items-center ${direction === 'rtl' ? 'space-x-6 space-x-reverse flex-row-reverse' : 'space-x-6'} order-2 lg:order-1`}>
+        <div className="lg:flex hidden mx-2 items-center space-x-6 order-2 lg:order-1">
 
 {/* 1. Favorites */}
 {userData && !userData.error && (
@@ -375,8 +374,8 @@ export default function NavbarC(props) {
     } catch (err) {
       console.error('Error opening favorites:', err);
     }
-  }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-0'}`}>{t('favorites')}</span>
+  }} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer relative">
+    <span className="text-sm hidden sm:block mr-0">{t('favorites')}</span>
     <Button isIconOnly className="text-xl" size="md" aria-label="Favorites">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
@@ -393,8 +392,8 @@ export default function NavbarC(props) {
   } catch (err) {
     console.error('Error opening cart:', err);
   }
-}} className={`flex w-full items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-  <span className={`text-sm w-full hidden sm:block ${direction === 'rtl' ? 'text-right' : 'text-left'}`}>
+}} className="flex w-full items-center text-gray-700 hover:text-gray-900 cursor-pointer">
+  <span className="text-sm w-full hidden sm:block text-left">
     {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} {t('products')}
     {/* <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -420,8 +419,8 @@ export default function NavbarC(props) {
     } catch (err) {
       console.error('Error handling account click:', err);
     }
-   }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'space-x-1 space-x-reverse flex-row-reverse' : 'space-x-1'}`}>
-    <span className={`text-sm hidden sm:block ${direction === 'rtl' ? 'ml-2' : 'mr-0'}`}>{t('myAccount')}</span>
+   }} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer space-x-1">
+    <span className="text-sm hidden sm:block mr-0">{t('myAccount')}</span>
     <Button isIconOnly className="text-2xl font-black text-gray-600 rounded-full" size="md" aria-label="Account">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -489,7 +488,7 @@ export default function NavbarC(props) {
   `}</style>
 </div> */}
 
-    <div dir={direction} className="lg:hidden w-full fixed top-0 left-0 z-50">
+    <div dir="rtl" className="lg:hidden w-full fixed top-0 left-0 z-50">
         <div className="bg-white w-full flex items-center justify-between px-4 py-3">
           {Logowhite && (
             <Logowhite onClick={() => {
@@ -501,7 +500,7 @@ export default function NavbarC(props) {
             }} className="w-16 cursor-pointer" />
           )}
 
-
+<div className="flex items-center ">
           <motion.div onClick={() => {
             try {
               if (props && typeof props.openCart === 'function') {
@@ -510,14 +509,14 @@ export default function NavbarC(props) {
             } catch (err) {
               console.error('Error opening cart:', err);
             }
-          }} className={`flex items-center text-gray-700 hover:text-gray-900 cursor-pointer ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-            <Button isIconOnly className={direction === 'rtl' ? 'ml-5' : 'mr-5'} size="md" aria-label="Cart">
+          }} className="flex items-center text-gray-700 hover:text-gray-900 cursor-pointer">
+            <Button isIconOnly className="mr-5" size="md" aria-label="Cart">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
               </svg>
             </Button>
-            <span className={`text-sm flex items-center sm:block ${direction === 'rtl' ? 'mr-2 text-right' : 'ml-2 text-left'}`}>
-              {totalPrice.toFixed(2)} $ <span className="mx-2 font-thin">|</span> {totalItems} {t('products')}
+            <span className="text-sm flex items-center sm:block text-left">
+              {totalPrice.toFixed(2)} $ <span className="mx-1 font-thin">|</span> {totalItems} {t('products')}
     <svg xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 32 32" strokeWidth={1.5} stroke="currentColor" className="size-4">
   <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>
@@ -533,15 +532,16 @@ export default function NavbarC(props) {
           >
             <MdMenu size={24} />
           </Button>
+          </div>
         </div>
 
 
 
         <motion.div
-          initial={{ x: direction === 'rtl' ? "100%" : "-100%" }}
-          animate={{ x: isMenuOpen ? "0%" : (direction === 'rtl' ? "100%" : "-100%") }}
+          initial={{ x: "100%" }}
+          animate={{ x: isMenuOpen ? "0%" : "100%" }}
           transition={{ duration: 0.3 }}
-          className={`fixed ${direction === 'rtl' ? 'right-0' : 'left-0'} h-screen backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4`}
+          className="fixed right-0 h-screen backdrop-blur- w-full bg-white z-50 overflow-y-auto p-4"
         >
           <div className="flex justify-between items-center mb-6">
             <Button
