@@ -1,0 +1,45 @@
+{
+  "name": "miniback",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "restart": "npm run-script restart",
+    "prod": "NODE_ENV=production npm run build && NODE_ENV=production npm start",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop minimoon-backend",
+    "pm2:restart": "pm2 restart minimoon-backend",
+    "pm2:logs": "pm2 logs minimoon-backend",
+    "pm2:monit": "pm2 monit",
+    "cleanup-logs": "node scripts/cleanup-logs.js"
+  },
+  "dependencies": {
+    "@strapi/plugin-cloud": "4.23.1",
+    "@strapi/plugin-i18n": "4.23.1",
+    "@strapi/plugin-users-permissions": "4.23.1",
+    "@strapi/strapi": "4.23.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.7",
+    "pg": "^8.12.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "5.3.4",
+    "stripe": "^16.2.0",
+    "styled-components": "5.3.3"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "7c03530b-04c2-49f0-a7ce-17b11fe3c4b3"
+  },
+  "engines": {
+    "node": ">=22.3.0",
+    "npm": ">=10.8.1"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hero_images",
+  "info": {
+    "singularName": "hero-image",
+    "pluralName": "hero-images",
+    "displayName": "Hero Image",
+    "description": "Homepage hero/banner images"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "title_ar": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "subtitle_ar": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "link": {
+      "type": "string"
+    },
+    "button_text": {
+      "type": "string"
+    },
+    "button_text_ar": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

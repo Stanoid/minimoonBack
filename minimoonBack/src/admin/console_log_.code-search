@@ -1,0 +1,1027 @@
+# Query: console.log.*$
+# Flags: RegExp
+# ContextLines: 1
+
+252 results - 50 files
+
+miniback • src\admin\app.example.js:
+  32  const bootstrap = (app) => {
+  33:   //console.log(app);
+  34  };
+
+miniback • src\api\catagorie\controllers\catagorie.js:
+   38         case "AddCat":
+   39: //console.log("Ssss",utype);
+   40  
+
+  107         case "EditCat":
+  108: //console.log("Ssss",utype);
+  109  
+
+miniback • src\api\color\controllers\color.js:
+   38         case "AddColor":
+   39: //console.log("Ssss",utype);
+   40  
+
+  103         case "EditColor":
+  104: //console.log("Ssss",utype);
+  105  
+
+miniback • src\api\order\controllers\order.js:
+   47       udata.id;
+   48:     // console.log(udata)
+   49       const user = await strapi.entityService.findOne(
+
+  143    let orary = []
+  144:   //console.log(resdev)
+  145       for (let i = 0; i < uorders.length; i++) {
+
+  147        const session = await stripe.checkout.sessions.retrieve(uorders[i].session_id);
+  148: //console.log(session)
+  149        if(session.status!="expired"){
+
+  185  
+  186:    // console.log(entity);
+  187   let price = 0;
+
+  189  
+  190:  //console.log(items[i]);
+  191     //Product approach
+
+  209       if(ressub.varients[j].id == items[i].id){
+  210:        //console.log(ressub.varients[j]);
+  211         price = ressub.varients[j].price;
+
+  230  
+  231: //console.log("ssssssssssssssss",items[i].product_ref)
+  232  
+
+  277           )
+  278:         //console.log(entry)
+  279  
+
+  286  
+  287:           // console.log(e.message)
+  288         }
+
+  304     let ordarray = []
+  305: //console.log(ressub)
+  306     for (let i = 0; i < ressub.length; i++) {
+
+  317  
+  318:    //console.log(ressub)
+  319  return ordarray;
+
+  354      let ordarraydev = []
+  355:  //console.log(resdev)
+  356      for (let i = 0; i < resdev.length; i++) {
+
+  383          const {id} = ctx.request.body;
+  384:         //console.log("order items session id: ",id)
+  385          const lineItems = await stripe.checkout.sessions.listLineItems(
+
+  481              default:
+  482:              // console.log(`Unhandled event type ${event.type}`);
+  483            }
+
+miniback • src\api\product\controllers\product.js:
+  255          case "AddProduct":
+  256:           //console.log("Ssss",utype);
+  257  
+
+  297  
+  298:           //  console.log(imgs);
+  299  
+
+  336  
+  337:   //  console.log("aaaaaaaaa", id);
+  338  
+
+  399  
+  400:             // console.log(imgs);
+  401              const productentry = await strapi.entityService.update(
+
+  417  
+  418:           //  console.log("from front", vartoDelete);
+  419:            // console.log("new var array ", newvar);
+  420  
+
+  439  
+  440:             console.log("to delete", toDelete);
+  441  
+
+miniback • src\api\size\controllers\size.js:
+   38         case "AddSize":
+   39: //console.log("Ssss",utype);
+   40  
+
+  104         case "EditSize":
+  105: //console.log("Ssss",utype);
+  106  
+
+miniback • src\api\subcatagory\controllers\subcatagory.js:
+   38         case "AddSubCat":
+   39: //console.log("Ssss",utype);
+   40  
+
+  193         case "EditSubCat":
+  194: //console.log("Ssss",utype);
+  195  
+
+nextmoon • context\AuthContext.js:
+   41                  .then(data =>{
+   42:                    // console.log(data);
+   43                      
+
+   45                          ls.set("atkn",data.jwt);
+   46:                   //   console.log("thiis tokwn",data.jwt)
+   47                       setUser(data.user.username);
+
+  182                      .then(data =>{
+  183:                    //  console.log("after call token",ls.get("atkn"))
+  184:                     //  console.log("dataaftercall",data)
+  185                       
+
+  246               const isLogged = async(chk)=>{
+  247:               //console.log("triggered",chk)
+  248                   // let myPromise = new Promise(function(resolve, reject) {
+
+  264                         .then(data =>{
+  265:                       // console.log("after call token",ls.get("atkn"))
+  266:                         // console.log("dataaftercall",data)
+  267     
+
+nextmoon • src\app\layout.js:
+   85        .then((data) => {
+   86:       //  console.log(data.data)
+   87         setCat(data.data);
+
+  112    const handleSearch = (el) =>{
+  113: //console.log(el.target.value)
+  114  
+  115  // if(el.target.value.lenght<4){
+  116: //   console.log("returned")
+  117  
+
+  120  
+  121: //console.log("lenght",el.target.value.length)
+  122  
+  123  if(el.target.value.length<3){
+  124: //console.log("returned-ish")
+  125  }else{
+
+  136      .then((data) => {
+  137:      // console.log("search",data );  
+  138        setSugges(data)
+
+  152      setLogindata(null);
+  153:    // console.log("loginval ")
+  154      
+
+  168              if(data.id){
+  169:      // console.log(data);
+  170        setLogindata(data)
+
+  172  
+  173:     //console.log("loginval",data);
+  174      
+
+  180    const drawSugg = (el)=>{
+  181: //console.log("search")
+  182      setEleft(el.target.getBoundingClientRect().left);
+
+nextmoon • src\app\page.js:
+  55          
+  56:             //  console.log("data22233",data)
+  57             setProducts(data)
+
+  81          const productso = await  responseprod.json();
+  82:       //  console.log(productso.data);
+  83          setProducts(productso.data)
+
+nextmoon • src\app\admin\addcat.js:
+   65            .then((data) => {
+   66:            // console.log("cats data ",data.data )
+   67             setSizes(data.data);
+
+   89              .then((data) => {
+   90:            //   console.log("deleted ",data.data )
+   91             getCats();
+
+  119  
+  120:     //  console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  121  
+
+  183              .then((data) => {
+  184:            //   console.log("added product data",data )
+  185               getCats();
+
+nextmoon • src\app\admin\AddColor.js:
+   64          .then((data) => {
+   65:         //  console.log("deleted ",data.data )
+   66         getcolors();
+
+   91            .then((data) => {
+   92:             //console.log("colors data ",data.data )
+   93             setcolors(data.data);
+
+  121  
+  122:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  123  
+
+  187              .then((data) => {
+  188:               //console.log("added product data",data )
+  189               setNamear("");
+
+nextmoon • src\app\admin\addproduct.js:
+   82        postData.append("files", files[i]);
+   83:       //console.log("postdata",postData);
+   84        axios
+
+   92            
+   93:           //console.log("Response image url", response.data[0].url);
+   94            //    setImgs(tmepar);
+
+  101      }
+  102:     //console.log("trmpa",tmepar);
+  103  
+
+  119        .then((data) => {
+  120:        // console.log("deleted ", data.data);
+  121          getProducts();
+
+  140        .then((data) => {
+  141:        // console.log("status updated", data);
+  142        })
+
+  159        .then((data) => {
+  160:        // console.log("Product data ", data);
+  161          setProducts(data);
+
+  179        .then((data) => {
+  180:       //  console.log("color data ", data.data);
+  181          setColors(data.data);
+
+  199        .then((data) => {
+  200:        // console.log("sizes data ", data.data);
+  201          setSizes(data.data);
+
+  219        .then((data) => {
+  220:        // console.log("sub catagories data ", data);
+  221          setCats(data);
+
+  240        .then((data) => {
+  241:        // console.log("aaaaaaaaaaaaaaaaaaaaaaa", data);
+  242  
+
+  254    const submitProduct = (tmepar) => {
+  255:   //  console.log(tmepar);
+  256:     //console.log("aaaaa",imgsob);
+  257  
+
+  297          .then((data) => {
+  298:        //   console.log("added product data", data);
+  299          })
+
+nextmoon • src\app\admin\addSize.js:
+   66            .then((data) => {
+   67:          //   console.log("sizes data ",data.data )
+   68             setSizes(data.data);
+
+   93              .then((data) => {
+   94:            //   console.log("deleted ",data.data )
+   95             getSizes();
+
+  123  
+  124:      // console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  125  
+
+  189              .then((data) => {
+  190:             //  console.log("added product data",data )
+  191               setNamear("");
+
+nextmoon • src\app\admin\addsubcat.js:
+   66            .then((data) => {
+   67:           //console.log("cats data ",data.data )
+   68             setCat(data.data);
+
+   93              .then((data) => {
+   94:            //console.log("subcat normal  data ",data )
+   95               setSubcats(data);
+
+  117              .then((data) => {
+  118:           //    console.log("deleted ",data.data )
+  119             getSubcats();
+
+  147  
+  148:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  149  
+
+  211              .then((data) => {
+  212:               //console.log("added product data",data )
+  213               getSubcats();
+
+nextmoon • src\app\admin\EditCat.js:
+   64            .then((data) => {
+   65:           //console.log("cats data ",data.data );
+   66              setNamear(data.data.attributes.name_ar);
+
+   90              .then((data) => {
+   91:              //console.log("deleted ",data.data )
+   92             getCats();
+
+  120  
+  121:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  122  
+
+  181              .then((data) => {
+  182:              //console.log("added product data",data )
+  183           
+
+nextmoon • src\app\admin\editColor.js:
+   64          .then((data) => {
+   65:           //console.log("deleted ",data.data )
+   66         getcolors();
+
+   91            .then((data) => {
+   92:            //console.log("colors data ",data )
+   93              setNamear(data.data.attributes.name_ar);
+
+  124  
+  125:      // console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  126  
+
+  190              .then((data) => {
+  191:               //console.log("coloreditfun",data )
+  192                setlod(false);
+
+nextmoon • src\app\admin\editProduct.js:
+   91        postData.append("files", files[i]);
+   92:       //console.log("postdata",postData);
+   93        axios
+
+   97            tmepar[i] = response.data[0].url;
+   98:           //console.log("uhrurhguhrughrughug", response.data[0].url);
+   99            setImgs(tmepar);
+
+  126        if(colors[i].id==color){
+  127:         //console.log("color ob",colors[i])
+  128          colorob = colors[i]
+
+  134              if(sizes[j].id==size){
+  135:               //console.log("size ob",sizes[j])
+  136                sizeob = sizes[j];
+
+  179  
+  180:     //console.log("varrrrrrrrrrrrrrrrrrrrs",varients)
+  181     setEff(false)
+
+  198        .then((data) => {
+  199:         //console.log("Product speced data ", data.data);
+  200         // setProducts(data.data);
+
+  246        .then((data) => {
+  247:         //console.log("color data ", data.data);
+  248          setColors(data.data);
+
+  266        .then((data) => {
+  267:         //console.log("sizes data ", data.data);
+  268          setSizes(data.data);
+
+  286        .then((data) => {
+  287:         //console.log("sub catagories data ", data);
+  288          setCats(data);
+
+  297  
+  298:     //console.log(index);
+  299     
+
+  306      setRefr(!refr);
+  307:     //console.log("aaaa",varients)
+  308  
+
+  321    const submitProduct = (imgsob) => {
+  322:     //console.log("vardelete",varientDelete);
+  323     setlod(true)
+  324  
+  325:     //console.log("aaaaa",imgsob);
+  326      if (
+
+  360          .then((data) => {
+  361:           //console.log("added product data", data);
+  362          })
+
+nextmoon • src\app\admin\editsize copy.js:
+   66            .then((data) => {
+   67:             //console.log("size data ",data.data )
+   68             //setSizes(data.data);
+
+   96              .then((data) => {
+   97:               //console.log("deleted ",data.data )
+   98             getSizes();
+
+  126  
+  127:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  128  
+
+  187              .then((data) => {
+  188:               //console.log("added product data",data )
+  189                
+
+nextmoon • src\app\admin\editsize.js:
+   66            .then((data) => {
+   67:            // console.log("size data ",data.data )
+   68             //setSizes(data.data);
+
+   96              .then((data) => {
+   97:               //console.log("deleted ",data.data )
+   98             getSizes();
+
+  126  
+  127:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  128  
+
+  187              .then((data) => {
+  188:               //console.log("added product data",data )
+  189                
+
+nextmoon • src\app\admin\EditSubcat.js:
+   66            .then((data) => {
+   67:             //console.log("cats data ",data.data )
+   68             setCat(data.data);
+
+   94              .then((data) => {
+   95:               //console.log("SSSScat ",data.data )
+   96               setNamear(data.data.attributes.name_ar);
+
+  123              .then((data) => {
+  124:               //console.log("deleted ",data.data )
+  125             getSubcats();
+
+  153  
+  154:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  155  
+
+  217              .then((data) => {
+  218:               //console.log("added product data",data )
+  219            
+
+nextmoon • src\app\admin\orders.js:
+   53          .then((data) => {
+   54:           //console.log("Orders ",data )
+   55            setOrderdata(data)
+
+   80            .then((data) => {
+   81:             //console.log("colors data ",data.data )
+   82             setcolors(data.data);
+
+  110  
+  111:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  112  
+
+  176              .then((data) => {
+  177:               //console.log("added product data",data )
+  178               setNamear("");
+
+  219        .then((data) => {
+  220:         //console.log("expired",data)
+  221         getOrders();
+
+nextmoon • src\app\admin\page.js:
+  52      async function loginvalHandler(){
+  53:       //console.log("aaaa",loginval())
+  54        loginval.then(function(result) {
+  55:        //console.log("aaaa",result)
+  56      });
+
+  79  
+  80:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  81  
+
+nextmoon • src\app\admin\productsList.js:
+   84        postData.append("files", files[i]);
+   85:       //console.log("postdata",postData);
+   86        axios
+
+   94            
+   95:           //console.log("Response image url", response.data[0].url);
+   96            //    setImgs(tmepar);
+
+  103      }
+  104:     //console.log("trmpa",tmepar);
+  105  
+
+  121        .then((data) => {
+  122:         //console.log("deleted ", data.data);
+  123          getProducts();
+
+  142        .then((data) => {
+  143:         //console.log("status updated", data);
+  144        })
+
+  161        .then((data) => {
+  162:         //console.log("Product data ", data);
+  163          setProducts(data);
+
+  181        .then((data) => {
+  182:         //console.log("color data ", data.data);
+  183          setColors(data.data);
+
+  201        .then((data) => {
+  202:         //console.log("sizes data ", data.data);
+  203          setSizes(data.data);
+
+  221        .then((data) => {
+  222:         //console.log("sub catagories data ", data);
+  223          setCats(data);
+
+  241        .then((data) => {
+  242:         //console.log("aaaaaaaaaaaaaaaaaaaaaaa", data);
+  243  
+
+  255    const submitProduct = (tmepar) => {
+  256:     //console.log(tmepar);
+  257:     //console.log("aaaaa",imgsob);
+  258  
+
+  298          .then((data) => {
+  299:           //console.log("added product data", data);
+  300          })
+
+nextmoon • src\app\admin\promoCodes.js:
+   75              .then((data) => {
+   76:           //console.log("Promo data",data )
+   77          
+
+  101              .then((data) => {
+  102:           //console.log("session data",data )
+  103          
+
+  128              .then((data) => {
+  129:           //console.log("Promo data",data )
+  130            setpromoData(data.data)
+
+nextmoon • src\app\agent\page.js:
+  24      async function loginvalHandler(){
+  25:       //console.log("aaaa",loginval())
+  26        loginval.then(function(result) {
+  27:        //console.log("aaaa",result)
+  28      });
+
+  51  
+  52:       //  console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  53  
+
+nextmoon • src\app\categories\page.js:
+  22  
+  23: //console.log(getQueryVariable("cid"))
+  24  
+
+  41        //   }
+  42:       //   console.log("Query variable %s not found", variable);
+  43        // }
+
+nextmoon • src\app\comps\accountel.js:
+  42          
+  43:       //  console.log("ddddddddddd",data)
+  44     if(data.id){
+
+nextmoon • src\app\comps\cart.js:
+   33  //   useEffect(()=>{
+   34: //     console.log(ls.get("MinimoonCart"))
+   35  // },[ls.get("MinimoonCart")])
+
+   43  
+   44:   //console.log(ls.get("MinimoonCart"));
+   45    if(ls.get("MinimoonCart").length==0){
+
+   62  
+   63:   //console.log(payarray)
+   64    
+
+   77    .then((data) => {
+   78:    // console.log("checoutlinked",data );
+   79      setLod(false)
+
+  106  //     .then((data) => {
+  107: //       console.log("checoutlinked",data );
+  108  //       window.location= data.url;
+
+nextmoon • src\app\comps\deliveryPopup.js:
+   34     getOrderItems();
+   35: //   console.log(new Date(props.data.date));
+   36  
+   37     var date = new Date(props.data&&props.data.date * 1000);
+   38: //console.log(props.data&&props.data.date)
+   39  // Hours part from the timestamp
+
+   78    .then((data) => {
+   79:     //console.log("orderitems",data );
+   80     
+
+  108  //     .then((data) => {
+  109: //       console.log("checoutlinked",data );
+  110  //       window.location= data.url;
+
+  138     .then((data) => {
+  139:     // console.log("delivered ",data )
+  140       props.getOrders();
+
+nextmoon • src\app\comps\dropgroup.js:
+  36                
+  37:          // console.log("Catagories data ",data.data)
+  38           setCats(data.data);
+
+nextmoon • src\app\comps\flashproduct.js:
+  29  // }
+  30: //console.log("img url", IMG_URL.concat(props.data.img&&JSON.parse(props.data.img)[0])) 
+  31  
+
+nextmoon • src\app\comps\megaMenu.js:
+  8      useEffect(() => {
+  9:      //console.log("mega menu data",props.data)
+  10      
+
+nextmoon • src\app\comps\product.js:
+  29  // }
+  30: //console.log("img url", IMG_URL.concat(props.data.img&&JSON.parse(props.data.img)[0])) 
+  31  
+
+nextmoon • src\app\comps\saveproduct.js:
+  14  
+  15: //console.log("item data:-",JSON.parse(props.data.img)[0])
+  16  
+
+nextmoon • src\app\comps\searchel.js:
+  38      data={data}
+  39:     callback={(record) => console.log(record)}
+  40    />
+
+nextmoon • src\app\comps\swipe.js:
+   40      function handleDragEnd(_, info) {
+   41:        //console.log(props.index,props.grnum)
+   42        
+
+   56          if(props.index==3){
+   57:             //console.log("reseted")
+   58              props.setIndex(0);
+
+  142        
+  143:              // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkk",data)
+  144             setProducts(data)
+
+nextmoon • src\app\comps\userItemsPopup.js:
+   34     getOrderItems();
+   35: //   console.log(new Date(props.data.date));
+   36  
+   37     var date = new Date(props.data&&props.data.date * 1000);
+   38: //console.log(props.data&&props.data.date)
+   39  // Hours part from the timestamp
+
+   78    .then((data) => {
+   79:     //console.log("orderitems",data );
+   80     
+
+  108  //     .then((data) => {
+  109: //       console.log("checoutlinked",data );
+  110  //       window.location= data.url;
+
+  138     .then((data) => {
+  139:     // console.log("delivered ",data )
+  140       props.getOrders();
+
+nextmoon • src\app\contexts\AuthCon.js:
+  17    const loginUser = (cred, pass) => {
+  18:     //console.log("started");
+  19      const requestOptions = {
+
+  30        .then((data) => {
+  31:         //console.log(data);
+  32                        
+
+  77    const loginval = ()=>{
+  78: //console.log("loginval ")
+  79  
+
+nextmoon • src\app\contexts\cartContext.js:
+   22  //   if(ls.get("MinimoonCart")){
+   23: //   //  console.log("ls already there ")
+   24  //   }else{
+   25  //     ls.set("MinimoonCart",[]);
+   26: //     //console.log("ls initated on null value ")
+   27  //   }
+
+   47   
+   48: // console.log("aaaaaaaa",ls.get("MinimoonCart").length&&ls.get("MinimoonCart").length);
+   49  
+
+   51  //     setCartTotal(0);
+   52: //     console.log("empty triggered")
+   53  //     // return
+
+   58    
+   59: // //console.log("aaaaaaaaaaaaaaaaaaaaa",cartData)
+   60   
+
+   66  
+   67: // console.log("ffffffffffffffffffff",ls.get("MinimoonCart")[i].data.attributes.varients.data.length)
+   68  
+
+   71  // total = total + (ls.get("MinimoonCart")[i].data.attributes.varients.data[j].attributes.price *ls.get("MinimoonCart")[i].qty);
+   72: //   console.log("aaaaaaa",total)
+   73  // }
+
+   86      if(ls.get("MinimoonCart")){
+   87:         //console.log("ls already there ");
+   88          
+
+   90            ls.set("MinimoonCart",[]);
+   91:         //console.log("ls initated on null value ",ls.get("MinimoonCart"))
+   92          }    
+
+  101      //setCartData(arr)
+  102:     //console.log(arr);
+  103      ls.set("MinimoonCart",arr)
+  104     // handleTotal();
+  105:     //console.log("cart from context (Add) ",arr)//??
+  106  
+
+  117      useNotifi("success","Added To Likes");
+  118:    // console.log("Likes from context (Add): " ,favData)//??
+  119    }
+
+  123    const removeFromFav = (id)=>{
+  124:    // console.log(id);
+  125          const oldcart = favData; //????
+
+  129          useNotifi("success","Removed from` Likes");
+  130:        // console.log("Likes from context: (Remove)" ,favData)//??
+  131      
+
+  135    const removeFromCart = (id)=>{
+  136: //console.log(id)
+  137  
+
+  147  
+  148:    // console.log("bafore setting minimooncart" ,arr)//??
+  149     
+
+  152      //handleTotal();
+  153:     //console.log("cart from context: (Remove)" ,cartData)//??
+  154     
+
+nextmoon • src\app\delivery\orders.js:
+   64          .then((data) => {
+   65:           //console.log("Orders ",data )
+   66            setlod(false)
+
+   79  
+   80: //console.log("aaaaaaaaaaa",order)
+   81          setOrdata(order);
+
+  100  //    .then((data) => {
+  101: //      console.log("delivered ",data )
+  102  //      getOrders();
+
+  128            .then((data) => {
+  129:             //console.log("colors data ",data.data )
+  130             setcolors(data.data);
+
+  158  
+  159:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  160  
+
+  224              .then((data) => {
+  225:               //console.log("added product data",data )
+  226               setNamear("");
+
+  267        .then((data) => {
+  268:        // console.log("expired",data)
+  269         getOrders();
+
+nextmoon • src\app\delivery\page.js:
+  27      async function loginvalHandler(){
+  28:       //console.log("aaaa",loginval())
+  29        loginval.then(function(result) {
+  30:       // console.log("aaaa",result)
+  31      });
+
+  54  
+  55:      // console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  56  
+
+nextmoon • src\app\login\page.js:
+   81    setLod(1);
+   82:  //  console.log(loading);
+   83    loginUser(email,pass)
+
+   99    const handlestate=(value)=>{
+  100:    // console.log("Aaa",value);
+  101      setstate(value)
+
+  113       
+  114:   //  console.log(data.data.attributes.cities.data);
+  115     setcities(data.data.attributes.cities.data);
+
+nextmoon • src\app\products\page.js:
+   45      setmimg(0);
+   46:     //console.log(getQueryVariable("pid"));
+   47  
+
+   53        const onPageLoad = () => {
+   54:        // console.log('page loaded');
+   55         // setLod(true);
+
+   70        //   if (product.data[i].id == getQueryVariable("pid")) {
+   71:       //     console.log("here:", product.data[i]);
+   72          
+
+  125          .then((data) => {
+  126:           //console.log(data.data.attributes.varients.data[0].attributes.price)
+  127            setImgs(JSON.parse(data.data.attributes.img));
+
+  131            setPref(data.data.attributes.varients.data[0].attributes.product_ref)
+  132:          // console.log(data.data.attributes.varients.data[0].attributes.product_ref)
+  133            setSelectedC(data.data.attributes.varients.data[0].attributes.color.data.id);
+
+  138          setLod(false);
+  139:        // console.log("aaaaa",imgs)
+  140          });
+
+  152    const HandleAddToCart = () => {
+  153:    //console.log(pref)
+  154        addToCart({ 
+
+  159        });
+  160:    //   console.log("Product Has been added on empty cart: ", db.attributes.name_en);
+  161        useNotifi("success", "تمت إضافة المنتج إلى السلة");
+
+  180        addTofav(db);
+  181:      // console.log("Product Has been added on empty likes: ", db.nameEn);
+  182        //useNotifi("success","Product has been added to Liked")
+
+  188          addTofav(db);
+  189:        // console.log("Product Has been added: to liked ", db.nameEn);
+  190          // useNotifi("success","Product has been added to Liked")
+  191        } else {
+  192:        // console.log("Product removed from liked:  ", db.nameEn);
+  193          removeFromFav(db.id);
+
+  200        //   if(cartData[i].id===parseInt(getQueryVariable("pid"))){
+  201:       //     console.log("Already trigger:",cartData[i].id,parseInt(getQueryVariable("pid")));
+  202        //    return
+  203        //   }else{
+  204:       //     console.log("added trigger:",cartData[i].id,parseInt(getQueryVariable("pid")));
+  205        //     addToCart(db);
+
+  220      }
+  221:    // console.log("Query variable %s not found", variable);
+  222    }
+
+  302          <span
+  303:         
+  304            style={{
+
+nextmoon • src\app\profile\page.js:
+  24      async function loginvalHandler(){
+  25:     //  console.log("aaaa",loginval())
+  26        loginval.then(function(result) {
+  27:        //console.log("aaaa",result)
+  28      });
+
+  51  
+  52:   //     //  console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  53  
+
+nextmoon • src\app\register\page.js:
+   75    const regis =()=>{
+   76: //console.log(email,pass,name)
+   77      setLod(true)
+
+   96  
+   97:   //console.log(newarc);
+   98    
+
+  115  
+  116: //console.log(requestOptions);
+  117  
+
+  128          
+  129:       //  console.log(data.error.message)
+  130  
+
+  138        setLod(false)
+  139:       // console.log(data);
+  140         
+
+  156  
+  157: //console.log(cpass,pass,email,name,phone);
+  158  if(pass!==cpass){
+
+  171     
+  172:    // console.log(state,city,address,address2);
+  173      setType(2)
+
+  183    const handlestate=(value)=>{
+  184:    // console.log("Aaa",value);
+  185      setstate(value)
+
+  197       
+  198:   //  console.log(data.data.attributes.cities.data);
+  199     setcities(data.data.attributes.cities.data);
+
+  443      <div style={{gridArea:"namear"}}>
+  444:       <InputEl outputfunc={(val)=>{console.log(val)}} label={"معلومات إضافية"}/>
+  445      </div>
+
+  447      <div style={{gridArea:"email"}}>
+  448:     <InputEl outputfunc={(val)=>{console.log(val)}} label={"معلومات إضافية"}/>
+  449      </div>
+
+  452      <div style={{gridArea:"pass2"}}>
+  453:     <InputEl outputfunc={(val)=>{console.log(val)}} label={"معلومات إضافية"}/>
+  454      </div> 
+
+  456      <div style={{gridArea:"pass"}}>
+  457:     <InputEl outputfunc={(val)=>{console.log(val)}} label={"معلومات إضافية"}/>
+  458      </div>
+
+  460      <div style={{gridArea:"confirm"}}>
+  461:     <InputEl outputfunc={(val)=>{console.log(val)}} label={"معلومات إضافية"}/>
+  462      </div>
+
+nextmoon • src\app\subcatagories\page.js:
+   26  
+   27: // console.log(getQueryVariable("sid"))
+   28  const requestOptions = {
+
+   38    .then((data) => {
+   39:   //  console.log("suuuuuuuuuub data ", data);
+   40     setProducts(data);
+
+   43  
+   44:     //console.log("then data ", datasub[0].subcatagory.catagory.id);
+   45  
+
+   56        .then((data) => {
+   57:       //  console.log("related produccts data ", data);
+   58      //setRelatedProducts(data);
+
+   69      }
+   70:     //console.log("all products",prodarray);
+   71      setRelatedProducts(prodarray);
+
+   99          }
+  100:        // console.log("Query variable %s not found", variable);
+  101        }
+
+nextmoon • src\app\user\orders.js:
+   65          .then((data) => {
+   66:           //console.log("Orders ",data )
+   67            setlod(false)
+
+   80  
+   81: ///console.log("aaaaaaaaaaa",order)
+   82          setOrdata(order);
+
+  101  //    .then((data) => {
+  102: //      console.log("delivered ",data )
+  103  //      getOrders();
+
+  129            .then((data) => {
+  130:            // console.log("colors data ",data.data )
+  131             setcolors(data.data);
+
+  159  
+  160:      //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  161  
+
+  225              .then((data) => {
+  226:               //console.log("added product data",data )
+  227               setNamear("");
+
+  268        .then((data) => {
+  269:        // console.log("expired",data)
+  270         getOrders();
+
+nextmoon • src\app\user\page.js:
+  27      async function loginvalHandler(){
+  28:      // console.log("aaaa",loginval())
+  29        loginval.then(function(result) {
+  30:        //console.log("aaaa",result)
+  31      });
+
+  54  
+  55:       //console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  56  
+
+nextmoon • src\app\vendor\page.js:
+  24      async function loginvalHandler(){
+  25:       //console.log("aaaa",loginval())
+  26        loginval.then(function(result) {
+  27:        //console.log("aaaa",result)
+  28      });
+
+  51  
+  52:       //  console.log("aaaaaaaaaaaaaaaaaaaaaaa",data)
+  53  

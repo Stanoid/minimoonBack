@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "status": {
+      "type": "boolean"
+    },
+    "name_ar": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string"
+    },
+    "description_ar": {
+      "type": "text"
+    },
+    "description_en": {
+      "type": "string"
+    },
+    "img": {
+      "type": "text"
+    },
+    "varients": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::varient.varient",
+      "mappedBy": "product"
+    },
+    "subcatagory": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::subcatagory.subcatagory",
+      "inversedBy": "products"
+    },
+    "seller": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "products"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "promotions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::promotion.promotion",
+      "mappedBy": "pids"
+    },
+    "like": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::like.like",
+      "inversedBy": "products"
+    },
+    "code": {
+      "type": "string"
+    }
+  }
+}
