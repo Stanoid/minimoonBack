@@ -1352,6 +1352,7 @@ export interface ApiSubcatagorySubcatagory extends Schema.CollectionType {
     >;
     img: Attribute.Media;
     feat: Attribute.Boolean;
+    topsec: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
